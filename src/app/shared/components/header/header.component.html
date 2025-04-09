@@ -1,187 +1,105 @@
 <header class="bg-black text-white relative">
-  <div
-    class="bg-gradient-to-r absolute inset-0 from-gray-900 to-black z-0"
-  ></div>
+  <div class="bg-gradient-to-r absolute inset-0 from-gray-900 to-black z-0"></div>
   <div class="mx-auto px-4 relative z-10 container">
-    <div>
-      <div class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div
-          class="md:flex-row items-center justify-between py-4 px-4 bg-black/5 flex flex-col backdrop-blur-sm transition-all duration-300"
-        >
-          <div class="items-center flex space-x-2">
-            <img
-              alt=""
-              src="https://placehold.co/60x60?text=FLEX"
-              class="h-10 w-10"
-            />
-            <span class="text-2xl font-bold tracking-wider">
-              FLEX
-              <span class="text-indigo-500">FIT</span>
-            </span>
-          </div>
-          <div class="md:block hidden">
-            <nav class="flex space-x-1">
-              <a
-                href="/Lb301x90iPOKMHn4jFlN#home"
-                class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
-                >Home</a
-              >
-              <a
-                href="/Lb301x90iPOKMHn4jFlN#about"
-                class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
-                >About</a
-              >
-              <a
-                href="/Lb301x90iPOKMHn4jFlN#services"
-                class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
-                >Services</a
-              >
-              <a
-                href="/Lb301x90iPOKMHn4jFlN#trainers"
-                class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
-                >Trainers</a
-              >
-              <a
-                href="/Lb301x90iPOKMHn4jFlN#testimonials"
-                class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
-                >Testimonials</a
-              >
-              <a
-                href="/Lb301x90iPOKMHn4jFlN#contact"
-                class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
-                >Contact</a
-              >
-            </nav>
-          </div>
-          <div class="items-center mt-4 md:mt-0 flex">
-            <a
-              href="/Lb301x90iPOKMHn4jFlN#signup"
-              class="bg-indigo-600 text-white py-2 px-6 rounded-full text-sm font-semibold tracking-wide shadow-lg hover:bg-indigo-700 transition-all duration-300 transform hover:scale-105"
-              >BECOME A MEMBER</a
-            >
-            <button
-              type="submit"
-              class="focus:outline-none md:hidden ml-4 text-white"
-            >
-              <span class="items-center justify-center h-6 w-6 flex">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-full h-full"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  id="Windframe_gq9kea3UX"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  ></path>
-                </svg>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <script id="Windframe_Veh_XmlGN">
-        const btn = document.querySelector(".mobile-menu-button");
-        const menu = document.querySelector(".mobile-menu");
-        btn.addEventListener("click", () => {
-          menu.classList.toggle("hidden");
-        });
-
-        window.addEventListener("scroll", function () {
-          const navbar = document.getElementById("navbar");
-          if (window.scrollY > 10) {
-            navbar.classList.add("bg-black/10");
-          } else {
-            navbar.classList.remove("bg-black/10");
-          }
-        });
-      </script>
-    </div>
-    <div>
-      <div></div>
-      <script id="Windframe_eqeXw6jCO">
-        const btn = document.querySelector(".mobile-menu-button");
-        const menu = document.querySelector(".mobile-menu");
-        btn.addEventListener("click", () => {
-          menu.classList.toggle("hidden");
-        });
-      </script>
-    </div>
-    <div class="py-12 md:py-20 lg:py-28 items-center text-center flex flex-col">
-      <p
-        class="text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tight"
+    <!-- Navbar -->
+    <nav
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      [ngClass]="{ 'bg-black/10': isScrolled }"
+    >
+      <div
+        class="md:flex-row items-center justify-between py-4 px-4 bg-black/5 flex flex-col backdrop-blur-sm transition-all duration-300"
       >
-        <span class="text-indigo-500">FITNESS</span>
-        ELEVATE YOUR &lt;br/&gt; JOURNEY
-      </p>
-      <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl">
-        Join our community of fitness enthusiasts and transform your body with
-        cutting-edge equipment and professional guidance
-      </p>
-      <div class="sm:flex-row mb-8 flex flex-col gap-4">
-        <button
-          type="button"
-          class="inline-flex border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 hover:bg-indigo-700 transition-all duration-300 justify-center rounded-md py-3 px-6 bg-indigo-600 text-base font-medium text-white shadow-lg"
-        >
-          Get Started Today
-        </button>
-        <button
-          type="button"
-          class="inline-flex border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 hover:bg-gray-800 transition-all duration-300 justify-center rounded-md py-3 px-6 bg-transparent text-base font-medium text-white shadow-lg"
-        >
-          View Programs
-        </button>
+        <!-- Logo -->
+        <div class="items-center flex space-x-2">
+          <img
+            alt="Logo"
+            src="https://placehold.co/60x60?text=FLEX"
+            class="h-10 w-10"
+          />
+          <span class="text-2xl font-bold tracking-wider">
+            FLEX <span class="text-indigo-500">FIT</span>
+          </span>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="md:block hidden">
+          <div class="flex space-x-1">
+            <a
+              *ngFor="let link of navLinks"
+              [routerLink]="link.path"
+              routerLinkActive="active-menu"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
+            >
+              {{ link.label }}
+            </a>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="items-center mt-4 md:mt-0 flex">
+          <button
+            (click)="toggleMobileMenu()"
+            class="md:hidden ml-4 text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="items-center text-sm flex space-x-4">
-        <div class="items-center flex">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-indigo-400 mr-1"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            id="Windframe_gs5LjGBMu"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-          <span>Open 24/7</span>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div
+      *ngIf="isMobileMenuOpen"
+      @fadeInOut
+      class="fixed inset-0 h-screen bg-gray-900 z-50 md:hidden transition duration-300 ease-in-out"
+    >
+      <div class="flex flex-col p-4 space-y-2 h-full">
+        <!-- Close Button -->
+        <div class="flex justify-end">
+          <button (click)="toggleMobileMenu()" class="text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </div>
-        <div class="items-center flex">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-indigo-400 mr-1"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            id="Windframe_yw7s6PnRG"
+
+        <!-- Menu Items -->
+        <div class="flex flex-col space-y-2">
+          <a
+            *ngFor="let link of navLinks"
+            [routerLink]="link.path"
+            routerLinkActive="active-menu"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
+            (click)="toggleMobileMenu()"
           >
-            <path
-              fill-rule="evenodd"
-              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-          <span>Multiple Locations</span>
-        </div>
-        <div class="items-center flex">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-indigo-400 mr-1"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            id="Windframe_ZnmqCzBnY"
-          >
-            <path
-              d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
-            ></path>
-          </svg>
-          <span>Expert Trainers</span>
+            {{ link.label }}
+          </a>
         </div>
       </div>
     </div>
