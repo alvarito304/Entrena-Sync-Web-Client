@@ -18,9 +18,13 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideClientHydration(withEventReplay()),
     providePrimeNG({ theme: {
-      preset: mypreset, 
+      preset: mypreset,
       options: {
-          darkModeSelector: '.app-dark'
+          darkModeSelector: '.my-app-dark',
+        cssLayer: {
+          name: 'primeng',
+          order: 'theme, base, primeng, tailwind-base , tailwind-utilities'
+        }
       }
     }}),
     provideAnimations()

@@ -1,4 +1,4 @@
-<header class="bg-black text-white relative">
+<header class="bg-black relative">
   <div class="bg-gradient-to-r absolute inset-0 from-gray-900 to-black z-0"></div>
   <div class="mx-auto px-4 relative container">
     <!-- Navbar -->
@@ -8,7 +8,7 @@
         <div class="flex items-center space-x-2">
           <img alt="Logo" src="https://placehold.co/60x60?text=FLEX" class="h-10 w-10" />
           <span class="text-2xl font-bold tracking-wider">
-            FLEX <span class="text-indigo-500">FIT</span>
+            FLEX <span class="text-primary-500">FIT</span>
           </span>
         </div>
         <!-- Columna Central: Menú -->
@@ -19,7 +19,7 @@
               [routerLink]="link.path"
               routerLinkActive="active-menu"
               [routerLinkActiveOptions]="{ exact: true }"
-              class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200">
+              class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-primary-400 transition-all duration-200">
               {{ link.label }}
             </a>
           </div>
@@ -34,7 +34,7 @@
             [icon]="isDarkTheme() ? 'pi pi-moon' : 'pi pi-sun'"
             severity="secondary"
           />
-          <!-- Otros elementos, por ejemplo: botones de login, etc. -->
+
         </div>
       </div>
       <!-- Estructura para móvil -->
@@ -43,7 +43,7 @@
         <div class="flex items-center space-x-2 mb-4">
           <img alt="Logo" src="https://placehold.co/60x60?text=FLEX" class="h-10 w-10" />
           <span class="text-2xl font-bold tracking-wider">
-            FLEX <span class="text-indigo-500">FIT</span>
+            FLEX <span class="text-primary-500">FIT</span>
           </span>
         </div>
         <!-- Botón de Mobile Menu -->
@@ -79,7 +79,7 @@
             [routerLink]="link.path"
             routerLinkActive="active-menu"
             [routerLinkActiveOptions]="{ exact: true }"
-            class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-indigo-400 transition-all duration-200"
+            class="px-3 py-2 text-sm font-medium rounded hover:bg-gray-800 hover:text-primary-400 transition-all duration-200"
             (click)="toggleMobileMenu()">
             {{ link.label }}
           </a>
