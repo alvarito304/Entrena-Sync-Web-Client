@@ -7,6 +7,7 @@ import {
   style,
   animate,
 } from '@angular/animations';
+import {AppFloatingConfigurator} from '../../../core/components/floatingconfigurator/floatingconfigurator.component';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,8 @@ import {
     NgForOf,
     NgIf,
     NgClass,
-    RouterLinkActive
+    RouterLinkActive,
+    AppFloatingConfigurator
   ],
   standalone: true,
   animations: [
