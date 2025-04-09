@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import {Component, computed, HostBinding, HostListener} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {
@@ -7,7 +7,8 @@ import {
   style,
   animate,
 } from '@angular/animations';
-import {AppFloatingConfigurator} from '../../../core/components/floatingconfigurator/floatingconfigurator.component';
+import {Button} from 'primeng/button';
+
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,7 @@ import {AppFloatingConfigurator} from '../../../core/components/floatingconfigur
     NgIf,
     NgClass,
     RouterLinkActive,
-    AppFloatingConfigurator
+    Button
   ],
   standalone: true,
   animations: [
@@ -50,6 +51,20 @@ export class HeaderComponent {
   @HostListener('window:scroll')
   onWindowScroll() {
     this.isScrolled = window.scrollY > 10;
+  }
+
+  darkTheme = false;
+
+  isDarkTheme() {
+    return this.darkTheme;
+  }
+
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    if (element !== null) {
+      element.classList.toggle('my-app-dark');
+      this.darkTheme = !this.darkTheme;
+    }
   }
 
   toggleMobileMenu() {
