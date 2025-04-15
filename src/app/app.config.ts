@@ -8,6 +8,7 @@ import  Aura  from '@primeng/themes/aura';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {provideHttpClient, withFetch} from '@angular/common/http';
+import mypreset from './mypreset';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,15 +18,15 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideClientHydration(withEventReplay()),
     providePrimeNG({ theme: {
-      preset: Aura, options: {
-        darkModeSelector: '.app-dark',
-          cssLayer: {
-            name: 'primeng',
-            order: 'theme, base, primeng'
-          }
+      preset: mypreset,
+      options: {
+          darkModeSelector: '.my-app-dark',
+        cssLayer: {
+          name: 'primeng',
+          order: 'theme, base, primeng, tailwind-base , tailwind-utilities'
+        }
       }
-    }
-    }),
+    }}),
     provideAnimations()
   ]
 };

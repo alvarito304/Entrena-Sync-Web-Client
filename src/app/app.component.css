@@ -1,0 +1,9 @@
+.content {
+  padding-top: 68px; /* Ajusta este valor a la altura de tu header */
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding-top: 0; /* Elimina el padding en pantallas más grandes si no es necesario */
+  }
+}
