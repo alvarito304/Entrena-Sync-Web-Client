@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {MessageService} from 'primeng/api';
-import {FeaturesSectionComponent} from './features/home/features-section/features-section.component';
-import {FooterComponent} from './shared/components/footer/footer.component';
-import {HeaderComponent} from './shared/components/header/header.component';
-import {HeroComponent} from './features/home/components/hero/hero.component';
-
+import { Router, RouterOutlet } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FooterComponent, HeaderComponent],
+  imports: [RouterOutlet, FooterComponent, HeaderComponent, NgIf],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css',
@@ -17,4 +15,11 @@ import {HeroComponent} from './features/home/components/hero/hero.component';
 })
 export class AppComponent {
   title = 'Entrena-Sync-Web-Client';
+
+  constructor(public router: Router) {}
+
+  shouldShowLayout(): boolean {
+    const noLayoutRoutes = ['/login'];
+    return !noLayoutRoutes.includes(this.router.url);
+  }
 }

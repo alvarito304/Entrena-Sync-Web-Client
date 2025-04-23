@@ -1,0 +1,43 @@
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+    <h4 class="text-2md font-semibold text-center text-gray-800 mb-6">Inicia sesión o regístrate</h4>
+
+    <div class="flex justify-center mb-6">
+      <img src="/entrenaSyncLogo.svg" alt="Icono Rayo EntrenaSync" class="h-16 w-auto" />
+    </div>
+
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">!Te damos la bienvenida a EntrenaSync!</h1>
+
+    <form class="space-y-4">
+      <!-- Email -->
+      <div class="p-float-label">
+        <label for="email" class="text-gray-700">Email</label>
+        <input id="email" [(ngModel)]="email" type="email" name="email" required class="block w-full border-2 border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"/>
+      </div>
+
+      <!-- Password -->
+      <div class="p-float-label">
+        <label for="password" class="text-gray-700">Password</label>
+        <p-password
+          [(ngModel)]="password"
+          [name]="password"
+          id="password"
+          [toggleMask]="true"
+          [feedback]="true"
+          inputStyleClass="!bg-white !text-gray-800 !border-gray-300 !rounded-lg !py-2 !px-3 !focus:ring-2 !focus:ring-blue-500 !focus:outline-none !w-full"
+          styleClass="w-full"
+        ></p-password>
+      </div>
+
+
+      <!-- Submit Button -->
+      <div class="flex justify-center mt-6">
+        <button type="submit" pButton label="Login" class="w-full p-button p-component p-button-primary"></button>
+      </div>
+    </form>
+
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">Don't have an account? <a href="#" class="text-blue-500 hover:underline">Sign up</a></p>
+    </div>
+  </div>
+</div>
