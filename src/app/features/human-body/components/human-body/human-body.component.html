@@ -1,8 +1,10 @@
-<div class="sc-body-model evidence-search-body-widget__body-model h-300-px">
+<div class="sc-body-model h-300-px">
+  <app-men-body-svg (pieceClick)="handlePieceClick($event)"></app-men-body-svg>
+  <app-men-back-body-svg (pieceClick)="handlePieceClick($event)"></app-men-back-body-svg>
+</div>
 
-
-    <!-- Componente del cuerpo frontal -->
-    <app-men-body-svg (pieceClick)="handlePieceClick($event)"></app-men-body-svg>
-    <!-- Componente del cuerpo trasero -->
-    <app-men-back-body-svg (pieceClick)="handlePieceClick($event)"></app-men-back-body-svg>
-  </div>
+<!-- Aquí mostramos la lista de ejercicios si hay selectedArea -->
+<app-exercise-list
+  *ngIf="selectedArea"
+  [area]="selectedArea">
+</app-exercise-list>

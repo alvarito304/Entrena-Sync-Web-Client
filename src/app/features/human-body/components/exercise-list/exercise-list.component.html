@@ -1,0 +1,7 @@
+<h3>Exercises for: {{ area }}</h3>
+<ul *ngIf="exercises$ | async as list; else loading">
+  <li *ngFor="let ex of list">
+    <strong>{{ ex.name }}</strong>: {{ ex.description }}
+  </li>
+</ul>
+<ng-template #loading>Loading…</ng-template>
