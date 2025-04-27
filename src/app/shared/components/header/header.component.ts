@@ -41,7 +41,7 @@ export class HeaderComponent {
 
   navLinks = [
     { path: '', label: 'Home' },
-    { path: 'about', label: 'About' },
+    { path: 'human-body', label: 'Ejercicios' },
     { path: 'services', label: 'Services' },
     { path: 'trainers', label: 'Trainers' },
     { path: 'testimonials', label: 'Testimonials' },
