@@ -3,8 +3,7 @@
   <app-men-back-body-svg (pieceClick)="handlePieceClick($event)"></app-men-back-body-svg>
 </div>
 
-<!-- Aquí mostramos la lista de ejercicios si hay selectedArea -->
 <app-exercise-list
-  *ngIf="selectedArea"
-  [area]="selectedArea">
+  *ngIf="exercises$ | async as list"
+  [exercises]="list">
 </app-exercise-list>
