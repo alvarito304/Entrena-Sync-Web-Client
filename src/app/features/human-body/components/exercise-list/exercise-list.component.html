@@ -1,0 +1,7 @@
+<!-- exercise-list.component.html -->
+<h3>Exercises for: {{ exercises.length ? exercises[0].bodyPart : '' }}</h3>
+<ul>
+  <li *ngFor="let ex of exercises">
+    <strong>{{ ex.name }}</strong>: {{ ex.description }}
+  </li>
+</ul>
