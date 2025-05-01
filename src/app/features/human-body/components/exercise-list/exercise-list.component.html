@@ -1,26 +1,59 @@
-<div class="container mx-auto px-4 py-6">
-  <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-    Exercises for: {{ exercises.length ? exercises[0].bodyPart : '' }}
-  </h3>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="container mx-auto px-4 py-8">
+  <!-- Header con gradiente sutil -->
+  <div class="mb-8">
+    <h3 class="text-3xl font-light text-gray-900 dark:text-gray-100 mb-2">
+      {{ exercises.length ? exercises[0].bodyPart : 'Exercises' }}
+    </h3>
+    <div class="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+  </div>
+
+  <!-- Grid de ejercicios -->
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
     <div *ngFor="let ex of exercises"
-         class="bg-white border border-gray-300 text-gray-900
-                dark:bg-gray-800 dark:border-gray-700 dark:text-white
-                rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300">
-      <h4 class="text-xl font-semibold mb-2">{{ ex.name }}</h4>
-      <p class="mb-2">{{ ex.description }}</p>
-      <ul class="text-sm space-y-1">
-        <li><strong>Muscle Group:</strong> {{ ex.muscleGroup }}</li>
-        <li><strong>Difficulty:</strong> {{ ex.difficulty }}</li>
-        <li *ngIf="ex.equipment"><strong>Equipment:</strong> {{ ex.equipment }}</li>
-        <li *ngIf="ex.caloriesBurned"><strong>Calories Burned:</strong> {{ ex.caloriesBurned }}</li>
-      </ul>
-      <div class="mt-4">
-        <a [href]="ex.videoUrl" target="_blank"
-           class="text-primary-600 dark:text-blue-400 hover:underline">
-          Watch Video
-        </a>
+         class="group bg-white dark:bg-gray-800 rounded-xl p-6 transition-all duration-300
+                hover:transform hover:-translate-y-2 shadow-sm hover:shadow-lg border border-gray-100 dark:border-gray-700">
+
+      <!-- Encabezado con icono -->
+      <div class="flex items-center mb-4">
+        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
+          <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <h4 class="text-xl font-semibold text-gray-800 dark:text-gray-100">{{ ex.name }}</h4>
       </div>
+
+      <!-- Contenido -->
+      <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed">
+        {{ ex.description }}
+      </p>
+
+      <!-- Detalles en grid -->
+      <div class="grid grid-cols-2 gap-3 text-sm mb-6">
+        <div class="flex items-center">
+          <span class="text-gray-500 dark:text-gray-400 mr-2">Difficulty:</span>
+          <span class="font-medium text-purple-600 dark:text-purple-400">{{ ex.difficulty }}</span>
+        </div>
+        <div class="flex items-center">
+          <span class="text-gray-500 dark:text-gray-400 mr-2">Muscle:</span>
+          <span class="font-medium text-blue-600 dark:text-blue-400">{{ ex.muscleGroup }}</span>
+        </div>
+        <div class="col-span-2 flex items-center" *ngIf="ex.equipment">
+          <span class="text-gray-500 dark:text-gray-400 mr-2">Equipment:</span>
+          <span class="font-medium text-gray-700 dark:text-gray-300">{{ ex.equipment }}</span>
+        </div>
+      </div>
+
+      <!-- Botón de video -->
+      <a [href]="ex.videoUrl" target="_blank"
+         class="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600
+                rounded-lg transition-colors duration-200 text-gray-700 dark:text-gray-200 font-medium">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Watch Tutorial
+      </a>
     </div>
   </div>
 </div>
