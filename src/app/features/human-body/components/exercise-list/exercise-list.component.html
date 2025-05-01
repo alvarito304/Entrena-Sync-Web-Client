@@ -1,7 +1,26 @@
-<!-- exercise-list.component.html -->
-<h3>Exercises for: {{ exercises.length ? exercises[0].bodyPart : '' }}</h3>
-<ul>
-  <li *ngFor="let ex of exercises">
-    <strong>{{ ex.name }}</strong>: {{ ex.description }}
-  </li>
-</ul>
+<div class="container mx-auto px-4 py-6">
+  <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+    Exercises for: {{ exercises.length ? exercises[0].bodyPart : '' }}
+  </h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let ex of exercises"
+         class="bg-white border border-gray-300 text-gray-900
+                dark:bg-gray-800 dark:border-gray-700 dark:text-white
+                rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300">
+      <h4 class="text-xl font-semibold mb-2">{{ ex.name }}</h4>
+      <p class="mb-2">{{ ex.description }}</p>
+      <ul class="text-sm space-y-1">
+        <li><strong>Muscle Group:</strong> {{ ex.muscleGroup }}</li>
+        <li><strong>Difficulty:</strong> {{ ex.difficulty }}</li>
+        <li *ngIf="ex.equipment"><strong>Equipment:</strong> {{ ex.equipment }}</li>
+        <li *ngIf="ex.caloriesBurned"><strong>Calories Burned:</strong> {{ ex.caloriesBurned }}</li>
+      </ul>
+      <div class="mt-4">
+        <a [href]="ex.videoUrl" target="_blank"
+           class="text-primary-600 dark:text-blue-400 hover:underline">
+          Watch Video
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

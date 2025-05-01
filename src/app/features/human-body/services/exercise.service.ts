@@ -57,7 +57,7 @@ export class ExerciseService {
   }
 
   private invalidateCache(): void {
-    this.cache.clear();                                                    
+    this.cache.clear();
   }
 }
 

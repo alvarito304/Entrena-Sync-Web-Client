@@ -5,7 +5,7 @@ export class Exercise {
   bodyPart: string;
   muscleGroup: string;
   equipment: string | undefined;
-  caaloriesBurned: number | undefined;
+  caloriesBurned: number | undefined;
   difficulty: string;
   videoUrl: string;
   createdAt: Date;
@@ -18,7 +18,7 @@ export class Exercise {
     bodyPart: string,
     muscleGroup: string,
     equipment: string | undefined,
-    caaloriesBurned: number | undefined,
+    caloriesBurned: number | undefined,
     difficulty: string,
     videoUrl: string,
     createdAt: Date,
@@ -30,7 +30,7 @@ export class Exercise {
     this.bodyPart = bodyPart;
     this.muscleGroup = muscleGroup;
     this.equipment = equipment;
-    this.caaloriesBurned = caaloriesBurned;
+    this.caloriesBurned = caloriesBurned;
     this.difficulty = difficulty;
     this.videoUrl = videoUrl;
     this.createdAt = createdAt;
