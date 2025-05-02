@@ -1,0 +1,9 @@
+<div class="sc-body-model h-300-px">
+  <app-men-body-svg (pieceClick)="handlePieceClick($event)"></app-men-body-svg>
+  <app-men-back-body-svg (pieceClick)="handlePieceClick($event)"></app-men-back-body-svg>
+</div>
+
+<app-exercise-list
+  *ngIf="exercises$ | async as list"
+  [exercises]="list">
+</app-exercise-list>

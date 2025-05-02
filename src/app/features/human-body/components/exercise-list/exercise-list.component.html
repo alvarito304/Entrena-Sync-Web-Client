@@ -1,0 +1,64 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Header con gradiente sutil -->
+  <div class="mb-8">
+    <h3 class="text-3xl font-light text-gray-900 dark:text-gray-100 mb-2">
+      {{ exercises.length ? exercises[0].bodyPart : 'Exercises' }}
+    </h3>
+    <div class="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+  </div>
+
+  <!-- Grid de ejercicios -->
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+    <div *ngFor="let ex of exercises"
+         class="group relative overflow-hidden rounded-xl p-6
+                bg-white/20 dark:bg-gray-900/20
+                backdrop-blur-md backdrop-filter
+                border border-white/30 dark:border-gray-700/30
+                shadow-lg hover:shadow-xl transition-shadow duration-300">
+
+      <!-- Capa Acrylic extra para gradiente suave -->
+      <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 dark:from-gray-800/10 dark:to-gray-900/5"></div>
+
+      <!-- Contenido encima -->
+      <div class="relative z-10">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
+            <!-- Icono de rayo (símbolo de energía) -->
+            <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h4 class="text-xl font-semibold text-gray-800 dark:text-gray-100">{{ ex.name }}</h4>
+        </div>
+        <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed">
+          {{ ex.description }}
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-sm mb-6">
+          <div class="flex items-center">
+            <span class="text-gray-500 dark:text-gray-400 mr-2">Difficulty:</span>
+            <span class="font-medium text-purple-600 dark:text-purple-400">{{ ex.difficulty }}</span>
+          </div>
+          <div class="flex items-center">
+            <span class="text-gray-500 dark:text-gray-400 mr-2">Muscle:</span>
+            <span class="font-medium text-blue-600 dark:text-blue-400">{{ ex.muscleGroup }}</span>
+          </div>
+          <div class="col-span-2 flex items-center" *ngIf="ex.equipment">
+            <span class="text-gray-500 dark:text-gray-400 mr-2">Equipment:</span>
+            <span class="font-medium text-gray-700 dark:text-gray-300">{{ ex.equipment }}</span>
+          </div>
+        </div>
+        <a [href]="ex.videoUrl" target="_blank"
+           class="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600
+                  rounded-lg transition-colors duration-200 text-gray-700 dark:text-gray-200 font-medium">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Watch Tutorial
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+

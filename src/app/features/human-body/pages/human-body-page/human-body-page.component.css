@@ -1,0 +1,13 @@
+
+@media (min-width: 768px) {
+  .margen-top {
+    margin-top: 72px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .margen-top {
+    padding-top: 12px;
+  }
+}
