@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {Observable, map, catchError, of, shareReplay, throwError, tap} from 'rxjs';
 import { Exercise } from '../../../core/models/exercise/exercise';
 
@@ -11,18 +11,25 @@ export class ExerciseService {
   constructor(private http: HttpClient) {}
 
   // Obtener ejercicios por área
-  getExercises(area: string): Observable<Exercise[]> {
-    if (!this.cache.has(area)) {
+  getExercises(area: string, name?: string): Observable<Exercise[]> {
+    // clave de caché: combina area+name
+    const key = `${area}|${name ?? ''}`;
+    if (!this.cache.has(key)) {
+      // construir params
+      let params = new HttpParams().set('bodyPart', area.toUpperCase());
+      if (name && name.trim().length > 0) {
+        params = params.set('name', name.trim());
+      }
       const req$ = this.http
-        .get<{ content: Exercise[] }>(`${this.baseUrl}?bodyPart=${area.toUpperCase()}`)
+        .get<{ content: Exercise[] }>(this.baseUrl, { params })
         .pipe(
-          map(response => response.content),
+          map(resp => resp.content),
           catchError(() => of([])),
           shareReplay({ bufferSize: 1, refCount: true })
         );
-      this.cache.set(area, req$);
+      this.cache.set(key, req$);
     }
-    return this.cache.get(area)!;
+    return this.cache.get(key)!;
   }
 
   // Crear un nuevo ejercicio
