@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <h4 class="text-2md font-semibold text-center text-gray-800 mb-6">Inicia sesión o regístrate</h4>
+
+    <div class="flex justify-center mb-6">
+      <img src="/entrenaSyncLogo.png" alt="Icono Rayo EntrenaSync" class="h-40 w-auto" />
+    </div>
+
+    <!-- stepper -->
+    <p-steps [model]="items" [(activeIndex)]="activeIndex" class="mb-6"></p-steps>
+
+    <form (ngSubmit)="submit()" class="space-y-6">
+
+      <!-- STEP 1: Cuenta -->
+      <div *ngIf="activeIndex === 0" class="space-y-6">
+        <p-iftalabel for="username" label="Nombre de usuario" class="w-full">
+          <input id="username" name="username" [(ngModel)]="username" type="text" required
+                 class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+        </p-iftalabel>
+
+        <p-iftalabel for="email" label="Email" class="w-full">
+          <input id="email" name="email" [(ngModel)]="email" type="email" required
+                 class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+        </p-iftalabel>
+
+        <p-iftalabel for="password1" label="Contraseña" class="w-full">
+          <p-password id="password1" name="password" [(ngModel)]="password"
+                      [toggleMask]="true" [feedback]="true"
+                      promptLabel="Elige contraseña" weakLabel="Muy débil"
+                      mediumLabel="Media" strongLabel="Fuerte"
+                      inputStyleClass="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+        </p-iftalabel>
+
+        <p-iftalabel for="password2" label="Confirmar contraseña" class="w-full">
+          <p-password id="password2" name="passwordConfirmation" [(ngModel)]="passwordConfirmation"
+                      [toggleMask]="true" [feedback]="false"
+                      inputStyleClass="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+        </p-iftalabel>
+      </div>
+
+      <!-- STEP 2: Perfil -->
+      <div *ngIf="activeIndex === 1" class="space-y-6">
+        <div class="grid grid-cols-2 gap-4">
+          <p-iftalabel for="firstName" label="Nombre">
+            <input id="firstName" name="firstName" [(ngModel)]="firstName" type="text" required
+                   class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+          </p-iftalabel>
+          <p-iftalabel for="lastName" label="Apellidos">
+            <input id="lastName" name="lastName" [(ngModel)]="lastName" type="text" required
+                   class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+          </p-iftalabel>
+        </div>
+
+        <p-iftalabel for="address" label="Dirección">
+          <input id="address" name="address" [(ngModel)]="address" type="text"
+                 class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+        </p-iftalabel>
+
+        <p-iftalabel label="Teléfono">
+          <div class="flex gap-2">
+            <p-dropdown [options]="countryCodes" [(ngModel)]="countryCode" name="countryCode"
+                        optionLabel="label" placeholder="+34"
+                        class="w-1/3 border border-gray-300 rounded-lg"/>
+            <input id="phone" name="phone" [(ngModel)]="phone" type="tel" required
+                   class="w-2/3 border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+          </div>
+        </p-iftalabel>
+
+        <p-iftalabel for="birthDate" label="Fecha de nacimiento">
+          <p-calendar id="birthDate" name="birthDate" [(ngModel)]="birthDate" dateFormat="dd/mm/yy"
+                      class="w-full" inputClass="w-full border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-blue-500"/>
+        </p-iftalabel>
+
+        <p-iftalabel for="gender" label="Género">
+          <p-dropdown id="gender" name="gender" [(ngModel)]="gender" [options]="genders"
+                      optionLabel="label" placeholder="Selecciona género"
+                      class="w-full border border-gray-300 rounded-lg"/>
+        </p-iftalabel>
+
+        <p-iftalabel label="Avatar">
+          <p-fileUpload name="avatar" accept="image/*" maxFileSize="1000000"
+                        customUpload="true" (uploadHandler)="onAvatarChange($event)"
+                        chooseLabel="Seleccionar foto" class="w-full"></p-fileUpload>
+          <div *ngIf="avatarPreview" class="mt-4 flex justify-center">
+            <img [src]="avatarPreview" alt="Avatar" class="h-24 w-24 rounded-full object-cover border-2 border-gray-300"/>
+          </div>
+        </p-iftalabel>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-between pt-4">
+        <button type="button" pButton label="Atrás" icon="pi pi-chevron-left"
+                (click)="prev()" [disabled]="activeIndex === 0"></button>
+        <button *ngIf="activeIndex < items.length-1" type="button" pButton
+                label="Siguiente" icon="pi pi-chevron-right" iconPos="right"
+                (click)="next()"></button>
+        <button *ngIf="activeIndex === items.length-1" type="submit"
+                pButton label="Registrar" class="p-button-success"></button>
+      </div>
+
+    </form>
+  </div>
+</div>

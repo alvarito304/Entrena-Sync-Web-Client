@@ -3,12 +3,12 @@
     <h4 class="text-2md font-semibold text-center text-gray-800 mb-6">Inicia sesión o regístrate</h4>
 
     <div class="flex justify-center mb-6">
-      <img src="/entrenaSyncLogo.svg" alt="Icono Rayo EntrenaSync" class="h-16 w-auto" />
+      <img src="/entrenaSyncLogo.png" alt="Icono Rayo EntrenaSync" class="h-40 w-auto" />
     </div>
 
     <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">!Te damos la bienvenida a EntrenaSync!</h1>
 
-    <form class="space-y-4">
+    <form class="space-y-4" (ngSubmit)="onSubmit()">
       <!-- Email -->
       <div class="p-float-label">
         <label for="email" class="text-gray-700">Email</label>
@@ -20,7 +20,7 @@
         <label for="password" class="text-gray-700">Password</label>
         <p-password
           [(ngModel)]="password"
-          [name]="password"
+          name = "password"
           id="password"
           [toggleMask]="true"
           [feedback]="true"
@@ -32,12 +32,12 @@
 
       <!-- Submit Button -->
       <div class="flex justify-center mt-6">
-        <button type="submit" pButton label="Login" class="w-full p-button p-component p-button-primary"></button>
+        <button type="submit"  pButton label="Login" class="w-full p-button p-component p-button-primary"></button>
       </div>
     </form>
 
     <div class="mt-4 text-center">
-      <p class="text-sm text-gray-600">Don't have an account? <a href="#" class="text-blue-500 hover:underline">Sign up</a></p>
+      <p class="text-sm text-gray-600">Don't have an account? <a href="#" class="text-blue-500 hover:underline" [routerLink]="'/register'" >Sign up</a></p>
     </div>
   </div>
 </div>
