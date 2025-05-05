@@ -13,7 +13,17 @@
 </div>
 
 
-<app-exercise-list
-  *ngIf="exercises$ | async as list"
-  [exercises]="list">
-</app-exercise-list>
+<!-- buscador y SVG igual que antes … -->
+
+<ng-container *ngIf="exercises$ | async as pageData">    <!-- comparte pageData -->
+  <app-exercise-list [exercises]="pageData.exercises"></app-exercise-list>
+
+  <app-pagination
+    [page]="page$.value"
+    [rows]="pageSize"
+    [totalRecords]="pageData.totalElements"
+    [links]="pageData.links"
+    (pageChange)="page$.next($event)"
+  ></app-pagination>
+</ng-container>
+

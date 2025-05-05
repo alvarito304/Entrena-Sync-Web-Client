@@ -1,38 +1,59 @@
+// src/app/services/exercise.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import {Observable, map, catchError, of, shareReplay, throwError, tap} from 'rxjs';
-import { Exercise } from '../../../core/models/exercise/exercise';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import {Observable, of, tap, throwError} from 'rxjs';
+import { map, catchError, shareReplay } from 'rxjs/operators';
+import {Exercise} from '../../../core/models/exercise/exercise';
+
+export interface PaginatedExercises {
+  exercises: Exercise[];
+  links: Record<string, { url: string; page: string; rel: string }>;
+  totalPages: number;
+  totalElements: number;
+}
 
 @Injectable({ providedIn: 'root' })
 export class ExerciseService {
-  private cache = new Map<string, Observable<Exercise[]>>();
+  private cache = new Map<string, Observable<PaginatedExercises>>();
   private baseUrl = 'http://localhost:8081/Exercises';
 
   constructor(private http: HttpClient) {}
 
-  // Obtener ejercicios por área
-  getExercises(area: string, name?: string): Observable<Exercise[]> {
-    // clave de caché: combina area+name
-    const key = `${area}|${name ?? ''}`;
-    if (!this.cache.has(key)) {
-      // construir params
-      let params = new HttpParams().set('bodyPart', area.toUpperCase());
-      if (name && name.trim().length > 0) {
-        params = params.set('name', name.trim());
-      }
-      const req$ = this.http
-        .get<{ content: Exercise[] }>(this.baseUrl, { params })
-        .pipe(
-          map(resp => resp.content),
-          catchError(() => of([])),
-          shareReplay({ bufferSize: 1, refCount: true })
-        );
-      this.cache.set(key, req$);
+  getExercises(
+    area: string,
+    name?: string,
+    page: number = 0,
+    size: number = 10
+  ): Observable<PaginatedExercises> {
+    let params = new HttpParams()
+      .set('bodyPart', area.toUpperCase())
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (name?.trim()) {
+      params = params.set('name', name.trim());
     }
-    return this.cache.get(key)!;
+
+    return this.http
+      .get<{
+        content: Exercise[];
+        totalPages: number;
+        totalElements: number
+      }>(this.baseUrl, { params, observe: 'response' })
+      .pipe(
+        map(resp => {
+          const body = resp.body?.content ?? [];
+          const linkHeader = resp.headers.get('link') ?? '';
+          const links = linkHeader ? this.parseLinkHeader(linkHeader) : {};
+          const totalPages = resp.body?.totalPages ?? 0;
+          const totalElements = resp.body?.totalElements ?? 0;
+          return { exercises: body, links, totalPages, totalElements };
+        }),
+        catchError(() => of({ exercises: [], links: {}, totalPages: 0, totalElements: 0 })),
+      );
   }
 
-  // Crear un nuevo ejercicio
+// Crear un nuevo ejercicio
   createExercise(ex: Exercise): Observable<Exercise> {
     return this.http.post<Exercise>(this.baseUrl, ex).pipe(
       tap(() => this.invalidateCache()),
@@ -66,6 +87,27 @@ export class ExerciseService {
   private invalidateCache(): void {
     this.cache.clear();
   }
+
+  private parseLinkHeader(header: string): Record<string, { url: string; page: string; rel: string }> {
+    const links: Record<string, { url: string; page: string; rel: string }> = {};
+    const parts = header.split(',');
+
+    parts.forEach(part => {
+      const section = part.split(';');
+      if (section.length !== 2) {
+        return;
+      }
+      const url = section[0].replace(/<(.*)>/, '$1').trim();
+      const rel = section[1].replace(/rel="(.*)"/, '$1').trim();
+      const urlObj = new URL(url);
+      const page = urlObj.searchParams.get('page') || '';
+      links[rel] = { url, page, rel };
+    });
+
+    console.log('Parsed Links:', links); // Verifica los enlaces parseados con rel
+    return links;
+  }
+
 }
 
 

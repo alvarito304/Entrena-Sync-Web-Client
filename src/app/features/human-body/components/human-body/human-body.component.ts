@@ -1,80 +1,82 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { MenBodySvgComponent } from '../men-body-svg/men-body-svg.component';
 import { MenBackBodySvgComponent } from '../men-back-body-svg/men-back-body-svg.component';
-import {Router} from '@angular/router';
 import {ExerciseListComponent} from '../exercise-list/exercise-list.component';
 import {AsyncPipe, NgIf} from '@angular/common';
-import {ExerciseService} from '../../services/exercise.service';
-import {Exercise} from '../../../../core/models/exercise/exercise';
+import {ExerciseService, PaginatedExercises} from '../../services/exercise.service';
 import {
   BehaviorSubject,
   catchError, combineLatest,
   debounceTime,
   distinctUntilChanged,
   Observable,
-  of,
+  of, startWith,
   Subject,
-  switchMap
+  switchMap, take
 } from 'rxjs';
 import {FormsModule} from '@angular/forms';
+import {PrimaryButtonComponent} from '../../../../core/components/primary-button/primary-button.component';
+import {PaginationComponent} from '../../../../core/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-human-body',
   standalone: true,
-  imports: [MenBodySvgComponent, MenBackBodySvgComponent, ExerciseListComponent, NgIf, AsyncPipe, FormsModule],
+  imports: [MenBodySvgComponent, MenBackBodySvgComponent, ExerciseListComponent, NgIf, AsyncPipe, FormsModule, PaginationComponent, PrimaryButtonComponent],
   templateUrl: './human-body.component.html',
   styleUrls: ['./human-body.component.css']
 })
 export class HumanBodyComponent implements OnInit, OnDestroy {
-  // Streams de estado
-  private area$ = new BehaviorSubject<string>('');
-  private name$ = new Subject<string>();
+  private area$    = new BehaviorSubject<string>('');
+  private name$    = new Subject<string>();
+  protected page$    = new BehaviorSubject<number>(0);
 
-  // Observable público que la plantilla consumirá
-  exercises$!: Observable<Exercise[]>;
-
-  searchName: string = '';
+  exercises$!: Observable<PaginatedExercises>;
+  searchName = '';
+  pageSize    = 10;
 
   constructor(private exerciseService: ExerciseService) {}
 
   ngOnInit(): void {
-    // pipeline de texto: debounce + no duplicados
     const debouncedName$ = this.name$.pipe(
       debounceTime(300),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      startWith('')
     );
 
-    // combinar área y texto: cada cambio en uno u otro dispara consulta
-    this.exercises$ = combineLatest([ this.area$, debouncedName$ ]).pipe(
-      switchMap(([ area, name ]) =>
-        this.exerciseService
-          .getExercises(area, name)   // params dinámicos
-          .pipe(catchError(() => of([])))
-      )
+    this.exercises$ = combineLatest([
+      this.area$,
+      debouncedName$,
+      this.page$
+    ]).pipe(
+      switchMap(([area, name, page]) => {
+        console.log('Fetching exercises for page:', page);
+       return this.exerciseService
+          .getExercises(area, name, page, this.pageSize)
+          .pipe(catchError(() => of({ exercises: [], links: {}, totalPages: 0, totalElements: 0 })));
+      })
     );
   }
 
   handlePieceClick(event: any): void {
-    // Si el elemento tiene la clase no-click, no se hace nada.
-    if (event.target.classList && event.target.classList.contains('no-click')) {
-      return;
-    }
-    // Obtener el data-position
-    const position = event.target.getAttribute('data-position') || event.target.parentElement?.getAttribute('data-position');
-    if (!position) {
-      return;
-    }
-    this.area$.next(position);
+    const pos = event.target.dataset.position || event.target.parentElement?.dataset.position;
+    if (!pos) return;
+    this.area$.next(pos);
+    this.page$.next(0);
     this.name$.next(this.searchName);
   }
 
   onSearchName(): void {
+    this.page$.next(0);            // reset al buscar texto
     this.name$.next(this.searchName);
   }
 
   ngOnDestroy(): void {
     this.area$.complete();
     this.name$.complete();
+    this.page$.complete();
   }
 }
+
+
+
 
