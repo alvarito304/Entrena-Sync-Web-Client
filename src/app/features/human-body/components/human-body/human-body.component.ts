@@ -26,7 +26,7 @@ import {PaginationComponent} from '../../../../core/components/pagination/pagina
   styleUrls: ['./human-body.component.css']
 })
 export class HumanBodyComponent implements OnInit, OnDestroy {
-  private area$    = new BehaviorSubject<string>('');
+  protected area$    = new BehaviorSubject<string>('');
   private name$    = new Subject<string>();
   protected page$    = new BehaviorSubject<number>(0);
 

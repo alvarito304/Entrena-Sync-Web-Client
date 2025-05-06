@@ -16,7 +16,7 @@
 <!-- buscador y SVG igual que antes … -->
 
 <ng-container *ngIf="exercises$ | async as pageData">    <!-- comparte pageData -->
-  <app-exercise-list [exercises]="pageData.exercises"></app-exercise-list>
+  <app-exercise-list [exercises]="pageData.exercises" [area]="area$ | async"></app-exercise-list>
 
   <app-pagination
     [page]="page$.value"
