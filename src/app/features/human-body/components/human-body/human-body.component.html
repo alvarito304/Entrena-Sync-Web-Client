@@ -1,29 +1,29 @@
+<!-- SVG interactivo -->
 <div class="sc-body-model h-300-px">
   <app-men-body-svg (pieceClick)="handlePieceClick($event)"></app-men-body-svg>
   <app-men-back-body-svg (pieceClick)="handlePieceClick($event)"></app-men-back-body-svg>
 </div>
 
-<div class="search-bar">
-  <input
-    type="text"
+<!-- Buscador centrado y con margen -->
+<div class="container mx-auto px-4 py-8">
+  <app-search-input
     placeholder="Buscar ejercicio por nombre…"
-    [(ngModel)]="searchName"
-    (ngModelChange)="onSearchName()"
-  />
+    (search)="onSearchName($event)">
+  </app-search-input>
 </div>
 
-
-<!-- buscador y SVG igual que antes … -->
-
-<ng-container *ngIf="exercises$ | async as pageData">    <!-- comparte pageData -->
-  <app-exercise-list [exercises]="pageData.exercises" [area]="area$ | async"></app-exercise-list>
+<!-- Lista de ejercicios y paginación -->
+<ng-container *ngIf="exercises$ | async as pageData">
+  <app-exercise-list
+    [exercises]="pageData.exercises"
+    [area]="area$ | async">
+  </app-exercise-list>
 
   <app-pagination
     [page]="page$.value"
     [rows]="pageSize"
     [totalRecords]="pageData.totalElements"
     [links]="pageData.links"
-    (pageChange)="page$.next($event)"
-  ></app-pagination>
+    (pageChange)="page$.next($event)">
+  </app-pagination>
 </ng-container>
-

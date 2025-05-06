@@ -1,0 +1,14 @@
+<div class="w-full">
+  <input
+    type="text"
+    class="w-full px-4 py-2 rounded-lg text-sm shadow-lg
+           bg-white/20 dark:bg-gray-900/20 backdrop-blur-md
+           border border-white/30 dark:border-gray-700/30
+           text-gray-900 dark:text-gray-100
+           placeholder-gray-500 dark:placeholder-gray-400
+           focus:ring-2 focus:ring-primary-500 focus:outline-none transition"
+    [placeholder]="placeholder"
+    [(ngModel)]="value"
+    (ngModelChange)="onChange()"
+  />
+</div>

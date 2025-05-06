@@ -15,13 +15,13 @@ import {
   switchMap, take
 } from 'rxjs';
 import {FormsModule} from '@angular/forms';
-import {PrimaryButtonComponent} from '../../../../core/components/primary-button/primary-button.component';
 import {PaginationComponent} from '../../../../core/components/pagination/pagination.component';
+import {SearchInputComponent} from '../../../../core/components/search-input/search-input.component';
 
 @Component({
   selector: 'app-human-body',
   standalone: true,
-  imports: [MenBodySvgComponent, MenBackBodySvgComponent, ExerciseListComponent, NgIf, AsyncPipe, FormsModule, PaginationComponent, PrimaryButtonComponent],
+  imports: [MenBodySvgComponent, MenBackBodySvgComponent, ExerciseListComponent, NgIf, AsyncPipe, FormsModule, PaginationComponent, SearchInputComponent],
   templateUrl: './human-body.component.html',
   styleUrls: ['./human-body.component.css']
 })
@@ -65,7 +65,8 @@ export class HumanBodyComponent implements OnInit, OnDestroy {
     this.name$.next(this.searchName);
   }
 
-  onSearchName(): void {
+  onSearchName(value: string): void {
+    this.searchName = value;
     this.page$.next(0);            // reset al buscar texto
     this.name$.next(this.searchName);
   }
