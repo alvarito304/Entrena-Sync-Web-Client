@@ -32,7 +32,7 @@ export class HumanBodyComponent implements OnInit, OnDestroy {
 
   exercises$!: Observable<PaginatedExercises>;
   searchName = '';
-  pageSize    = 10;
+  pageSize    = 12;
 
   constructor(private exerciseService: ExerciseService) {}
 
