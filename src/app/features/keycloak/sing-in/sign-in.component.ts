@@ -11,10 +11,11 @@ import {FileUpload} from 'primeng/fileupload';
 import {DropdownModule} from 'primeng/dropdown';
 import {Calendar} from 'primeng/calendar';
 import {IftaLabelModule} from 'primeng/iftalabel';
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: 'app-sign-in',
-  imports: [CommonModule, IftaLabelModule, FormsModule, InputTextModule, PasswordModule, ButtonModule, RouterLink, Steps, FileUpload, DropdownModule, Calendar],
+    imports: [CommonModule, IftaLabelModule, FormsModule, InputTextModule, PasswordModule, ButtonModule, RouterLink, Steps, FileUpload, DropdownModule, Calendar, DatePicker],
   templateUrl: './sign-in.component.html',
   standalone: true,
   styleUrl: './sign-in.component.css'
@@ -50,7 +51,6 @@ export class SignInComponent {
   genders = [
     { label: 'Femenino', value: 'F' },
     { label: 'Masculino', value: 'M' },
-    { label: 'Otro', value: 'O' }
   ];
 
   next() {
