@@ -53,6 +53,38 @@ export class ExerciseService {
       );
   }
 
+  getExercisesWithFilters(params: {[key:string]: string|number}): Observable<PaginatedExercises> {
+    let httpParams = new HttpParams();
+
+    // Convierte cada propiedad de `params` en un query-param
+    Object.keys(params).forEach(key => {
+      const value = params[key];
+      if (value !== null && value !== undefined && String(value).trim() !== '') {
+        httpParams = httpParams.set(key, String(value).trim());
+      }
+    });
+
+    return this.http
+      .get<{ content: Exercise[]; totalPages: number; totalElements: number }>(
+        this.baseUrl,
+        { params: httpParams, observe: 'response' }
+      )
+      .pipe(
+        map(resp => {
+          const body = resp.body?.content ?? [];
+          const linkHeader = resp.headers.get('link') ?? '';
+          const links = linkHeader ? this.parseLinkHeader(linkHeader) : {};
+          return {
+            exercises: body,
+            links,
+            totalPages: resp.body?.totalPages ?? 0,
+            totalElements: resp.body?.totalElements ?? 0
+          };
+        }),
+        catchError(() => of({ exercises: [], links: {}, totalPages: 0, totalElements: 0 }))
+      );
+  }
+
 // Crear un nuevo ejercicio
   createExercise(ex: Exercise): Observable<Exercise> {
     return this.http.post<Exercise>(this.baseUrl, ex).pipe(
