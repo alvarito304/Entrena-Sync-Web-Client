@@ -14,7 +14,8 @@
       <app-search-input
         [fields]="filterFields"
         [activeFilters]="filter$.value"
-        (search)="onFilter($event)">
+        (search)="onFilter($event)"
+        ngSkipHydration>
       </app-search-input>
     </div>
 

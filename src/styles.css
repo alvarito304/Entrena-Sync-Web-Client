@@ -46,3 +46,33 @@
   .animate-delay-800 { animation-delay: 800ms; }
   .animate-delay-900 { animation-delay: 900ms; }
 }
+
+
+/* styles.css */
+
+/* === p-select Custom Styles for Light/Dark Mode === */
+
+/* Label del valor seleccionado (y placeholder por defecto) */
+:root:not(.my-app-dark) .p-select .p-select-label {
+  @apply text-black; /* Color de texto para modo claro (ej: un gris oscuro) */
+}
+html.my-app-dark .p-select .p-select-label {
+  @apply text-gray-200; /* Color de texto para modo oscuro (ej: un gris claro) */
+}
+
+/* Placeholder específico si es necesario un color diferente al label */
+:root:not(.my-app-dark) .p-select .p-select-label.p-placeholder {
+  @apply text-surface-400; /* Color del placeholder en modo claro */
+}
+html.my-app-dark .p-select .p-select-label.p-placeholder {
+  @apply text-surface-400; /* Color del placeholder en modo oscuro */
+}
+
+
+/* Icono del dropdown (flecha) si también necesita cambio de color */
+:root:not(.my-app-dark) .p-select .p-select-dropdown-icon {
+  @apply text-gray-600;
+}
+html.my-app-dark .p-select .p-select-dropdown-icon {
+  @apply text-gray-300;
+}

@@ -1,14 +1,36 @@
 import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {FilterField} from '../../models/filterFields/filterFields';
+import {InputText} from 'primeng/inputtext';
+import {Sidebar} from 'primeng/sidebar';
+import {DropdownModule} from 'primeng/dropdown';
+import {ConfirmDialog} from 'primeng/confirmdialog';
+import {SpeedDial} from 'primeng/speeddial';
+import {Panel} from 'primeng/panel';
+import {ButtonDirective, ButtonIcon} from 'primeng/button';
+import { TabsModule } from 'primeng/tabs';
+import {StyleClass} from 'primeng/styleclass';
+import {Select} from 'primeng/select';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-search-input',
   imports: [
     FormsModule,
-    NgForOf,
-    NgIf
+    InputText,
+    Sidebar,
+    DropdownModule,
+    ConfirmDialog,
+    SpeedDial,
+    Panel,
+    ButtonDirective,
+    CommonModule,
+    TabsModule,
+    StyleClass,
+    Select,
+    ButtonIcon,
+    InputNumberModule
   ],
   templateUrl: './search-input.component.html',
   standalone: true,

@@ -1,43 +1,79 @@
-<div class="w-full bg-white/20 dark:bg-gray-900/20 backdrop-blur-md border border-white/30 dark:border-gray-700/30 rounded-xl p-8 mb-10 shadow-lg">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-    <ng-container *ngFor="let field of fields">
-      <div class="relative group">
-        <ng-container *ngIf="field.type === 'text' || field.type === 'number'">
-          <div class="flex items-center bg-white/30 dark:bg-gray-800/30 border border-white/20 dark:border-gray-700/20 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 transition duration-300">
-            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12h4m-4 0h-4m0 0V8m0 4v4m-6 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <input
-              [type]="field.type"
-              [placeholder]="field.placeholder"
-              [(ngModel)]="values[field.key]"
-              class="w-full bg-transparent focus:outline-none text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-            />
-          </div>
-        </ng-container>
+<div class="w-full rounded-xl p-6
+             bg-white/20 dark:bg-gray-900/20
+             backdrop-blur-md backdrop-filter
+             border border-white/30 dark:border-gray-700/30
+             shadow-lg hover:shadow-xl
+             transition-transform duration-300 opacity-0 animate-fade-slide-in">
 
-        <ng-container *ngIf="field.type === 'select'">
-          <div class="flex items-center bg-white/30 dark:bg-gray-800/30 border border-white/20 dark:border-gray-700/20 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 transition duration-300">
-            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8l4 4-4 4m6-4h14" />
-            </svg>
-            <select [(ngModel)]="values[field.key]" class="w-full bg-transparent focus:outline-none text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
-              <option value="">{{ field.placeholder }}</option>
-              <option *ngFor="let opt of field.options" [value]="opt">{{ opt }}</option>
-            </select>
-          </div>
+<p-tabs value="0" lazy="true">
+  <p-tablist>
+    <p-tab value="0">Buscador Rapido</p-tab>
+    <p-tab value="1">Buscador avanzado</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel value="0">
+      <div class="flex items-center">
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="values['name']"
+          placeholder="Nombre del ejercicio"
+          class="flex-1 bg-transparent focus:outline-none p-2 text-sm text-sm text-black dark:text-white"
+        />
+      </div>
+    </p-tabpanel>
+    <p-tabpanel value="1">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ng-container *ngFor="let field of fields">
+          <ng-container [ngSwitch]="field.type">
+            <!-- Text / Number -->
+            <div
+              *ngSwitchCase="'text'"
+            >
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="values[field.key]"
+                [placeholder]="field.placeholder"
+                class="w-full bg-transparent focus:outline-none text-sm text-sm text-black dark:text-white"
+              />
+            </div>
+            <!-- Select -->
+            <div
+              *ngSwitchCase="'select'"
+            >
+              <p-select
+                [options]="field.options"
+                [(ngModel)]="values[field.key]"
+                [placeholder]="field.placeholder"
+                styleClass="w-full bg-transparent focus:outline-none text-sm"
+              ></p-select>
+            </div>
+
+            <div *ngSwitchCase="'number'" class="w-full">
+              <p-inputNumber
+                type="number"
+                [(ngModel)]="values[field.key]"
+                [placeholder]="field.placeholder"
+                inputStyleClass="w-full bg-transparent focus:outline-none text-sm text-black dark:text-white"
+                class="w-full"
+                [inputStyle]="{'width': '100%'}"
+              />
+            </div>
+          </ng-container>
         </ng-container>
       </div>
-    </ng-container>
+    </p-tabpanel>
+  </p-tabpanels>
+  <div class="flex justify-end mt-4 space-x-3">
+    <button pButton label="Limpiar" (click)="reset()" class="p-button-secondary"></button>
+    <button
+      pButton
+      label="Buscar"
+      pButtonIcon="pi pi-search"
+      (click)="onSearch()"
+      class="ml-2"
+    ></button>
   </div>
-
-  <!-- Botones de acción -->
-  <div class="flex justify-end gap-4">
-    <button (click)="reset()" class="px-5 py-2 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium hover:bg-gray-400 dark:hover:bg-gray-600 transition">
-      Limpiar
-    </button>
-    <button (click)="onSearch()" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
-      Buscar
-    </button>
-  </div>
+</p-tabs>
 </div>
