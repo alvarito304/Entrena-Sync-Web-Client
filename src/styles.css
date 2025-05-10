@@ -4,3 +4,75 @@
 /*@import "./theme.css";*/
 
 @custom-variant dark (&:where(.my-app-dark, .my-app-dark *));
+
+
+@layer utilities {
+  @keyframes grow-line {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  .animate-grow-line {
+    animation: grow-line 0.8s ease-out forwards;
+  }
+
+  @keyframes fade-slide-in {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-fade-slide-in {
+    animation: fade-slide-in 0.6s ease-out forwards;
+  }
+
+  .animate-delay-0 { animation-delay: 0ms; }
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+  .animate-delay-600 { animation-delay: 600ms; }
+  .animate-delay-700 { animation-delay: 700ms; }
+  .animate-delay-800 { animation-delay: 800ms; }
+  .animate-delay-900 { animation-delay: 900ms; }
+}
+
+
+/* styles.css */
+
+/* === p-select Custom Styles for Light/Dark Mode === */
+
+/* Label del valor seleccionado (y placeholder por defecto) */
+:root:not(.my-app-dark) .p-select .p-select-label {
+  @apply text-black; /* Color de texto para modo claro (ej: un gris oscuro) */
+}
+html.my-app-dark .p-select .p-select-label {
+  @apply text-gray-200; /* Color de texto para modo oscuro (ej: un gris claro) */
+}
+
+/* Placeholder específico si es necesario un color diferente al label */
+:root:not(.my-app-dark) .p-select .p-select-label.p-placeholder {
+  @apply text-surface-400; /* Color del placeholder en modo claro */
+}
+html.my-app-dark .p-select .p-select-label.p-placeholder {
+  @apply text-surface-400; /* Color del placeholder en modo oscuro */
+}
+
+
+/* Icono del dropdown (flecha) si también necesita cambio de color */
+:root:not(.my-app-dark) .p-select .p-select-dropdown-icon {
+  @apply text-gray-600;
+}
+html.my-app-dark .p-select .p-select-dropdown-icon {
+  @apply text-gray-300;
+}

@@ -1,9 +1,38 @@
-<div class="sc-body-model h-300-px">
-  <app-men-body-svg (pieceClick)="handlePieceClick($event)"></app-men-body-svg>
-  <app-men-back-body-svg (pieceClick)="handlePieceClick($event)"></app-men-back-body-svg>
-</div>
+<div class="container mx-auto px-4 py-8 space-y-8">
 
-<app-exercise-list
-  *ngIf="exercises$ | async as list"
-  [exercises]="list">
-</app-exercise-list>
+  <!-- SVG Interactivo y Buscador -->
+  <div class="flex flex-col lg:flex-row gap-8 items-center justify-between">
+
+    <!-- SVG Interactivo -->
+    <div class="sc-body-model h-300-px flex-1">
+      <app-men-body-svg (pieceClick)="handlePieceClick($event)"></app-men-body-svg>
+      <app-men-back-body-svg (pieceClick)="handlePieceClick($event)"></app-men-back-body-svg>
+    </div>
+
+    <!-- Buscador -->
+    <div class="w-full lg:max-w-lg flex-1">
+      <app-search-input
+        [fields]="filterFields"
+        [activeFilters]="filter$.value"
+        (search)="onFilter($event)"
+        (resetAll)="onResetAll()"
+        ngSkipHydration>
+      </app-search-input>
+    </div>
+
+  </div>
+
+  <!-- Lista de Ejercicios y Paginación -->
+  <ng-container *ngIf="exercises$ | async as pageData">
+    <app-exercise-list [exercises]="pageData.exercises" [area]="area$ | async"></app-exercise-list>
+
+    <app-pagination
+      [page]="page$.value"
+      [rows]="pageSize"
+      [totalRecords]="pageData.totalElements"
+      [links]="pageData.links"
+      (pageChange)="page$.next($event)">
+    </app-pagination>
+  </ng-container>
+
+</div>

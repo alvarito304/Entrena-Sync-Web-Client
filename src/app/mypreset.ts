@@ -19,7 +19,6 @@ const CustomTheme = definePreset(Aura, {
     },
     colorScheme: {
       light: {
-
         surface: {
           0: '#606060',
           50: '#707070',
@@ -51,7 +50,60 @@ const CustomTheme = definePreset(Aura, {
           950: '#16161d'
         },
       }
+    }
+  },
+  // ← aquí añadimos la sección “components” para Tabs
+  components: {
+    tabs: {
+      semantic: {
+        light: {
+          tablist: {
+            background: '{transparent}'         // token tabs.tablist.background :contentReference[oaicite:2]{index=2}
+          },
+          tab: {
+            active: {
+              background: '{transparent}'       // token tabs.tab.active.background :contentReference[oaicite:3]{index=3}
+            }
+          },
+          tabpanel: {
+            background: '{transparent}'         // token tabs.tabpanels.background :contentReference[oaicite:4]{index=4}
+          }
+        },
+        dark: {
+          tablist: {
+            background: '{transparent}'
+          },
+          tab: {
+            active: {
+              background: '{transparent}'
+            }
+          },
+          tabpanel: {
+            background: '{transparent}'         // token tabs.tabpanels.background :contentReference[oaicite:4]{index=4}
+          }
+        }
       }
+    },
+/*    select: {
+      semantic: {
+        colorScheme: { // Añade este nivel explícito
+          light: {
+            color: 'red',
+            placeholderColor: 'pink',
+            optionColor: 'orange'
+            // Aquí podrías añadir otros tokens semánticos para 'light' si los necesitas
+            // por ejemplo, backgroundColor, borderColor, etc., si fueran aplicables a 'select.semantic'
+          },
+          dark: {
+            color: 'blue',
+            placeholderColor: 'lightblue',
+            optionColor: 'cyan'
+            // Tokens semánticos para 'dark'
+          }
+        }
+      }
+    }*/
+
   }
 });
 

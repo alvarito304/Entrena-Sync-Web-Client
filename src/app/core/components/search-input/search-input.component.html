@@ -1,0 +1,79 @@
+<div class="w-full rounded-xl p-6
+             bg-white/20 dark:bg-gray-900/20
+             backdrop-blur-md backdrop-filter
+             border border-white/30 dark:border-gray-700/30
+             shadow-lg hover:shadow-xl
+             transition-transform duration-300 opacity-0 animate-fade-slide-in">
+
+<p-tabs value="0" lazy="true" [(value)]="value" (valueChange)="onTabChange()">
+  <p-tablist>
+    <p-tab [value]="0">Buscador Rapido</p-tab>
+    <p-tab [value]="1">Buscador avanzado</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel [value]="0">
+      <div class="flex items-center">
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="values['name']"
+          placeholder="Nombre del ejercicio"
+          class="flex-1 bg-transparent focus:outline-none p-2 text-sm text-sm text-black dark:text-white"
+        />
+      </div>
+    </p-tabpanel>
+    <p-tabpanel [value]="1">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ng-container *ngFor="let field of fields">
+          <ng-container [ngSwitch]="field.type">
+            <!-- Text / Number -->
+            <div
+              *ngSwitchCase="'text'"
+            >
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="values[field.key]"
+                [placeholder]="field.placeholder"
+                class="w-full bg-transparent focus:outline-none text-sm text-sm text-black dark:text-white"
+              />
+            </div>
+            <!-- Select -->
+            <div
+              *ngSwitchCase="'select'"
+            >
+              <p-select
+                [options]="field.options"
+                [(ngModel)]="values[field.key]"
+                [placeholder]="field.placeholder"
+                styleClass="w-full bg-transparent focus:outline-none text-sm"
+              ></p-select>
+            </div>
+
+            <div *ngSwitchCase="'number'" class="w-full">
+              <p-inputNumber
+                type="number"
+                [(ngModel)]="values[field.key]"
+                [placeholder]="field.placeholder"
+                inputStyleClass="w-full bg-transparent focus:outline-none text-sm text-black dark:text-white"
+                class="w-full"
+                [inputStyle]="{'width': '100%'}"
+              />
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </p-tabpanel>
+  </p-tabpanels>
+  <div class="flex justify-end mt-4 space-x-3">
+    <button pButton label="Limpiar" (click)="reset()" class="p-button-secondary"></button>
+    <button
+      pButton
+      label="Buscar"
+      pButtonIcon="pi pi-search"
+      (click)="onSearch()"
+      class="ml-2"
+    ></button>
+  </div>
+</p-tabs>
+</div>
