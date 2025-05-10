@@ -136,7 +136,6 @@ export class ExerciseService {
       links[rel] = { url, page, rel };
     });
 
-    console.log('Parsed Links:', links); // Verifica los enlaces parseados con rel
     return links;
   }
 
