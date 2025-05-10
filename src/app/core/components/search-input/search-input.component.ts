@@ -3,14 +3,9 @@ import {FormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {FilterField} from '../../models/filterFields/filterFields';
 import {InputText} from 'primeng/inputtext';
-import {Sidebar} from 'primeng/sidebar';
 import {DropdownModule} from 'primeng/dropdown';
-import {ConfirmDialog} from 'primeng/confirmdialog';
-import {SpeedDial} from 'primeng/speeddial';
-import {Panel} from 'primeng/panel';
 import {ButtonDirective, ButtonIcon} from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';
-import {StyleClass} from 'primeng/styleclass';
 import {Select} from 'primeng/select';
 import { InputNumberModule } from 'primeng/inputnumber';
 
@@ -19,15 +14,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
   imports: [
     FormsModule,
     InputText,
-    Sidebar,
     DropdownModule,
-    ConfirmDialog,
-    SpeedDial,
-    Panel,
     ButtonDirective,
     CommonModule,
     TabsModule,
-    StyleClass,
     Select,
     ButtonIcon,
     InputNumberModule
@@ -40,8 +30,11 @@ export class SearchInputComponent implements OnChanges {
   @Input() fields: FilterField[] = [];
   @Input() activeFilters: { [key: string]: any } = {};
   @Output() search = new EventEmitter<{ [key: string]: any }>();
+  @Output() resetAll = new EventEmitter<void>();
 
   values: { [key: string]: any } = {};
+
+  value: number = 0;
 
   ngOnChanges() {
     this.values = { ...this.activeFilters };
@@ -55,12 +48,18 @@ export class SearchInputComponent implements OnChanges {
   reset() {
     this.values = {};
 
-    // Asignamos valores vacíos o `null` para todos los campos para forzar el reset.
     this.fields.forEach(field => {
       this.values[field.key] = '';
     });
 
     this.search.emit(this.values);
+    this.resetAll.emit();
+  }
+
+  onTabChange() {
+    if (this.value === 0) {
+      this.reset();
+    }
   }
 
 }

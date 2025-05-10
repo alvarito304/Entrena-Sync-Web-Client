@@ -5,13 +5,13 @@
              shadow-lg hover:shadow-xl
              transition-transform duration-300 opacity-0 animate-fade-slide-in">
 
-<p-tabs value="0" lazy="true">
+<p-tabs value="0" lazy="true" [(value)]="value" (valueChange)="onTabChange()">
   <p-tablist>
-    <p-tab value="0">Buscador Rapido</p-tab>
-    <p-tab value="1">Buscador avanzado</p-tab>
+    <p-tab [value]="0">Buscador Rapido</p-tab>
+    <p-tab [value]="1">Buscador avanzado</p-tab>
   </p-tablist>
   <p-tabpanels>
-    <p-tabpanel value="0">
+    <p-tabpanel [value]="0">
       <div class="flex items-center">
         <input
           pInputText
@@ -22,7 +22,7 @@
         />
       </div>
     </p-tabpanel>
-    <p-tabpanel value="1">
+    <p-tabpanel [value]="1">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <ng-container *ngFor="let field of fields">
           <ng-container [ngSwitch]="field.type">

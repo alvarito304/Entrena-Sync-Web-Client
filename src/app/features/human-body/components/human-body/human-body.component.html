@@ -15,6 +15,7 @@
         [fields]="filterFields"
         [activeFilters]="filter$.value"
         (search)="onFilter($event)"
+        (resetAll)="onResetAll()"
         ngSkipHydration>
       </app-search-input>
     </div>

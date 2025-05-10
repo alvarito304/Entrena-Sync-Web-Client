@@ -1,13 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Paginator, PaginatorState  } from 'primeng/paginator';
-import {AsyncPipe, DecimalPipe, NgForOf, NgIf} from '@angular/common';
-import {PrimeTemplate} from 'primeng/api';
-import {PrimaryButtonComponent} from '../primary-button/primary-button.component';
-import {StyleClass} from 'primeng/styleclass';
+import {NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-pagination',
-  imports: [Paginator, PrimeTemplate, PrimaryButtonComponent, AsyncPipe, DecimalPipe, StyleClass, NgIf, NgForOf],
+  imports: [ NgIf, NgForOf],
   templateUrl: './pagination.component.html',
   standalone: true,
   styleUrl: './pagination.component.css'
