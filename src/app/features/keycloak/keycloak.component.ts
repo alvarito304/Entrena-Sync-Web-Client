@@ -5,11 +5,12 @@ import {InputText} from 'primeng/inputtext';
 import {PasswordModule} from 'primeng/password';
 import {ButtonDirective} from 'primeng/button';
 import {Router, RouterLink} from '@angular/router';
-import {AuthService, LoginResponse} from './services/auth.service';
+import {IftaLabel} from 'primeng/iftalabel';
+import {AuthService} from './services/auth.service';
 
 @Component({
   selector: 'app-keycloak',
-  imports: [CommonModule, FormsModule, InputText, PasswordModule, ButtonDirective, RouterLink],
+  imports: [CommonModule, FormsModule, InputText, PasswordModule, ButtonDirective, RouterLink, IftaLabel],
   templateUrl: './keycloak.component.html',
   standalone: true,
   styleUrl: './keycloak.component.css'
@@ -24,15 +25,10 @@ export class KeycloakComponent {
 
   onSubmit(): void {
     this.authService.login(this.email, this.password).subscribe({
-      next: (response: LoginResponse) => {
-        const token = response.access_token;
-        if (token) {
-          localStorage.setItem('access_token', token);
+      next: () => {
           console.log('Login successful. Token stored.');
           this.router.navigate(['/human-body']);
-        } else {
-          console.warn('Login response does not contain a token.');
-        }
+
       },
       error: (error) => {
         console.error('Login failed:', error);
