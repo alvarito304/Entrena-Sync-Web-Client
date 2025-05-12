@@ -6,14 +6,16 @@ import {provideClientHydration, withEventReplay, withHttpTransferCacheOptions} f
 import {providePrimeNG} from 'primeng/config';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
-import {provideHttpClient, withFetch} from '@angular/common/http';
+import {provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi} from '@angular/common/http';
 import mypreset from './mypreset';
+import {TokenInterceptor} from './features/keycloak/services/TokenInterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withInterceptorsFromDi()),
+    TokenInterceptor,
     provideAnimationsAsync(),
     provideClientHydration(withEventReplay()),
     providePrimeNG({ theme: {

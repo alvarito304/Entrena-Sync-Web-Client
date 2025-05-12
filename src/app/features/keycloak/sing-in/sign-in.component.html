@@ -1,0 +1,199 @@
+<!-- register.component.html refactorizado -->
+<div class="min-h-screen bg-[var(--bg-light)] dark:bg-[var(--bg-dark)] flex items-center justify-center p-6">
+    <div class="relative container max-w-md p-6 md:p-8
+              bg-gradient-to-br from-white/10 to-white/5 dark:from-black/20 dark:to-black/10
+              backdrop-blur-md border border-white/30 dark:border-white/30
+              rounded-2xl shadow-lg">
+        <!-- Header -->
+        <h4 class="text-xl font-light tracking-wide text-[var(--text-light)] dark:text-[var(--text-dark)]
+               text-center mb-8 bg-clip-text">
+            Crea tu cuenta en
+            <span class="bg-clip-text text-primary">
+        EntrenaSync
+      </span>
+        </h4>
+
+        <!-- Logo -->
+        <div class="flex justify-center mb-8">
+            <img src="/entrenaSyncLogo.png" alt="Logo" class="h-40 w-auto"/>
+        </div>
+
+        <!-- Steps -->
+        <p-steps [model]="items" [(activeIndex)]="activeIndex" class="mb-8"></p-steps>
+
+        <form (ngSubmit)="submit()" class="space-y-6">
+
+            <!-- STEP 1: Cuenta -->
+            <div *ngIf="activeIndex === 0" class="space-y-4">
+                <!-- Nombre de usuario -->
+                <p-iftalabel class="peer w-full">
+                    <label for="username"
+                           class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                        peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                        Nombre de usuario
+                    </label>
+                    <input pInputText id="username" name="username" [(ngModel)]="username" required type="text"
+                           class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                        border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                        rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                </p-iftalabel>
+
+                <!-- Email -->
+                <p-iftalabel class="peer w-full">
+                    <label for="email"
+                           class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                        peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                        Email
+                    </label>
+                    <input pInputText id="email" name="email" type="email" [(ngModel)]="email" required
+                           class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                        border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                        rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                </p-iftalabel>
+
+                <!-- Contraseña -->
+                <p-iftalabel class="peer w-full">
+                    <label for="password1"
+                           class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                        peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                        Contraseña
+                    </label>
+                    <p-password styleClass="peer w-full h-14" id="password1" name="password" [(ngModel)]="password"
+                                [toggleMask]="true" [feedback]="true" promptLabel="Elige contraseña" weakLabel="Muy débil"
+                                mediumLabel="Media" strongLabel="Fuerte"
+                                inputStyleClass="w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                                      border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                                      rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                </p-iftalabel>
+
+                <!-- Confirmar contraseña -->
+                <p-iftalabel class="peer w-full">
+                    <label for="password2"
+                           class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                        peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                        Confirmar contraseña
+                    </label>
+                    <p-password styleClass="peer w-full h-14" id="password2" name="passwordConfirmation"
+                                [(ngModel)]="passwordConfirmation" [toggleMask]="true" [feedback]="false"
+                                inputStyleClass="w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                                      border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                                      rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                </p-iftalabel>
+            </div>
+
+            <!-- STEP 2: Perfil -->
+            <div *ngIf="activeIndex === 1" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Nombre -->
+                    <p-iftalabel class="peer w-full">
+                        <label for="firstName"
+                               class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                          peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                            Nombre
+                        </label>
+                        <input pInputText id="firstName" name="firstName" [(ngModel)]="firstName" required type="text"
+                               class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                          border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                          rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                    </p-iftalabel>
+
+                    <!-- Apellidos -->
+                    <p-iftalabel class="peer w-full">
+                        <label for="lastName"
+                               class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                          peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                            Apellidos
+                        </label>
+                        <input pInputText id="lastName" name="lastName" [(ngModel)]="lastName" required type="text"
+                               class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                          border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                          rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                    </p-iftalabel>
+                </div>
+
+                <!-- Dirección -->
+                <p-iftalabel class="peer w-full">
+                    <label for="address"
+                           class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                        peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                        Dirección
+                    </label>
+                    <input pInputText id="address" name="address" [(ngModel)]="address" type="text"
+                           class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                        border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                        rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                </p-iftalabel>
+
+                <!-- Teléfono -->
+                <p-iftalabel class="peer w-full">
+                    <label class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2">
+                        Teléfono
+                    </label>
+                    <div class="flex gap-3">
+                        <p-dropdown [options]="countryCodes" [(ngModel)]="countryCode" name="countryCode" optionLabel="label"
+                                    placeholder="+34"
+                                    class="w-1/3 h-12 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                               border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                               rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                        <input pInputText id="phone" name="phone" [(ngModel)]="phone" type="tel" required pattern="[0-9]*"
+                               class="w-2/3 h-12 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                          border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                          rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                    </div>
+                </p-iftalabel>
+
+                <!-- Fecha de nacimiento -->
+                <div class="peer w-full mb-4">
+                    <p-datepicker
+                            [(ngModel)]="birthDate"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            inputId="birthDate"
+                            placeholder="Fecha de Nacimiento"
+                            styleClass="w-full"
+                            inputClass="w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)] border border-[var(--border-light)] dark:border-[var(--border-dark)] rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    ></p-datepicker>
+                </div>
+
+                <!-- Género -->
+                <p-iftalabel class="peer w-full">
+                    <label for="gender" class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2 peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                        Género
+                    </label>
+                    <p-dropdown id="gender" name="gender" [(ngModel)]="gender" [options]="genders" optionLabel="label"
+                                placeholder="Selecciona género"
+                                class="w-full h-12 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)] border border-[var(--border-light)] dark:border-[var(--border-dark)] rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                </p-iftalabel>
+
+                <!-- Avatar -->
+                <p-iftalabel class="peer w-full">
+                    <label class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2">
+                        Avatar
+                    </label>
+                    <div class="w-24 h-24 mx-auto rounded-full border-2 border-[var(--border-light)] dark:border-[var(--border-dark)] overflow-hidden relative cursor-pointer">
+                        <p-fileUpload name="avatar" accept="image/png" maxFileSize="1000000" customUpload="true"
+                                      (uploadHandler)="onAvatarChange($event)" chooseLabel=""
+                                      class="w-full h-full opacity-0 absolute top-0 left-0"></p-fileUpload>
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 stroke-current text-[var(--text-dark)] dark:text-[var(--text-light)]" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div *ngIf="avatarPreview" class="mt-4 flex justify-center">
+                        <img [src]="avatarPreview" alt="Avatar"
+                             class="h-24 w-24 rounded-full object-cover border-2 border-[var(--border-light)] dark:border-[var(--border-dark)]" />
+                    </div>
+                </p-iftalabel>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between pt-6">
+                <button type="button" pButton label="Atrás" icon="pi pi-chevron-left" (click)="prev()" [disabled]="activeIndex === 0" class="duration-300 ease-in-out"></button>
+                <button *ngIf="activeIndex < items.length - 1" type="button" pButton label="Siguiente" icon="pi pi-chevron-right" iconPos="right" (click)="next()" class="duration-300 ease-in-out"></button>
+                <button *ngIf="activeIndex === items.length - 1" type="submit" pButton label="Registrar" class="p-button-success duration-300 ease-in-out"></button>
+            </div>
+
+        </form>
+    </div>
+</div>

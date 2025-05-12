@@ -1,0 +1,64 @@
+<div class="min-h-screen bg-[var(--bg-light)] dark:bg-[var(--bg-dark)] flex items-center justify-center p-6">
+  <div class="relative container max-w-md p-6 md:p-8
+              bg-gradient-to-br from-white/10 to-white/5 dark:from-black/20 dark:to-black/10
+              backdrop-blur-md border border-white/30 dark:border-white/30
+              rounded-2xl shadow-lg">
+
+    <!-- Header -->
+    <h4 class="text-xl font-light tracking-wide text-[var(--text-light)] dark:text-[var(--text-dark)]
+               text-center mb-8 bg-clip-text">
+      Inicia sesión en
+      <span class="bg-clip-text text-primary">
+        EntrenaSync
+      </span>
+    </h4>
+
+    <!-- Logo -->
+    <div class="flex justify-center mb-8">
+      <img src="/entrenaSyncLogo.png" alt="Logo" class="h-40 w-auto"/>
+    </div>
+
+    <!-- Formulario -->
+    <form (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <!-- Usuario -->
+      <p-iftalabel class="peer w-full">
+        <label for="email"
+               class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                      peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+          Email
+        </label>
+        <input pInputText id="email" name="email" [(ngModel)]="email" required type="text"
+               class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                      border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                      rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      </p-iftalabel>
+
+      <!-- Contraseña -->
+      <p-iftalabel class="peer w-full">
+        <label for="password"
+               class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
+                      peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+          Contraseña
+        </label>
+        <p-password styleClass="peer w-full h-14" id="password" name="password" [(ngModel)]="password"
+                    [toggleMask]="true" [feedback]="false"
+                    inputStyleClass="w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                          border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                          rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      </p-iftalabel>
+
+      <!-- Botón -->
+      <button type="submit"
+              class="w-full h-14 bg-primary-600 text-white rounded-lg font-semibold hover:bg-pink-400 transition-all duration-300">
+        Iniciar sesión
+      </button>
+
+      <!-- Enlace a registro -->
+      <div class="text-center text-sm text-[var(--text-dark)] dark:text-[var(--text-light)]">
+        ¿No tienes cuenta?
+        <a routerLink="/register" class="text-primary font-medium hover:underline">Regístrate aquí</a>
+      </div>
+    </form>
+  </div>
+</div>
