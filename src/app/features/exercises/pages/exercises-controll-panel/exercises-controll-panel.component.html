@@ -1,0 +1,36 @@
+<generic-table
+  [items]="exercises"
+  [cols]="cols"
+  [globalFilterFields]="['name', 'bodyPart', 'target']"
+  [title]="'Manage Exercises'"
+  [entityName]="'exercises'"
+  [idField]="'id'"
+  [nameField]="'name'"
+  [severityMap]="severityMap"
+  (onSave)="saveExercise($event)"
+  (onDelete)="deleteExercise($event)"
+  (onDeleteMultiple)="deleteSelectedExercises($event)"
+  (onImportItems)="importExercises($event)"
+>
+  <ng-template #formTemplate let-exercise>
+    <div *ngIf="exercise.gifUrl">
+      <img [src]="exercise.gifUrl" [alt]="exercise.name" class="block m-auto pb-4" style="max-width:150px" />
+    </div>
+
+    <div>
+      <label for="name" class="block font-bold mb-2">Name</label>
+      <input type="text" pInputText id="name" [(ngModel)]="exercise.name" required />
+      <small class="text-red-500" *ngIf="submitted && !exercise.name">Name is required.</small>
+    </div>
+
+    <div>
+      <label for="bodyPart" class="block font-bold mb-2">Body Part</label>
+      <input type="text" pInputText id="bodyPart" [(ngModel)]="exercise.bodyPart" required />
+    </div>
+
+    <div>
+      <label for="target" class="block font-bold mb-2">Target Muscle</label>
+      <input type="text" pInputText id="target" [(ngModel)]="exercise.target" required />
+    </div>
+  </ng-template>
+</generic-table>
