@@ -28,7 +28,7 @@ const CustomTheme = definePreset(Aura, {
           400: '#b0b0b0',
           500: '#c0c0c0',
           600: '#d0d0d0',
-          700: '#e0e0e0',
+          700: '#333333',
           800: '#f0f0f0',
           900: '#f8f8f8',
           950: '#ffffff'
@@ -52,7 +52,7 @@ const CustomTheme = definePreset(Aura, {
       }
     }
   },
-  // ← aquí añadimos la sección “components” para Tabs
+
   components: {
     tabs: {
       semantic: {
@@ -84,25 +84,143 @@ const CustomTheme = definePreset(Aura, {
         }
       }
     },
-/*    select: {
-      semantic: {
-        colorScheme: { // Añade este nivel explícito
-          light: {
-            color: 'red',
-            placeholderColor: 'pink',
-            optionColor: 'orange'
-            // Aquí podrías añadir otros tokens semánticos para 'light' si los necesitas
-            // por ejemplo, backgroundColor, borderColor, etc., si fueran aplicables a 'select.semantic'
+    datatable:{
+      colorScheme: {
+        light: {
+          border: {
+            color: '#e0e0e0'
           },
-          dark: {
-            color: 'blue',
-            placeholderColor: 'lightblue',
-            optionColor: 'cyan'
-            // Tokens semánticos para 'dark'
+          header: {
+            background: '{transparent}',
+
+            cell: {
+              background: '{transparent}',
+              hover: {
+                background: '#dedfdf',
+                color: '#000000'
+              }
+            }
+          },
+          body: {
+            background: '{transparent}'
+          },
+          row: {
+            background: '{transparent}',
+            color: '#333333',
+            hover: {
+              background: '#dedfdf',
+              color: '#000000'
+            },
+          },
+        },
+        dark: {
+          border: {
+            color: '#4a4a4a'
+          },
+          header: {
+            background: '{transparent}',
+            cell: {
+              background: '{transparent}',
+              hover: {
+                background: '#2c2c34',
+                color: '#ffffff'
+              }
+            }
+          },
+          body: {
+            background: '{transparent}'
+          },
+          row: {
+            background: '{transparent}',
+            color: '#dedfdf',
+            hover: {
+              background: '#2c2c34',
+              color: '#ffffff'
+            },
+          },
+        }
+      }
+    },
+    toolbar: {
+      colorScheme: {
+        light: {
+          border: {
+            color: '#e0e0e0'    // un gris medio (igual que el texto normal de fila)
+          },
+          background: '#dedfdf',         // token toolbar.background :contentReference[oaicite:5]{index=5}
+        },
+        dark: {
+          border: {
+            color: '#4a4a4a'    // un gris oscuro intermedio
+          },
+          background: '{transparent}'         // token toolbar.background :contentReference[oaicite:5]{index=5}
+        }
+      }
+    },
+    paginator: {
+      colorScheme: {
+        light: {
+          background: '{transparent}',
+          border: {
+            color: '#e0e0e0'
+          },
+          current: {
+            page: {
+              report: {
+                color: '#333333'
+              }
+            }
+          },
+          nav:{
+            button: {
+              color: '#333333',
+              hover: {
+                background: '#dedfdf',
+                color: '#000000'
+              }
+            }
+          }
+        },
+        dark: {
+          background: '{transparent}',
+          border: {
+            color: '#4a4a4a'
+          },
+          current: {
+            page: {
+              report: {
+                color: '#dedfdf'
+              }
+            }
+          },
+          nav:{
+            button: {
+              color: '#dedfdf',
+              hover: {
+                background: '#2c2c34',
+                color: '#ffffff'
+              }
+            }
           }
         }
       }
-    }*/
+    },
+    checkbox: {
+      colorScheme: {
+        light: {
+          border: {
+            color: '#333333'
+          },
+          background: '{transparent}'
+        },
+        dark: {
+          border: {
+            color: '#4a4a4a'
+          },
+          background: '{transparent}'
+        }
+      }
+    }
 
   }
 });

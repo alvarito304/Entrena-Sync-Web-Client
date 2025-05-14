@@ -1,6 +1,15 @@
+
 <div class="card">
   <p-toast />
+  <div class="w-full rounded-xl p-6
+             bg-white/20 dark:bg-gray-900/20
+             backdrop-blur-md backdrop-filter
+             border border-white/30 dark:border-gray-700/30
+             shadow-lg hover:shadow-xl
+             transition-transform duration-300 opacity-0 animate-fade-slide-in">
+    <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 dark:from-gray-800/10 dark:to-gray-900/5"></div>
 
+    <div class="z-10">
   <p-toolbar styleClass="mb-6">
     <ng-template #start>
       <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
@@ -23,11 +32,12 @@
         chooseLabel="Import"
         auto
         customUpload
+        outlined
         class="mr-2 inline-block"
-        [chooseButtonProps]="{ severity: 'secondary' }"
+        [chooseButtonProps]="{ severity: 'primary', outlined: true }"
         (uploadHandler)="onImport($event)"
       />
-      <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV($event)" />
+      <p-button label="Export" icon="pi pi-upload" outlined severity="primary" (onClick)="exportCSV($event)" />
     </ng-template>
   </p-toolbar>
 
@@ -44,13 +54,15 @@
     [dataKey]="idField"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [showCurrentPageReport]="true"
+    styleClass="text-primary"
+    tableStyleClass=""
   >
     <ng-template #caption>
       <div class="flex items-center justify-between">
         <h5 class="m-0">{{ title }}</h5>
         <p-iconfield>
           <p-inputicon styleClass="pi pi-search" />
-          <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value , 'contains')" placeholder="Search..." />
+          <input pInputText class="bg-transparent border-[#e0e0e0] dark:border-[#4a4a4a]" type="text" (input)="dt.filterGlobal($any($event.target).value , 'contains')" placeholder="Search..." />
         </p-iconfield>
       </div>
     </ng-template>
@@ -107,13 +119,9 @@
         </td>
       </tr>
     </ng-template>
-
-    <ng-template #summary>
-      <div class="flex items-center justify-between">
-        In total there are {{ items ? items.length : 0 }} {{ entityName }}.
-      </div>
-    </ng-template>
   </p-table>
+    </div>
+</div>
 
   <p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" [header]="entityName + ' Details'" [modal]="true">
     <ng-template #content>
@@ -130,3 +138,4 @@
 
   <p-confirmDialog [style]="{ width: '450px' }" />
 </div>
+

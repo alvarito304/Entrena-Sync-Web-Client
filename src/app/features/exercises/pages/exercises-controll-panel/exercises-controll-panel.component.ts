@@ -16,10 +16,11 @@ import {ExerciseService} from '../../../human-body/services/exercise.service';
 @Component({
   selector: 'app-exercise-table',
   template: `
+    <div class="m-20">
     <generic-table
       [items]="exercises"
       [cols]="cols"
-      [globalFilterFields]="['name', 'bodyPart', 'target']"
+      [globalFilterFields]="['name', 'bodyPart']"
       [title]="'Manage Exercises'"
       [entityName]="'exercises'"
       [idField]="'id'"
@@ -52,6 +53,7 @@ import {ExerciseService} from '../../../human-body/services/exercise.service';
         </div>
       </ng-template>
     </generic-table>
+    </div>
   `,
   standalone: true,
   imports: [
@@ -72,7 +74,11 @@ export class ExercisesControllPanelComponent implements OnInit {
   exercises: Exercise[] = [];
   submitted: boolean = false;
   cols: Column[] = [];
-  severityMap: { [key: string]: string } = {};
+  severityMap: { [key: string]: string } = {
+    'BEGINNER': 'success',
+    'INTERMEDIATE': 'info',
+    'ADVANCED': 'danger'
+  };
 
   constructor(private exerciseService: ExerciseService) {}
 
@@ -84,9 +90,13 @@ export class ExercisesControllPanelComponent implements OnInit {
   setupColumns() {
     this.cols = [
       { field: 'name', header: 'Name', style: 'min-width: 16rem' },
+      { field: 'description', header: 'Description', style: 'min-width: 16rem' },
       { field: 'bodyPart', header: 'Body Part', style: 'min-width: 12rem' },
-      { field: 'target', header: 'Target Muscle', style: 'min-width: 12rem' },
-      { field: 'gifUrl', header: 'Demo', type: 'image', style: 'min-width: 8rem' }
+      { field: 'muscleGroup', header: 'Muscle Group', style: 'min-width: 12rem' },
+      { field: 'equipment', header: 'Equipment', style: 'min-width: 8rem' },
+      { field: 'caloriesBurned', header: 'Calories Burned', type: 'rating', style: 'min-width: 8rem' },
+      { field: 'difficulty', header: 'Difficulty', type:"tag", style: 'min-width: 12rem' },
+      { field: 'videoUrl', header: 'VideoUrl', type: 'text', style: 'min-width: 16rem' },
     ];
   }
 
