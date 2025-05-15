@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {environment} from '../../../../environments/environment';
-import {catchError, map, Observable, of, shareReplay} from 'rxjs';
+import {catchError, map, Observable, of, shareReplay, switchMap} from 'rxjs';
 
 export interface UserResponse {
   sub: string;
@@ -11,6 +11,23 @@ export interface UserResponse {
   email: string;
   given_name: string;
   family_name: string;
+}
+export interface UserRequest {
+  username: string;
+  email: string;
+  firstName: string;
+  lasName: string;
+  password: string;
+  passwordConfirmation: string
+}
+export interface ClientRequest {
+  name: string;
+  address: string;
+  avatar?: string ;
+  phone: string;
+  birthDate: string;
+  gender: string
+  userId: string
 }
 
 @Injectable({ providedIn: 'root' })
@@ -32,6 +49,21 @@ export class AuthService {
 
   logout() {
     this.router.navigate(['/login']);
+  }
+
+  register(userRequest: UserRequest, clientRequest: ClientRequest): Observable<any> {
+    return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest).pipe(
+      switchMap((response) => {
+        const keycloakUserId = response.id;
+
+        const fullClientRequest = {
+          ...clientRequest,
+          userId: keycloakUserId
+        };
+
+        return this.http.post(`${this.apiUrl}/Clients`, fullClientRequest);
+      })
+    );
   }
 
   getUserInfo(): Observable<UserResponse | null> {

@@ -19,20 +19,34 @@
     </div>
 
     <!-- Formulario -->
-    <form (ngSubmit)="onSubmit()" class="space-y-6">
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="space-y-6">
 
       <!-- Usuario -->
       <p-iftalabel class="peer w-full">
         <label for="email"
                class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
-                      peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
+                peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
           Email
         </label>
-        <input pInputText id="email" name="email" [(ngModel)]="email" required type="text"
+        <input pInputText
+               id="email"
+               name="email"
+               [(ngModel)]="email"
+               #emailModel="ngModel"
+               required
+               minlength="3"
+               type="text"
                class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
-                      border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                      rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+        <!-- Mensaje de error -->
+        <div *ngIf="emailModel.invalid && emailModel.touched" class="mt-2 text-sm text-red-500">
+          <span *ngIf="emailModel.errors?.['required']">El email es obligatorio.</span>
+          <span *ngIf="emailModel.errors?.['minlength']">El email debe tener al menos 3 caracteres.</span>
+        </div>
       </p-iftalabel>
+
 
       <!-- Contraseña -->
       <p-iftalabel class="peer w-full">

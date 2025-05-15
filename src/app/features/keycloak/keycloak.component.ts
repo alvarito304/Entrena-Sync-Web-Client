@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 import {PasswordModule} from 'primeng/password';
 import {ButtonDirective} from 'primeng/button';
@@ -23,7 +23,11 @@ export class KeycloakComponent {
   constructor(private authService: AuthService, private router: Router) {
   }
 
-  onSubmit(): void {
+  onSubmit(form: NgForm): void {
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
           console.log('Login successful. Token stored.');
