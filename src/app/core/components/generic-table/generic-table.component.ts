@@ -20,21 +20,8 @@ import { FormsModule } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-
-export interface Column {
-  field: string;
-  header: string;
-  type?: 'text' | 'image' | 'currency' | 'rating' | 'tag' | 'custom';
-  style?: string;
-  currencyCode?: string;
-  customExportHeader?: string;
-  template?: TemplateRef<any>;
-}
-
-export interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
+import {Column} from '../../models/colum/column';
+import {ExportColumn} from '../../models/colum/export-column';
 
 @Component({
   selector: 'generic-table',
