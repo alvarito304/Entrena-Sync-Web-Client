@@ -35,12 +35,15 @@ import {FileUpload} from 'primeng/fileupload';
       [nameField]="'name'"
       [severityMap]="severityMap"
       [isFormValid]="isFormValid"
+      [loading]="loading"
       (onSave)="saveExercise($event)"
       (onDelete)="deleteExercise($event)"
       (onDeleteMultiple)="deleteSelectedExercises($event)"
       (onImportItems)="importExercises($event)"
     >
       <ng-template #formTemplate let-exercise>
+
+
 
         <form [formGroup]="exerciseForm" (ngSubmit)="saveExercise(exercise)">
           <div>
@@ -174,6 +177,7 @@ export class ExercisesControllPanelComponent implements OnInit {
   };
   isFormValid: boolean = false;
   selectedFile?: File;
+  loading = false;
 
   exerciseForm!: FormGroup;
   currentExercise: Exercise | null = null;
@@ -247,6 +251,8 @@ export class ExercisesControllPanelComponent implements OnInit {
       form.append('file', this.selectedFile, this.selectedFile.name);
     }
 
+    this.loading = true;
+
     // 4. Llama al servicio
     if (ex.id) {
       this.exerciseService.updateExercise(ex.id, form)
@@ -273,6 +279,7 @@ export class ExercisesControllPanelComponent implements OnInit {
             this.currentExercise = null;
             this.exerciseForm.reset();
             this.selectedFile = undefined;
+            this.loading = false;
           })
         ).subscribe();
     } else {
@@ -298,7 +305,10 @@ export class ExercisesControllPanelComponent implements OnInit {
           }),
           finalize(() => {
             this.submitted = false;
+            this.currentExercise = null;
             this.exerciseForm.reset();
+            this.selectedFile = undefined;
+            this.loading = false;
           })
         ).subscribe();
     }

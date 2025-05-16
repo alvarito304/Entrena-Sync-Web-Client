@@ -124,6 +124,17 @@
 </div>
 
   <p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" [header]="entityName + ' Details'" [modal]="true">
+
+    <!-- Overlay de bloqueo con BlockUI -->
+    <p-blockUI [blocked]="loading" styleClass="w-full h-full flex items-center justify-center">
+      <ng-template pTemplate>
+        <div class="card flex justify-center">
+          <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+        </div>
+      </ng-template>
+    </p-blockUI>
+
+
     <ng-template #content>
       <div class="flex flex-col gap-6">
         <ng-container *ngTemplateOutlet="formTemplate; context: { $implicit: item }"></ng-container>

@@ -22,6 +22,8 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import {Column} from '../../models/colum/column';
 import {ExportColumn} from '../../models/colum/export-column';
+import {BlockUI} from 'primeng/blockui';
+import {ProgressSpinner} from 'primeng/progressspinner';
 
 @Component({
   selector: 'generic-table',
@@ -48,7 +50,9 @@ import {ExportColumn} from '../../models/colum/export-column';
     InputNumber,
     IconFieldModule,
     InputIconModule,
-    Button
+    Button,
+    BlockUI,
+    ProgressSpinner
   ],
   providers: [MessageService, ConfirmationService]
 })
@@ -62,6 +66,7 @@ export class GenericTableComponent implements OnInit {
   @Input() globalFilterFields: string[] = [];
   @Input() severityMap: { [key: string]: string } = {};
   @Input() isFormValid: boolean = false;
+  @Input() loading: boolean = false;
 
   @ContentChild('formTemplate') formTemplate!: TemplateRef<any>;
 
@@ -77,6 +82,7 @@ export class GenericTableComponent implements OnInit {
   item: any = {};
   submitted: boolean = false;
   exportColumns: ExportColumn[] = [];
+
 
   constructor(
     private messageService: MessageService,
