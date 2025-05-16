@@ -225,8 +225,8 @@ export class ExercisesControllPanelComponent implements OnInit {
   }
 
   loadExercises() {
-    this.exerciseService.getExercisesWithFilters({}).subscribe((res) => {
-      this.exercises = res.exercises;
+    this.exerciseService.getAllExercises().subscribe((res) => {
+      this.exercises = res;
     });
   }
 
@@ -236,24 +236,20 @@ export class ExercisesControllPanelComponent implements OnInit {
       return;
     }
 
-    // 1. Construye el DTO a partir del formGroup
     const dto: ExerciseUpdateRequest = { ...this.exerciseForm.value };
 
-    // 2. Monta el FormData con un sólo part JSON
     const form = new FormData();
     form.append(
       'exercise',
       new Blob([JSON.stringify(dto)], { type: 'application/json' })
     );
 
-    // 3. (Opcional) adjunta el fichero si existe
     if (this.selectedFile) {
       form.append('file', this.selectedFile, this.selectedFile.name);
     }
 
     this.loading = true;
 
-    // 4. Llama al servicio
     if (ex.id) {
       this.exerciseService.updateExercise(ex.id, form)
         .pipe(
@@ -324,7 +320,6 @@ export class ExercisesControllPanelComponent implements OnInit {
   }
 
   importExercises(event: any) {
-    // Implement import logic or skip if not needed
     console.log('Import not implemented', event);
   }
 
@@ -339,7 +334,11 @@ export class ExercisesControllPanelComponent implements OnInit {
     videoElement.onloadedmetadata = () => {
       URL.revokeObjectURL(videoElement.src);
       if (videoElement.duration > 120) {
-        this.messageService.add({ /* …duración err…*/ });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'El video no puede durar más de 2 minutos'
+        });
         return;
       }
       // Si pasa validación, guardamos el fichero:
