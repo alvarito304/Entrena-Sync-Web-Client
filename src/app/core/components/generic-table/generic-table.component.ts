@@ -61,6 +61,7 @@ export class GenericTableComponent implements OnInit {
   @Input() nameField: string = 'name';
   @Input() globalFilterFields: string[] = [];
   @Input() severityMap: { [key: string]: string } = {};
+  @Input() isFormValid: boolean = false;
 
   @ContentChild('formTemplate') formTemplate!: TemplateRef<any>;
 

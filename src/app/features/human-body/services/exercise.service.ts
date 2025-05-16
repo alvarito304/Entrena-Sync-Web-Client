@@ -86,8 +86,8 @@ export class ExerciseService {
   }
 
 // Crear un nuevo ejercicio
-  createExercise(ex: Exercise): Observable<Exercise> {
-    return this.http.post<Exercise>(this.baseUrl, ex).pipe(
+  createExercise(form: FormData): Observable<Exercise> {
+    return this.http.post<Exercise>(this.baseUrl, form).pipe(
       tap(() => this.invalidateCache()),
       catchError(err => {
         console.error('Create failed', err);
@@ -96,11 +96,10 @@ export class ExerciseService {
     );
   }
 
-  updateExercise(id: string, ex: Exercise): Observable<Exercise> {
-    return this.http.put<Exercise>(`${this.baseUrl}/${id}`, ex).pipe(
+  updateExercise(id: string, form: FormData): Observable<Exercise> {
+    return this.http.put<Exercise>(`${this.baseUrl}/${id}`, form).pipe(
       tap(() => this.invalidateCache()),
       catchError(err => {
-        console.error('Update failed', err);
         return throwError(() => err);
       })
     );

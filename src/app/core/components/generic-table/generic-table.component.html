@@ -132,7 +132,7 @@
 
     <ng-template #footer>
       <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-      <p-button label="Save" icon="pi pi-check" (click)="saveItem()" />
+      <p-button label="Save" icon="pi pi-check" (click)="saveItem()" [disabled]="!isFormValid" />
     </ng-template>
   </p-dialog>
 
