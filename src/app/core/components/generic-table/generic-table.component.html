@@ -1,0 +1,152 @@
+
+<div class="card">
+  <p-toast />
+  <div class="w-full rounded-xl p-6
+             bg-white/20 dark:bg-gray-900/20
+             backdrop-blur-md backdrop-filter
+             border border-white/30 dark:border-gray-700/30
+             shadow-lg hover:shadow-xl
+             transition-transform duration-300 opacity-0 animate-fade-slide-in">
+    <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 dark:from-gray-800/10 dark:to-gray-900/5"></div>
+
+    <div class="z-10">
+  <p-toolbar styleClass="mb-6">
+    <ng-template #start>
+      <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+      <p-button
+        severity="danger"
+        label="Delete"
+        icon="pi pi-trash"
+        outlined
+        (onClick)="deleteSelectedItems()"
+        [disabled]="!selectedItems || !selectedItems.length"
+      />
+    </ng-template>
+
+    <ng-template #end>
+      <p-fileUpload
+        mode="basic"
+        accept="image/*"
+        [maxFileSize]="1000000"
+        label="Import"
+        chooseLabel="Import"
+        auto
+        customUpload
+        outlined
+        class="mr-2 inline-block"
+        [chooseButtonProps]="{ severity: 'primary', outlined: true }"
+        (uploadHandler)="onImport($event)"
+      />
+      <p-button label="Export" icon="pi pi-upload" outlined severity="primary" (onClick)="exportCSV($event)" />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="items"
+    [rows]="10"
+    [columns]="cols"
+    [paginator]="true"
+    [globalFilterFields]="globalFilterFields"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="selectedItems"
+    [rowHover]="true"
+    [dataKey]="idField"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+    styleClass="text-primary"
+    tableStyleClass=""
+  >
+    <ng-template #caption>
+      <div class="flex items-center justify-between">
+        <h5 class="m-0">{{ title }}</h5>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input pInputText class="bg-transparent border-[#e0e0e0] dark:border-[#4a4a4a]" type="text" (input)="dt.filterGlobal($any($event.target).value , 'contains')" placeholder="Search..." />
+        </p-iconfield>
+      </div>
+    </ng-template>
+
+    <ng-template #header>
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox />
+        </th>
+        <ng-container *ngFor="let col of cols">
+          <th [pSortableColumn]="col.field" [style]="col.style">
+            {{ col.header }}
+            <p-sortIcon [field]="col.field" />
+          </th>
+        </ng-container>
+        <th style="min-width: 12rem"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-item>
+      <tr>
+        <td style="width: 3rem">
+          <p-tableCheckbox [value]="item" />
+        </td>
+        <ng-container *ngFor="let col of cols">
+          <td [style]="col.style">
+            <ng-container *ngIf="!col.template">
+              <ng-container [ngSwitch]="col.type">
+                <ng-container *ngSwitchCase="'image'">
+                  <img [src]="item[col.field]" [alt]="item[nameField]" style="width: 64px" class="rounded" />
+                </ng-container>
+                <ng-container *ngSwitchCase="'currency'">
+                  {{ item[col.field] | currency: col.currencyCode || 'USD' }}
+                </ng-container>
+                <ng-container *ngSwitchCase="'rating'">
+                  <p-rating [(ngModel)]="item[col.field]" [readonly]="true" />
+                </ng-container>
+                <ng-container *ngSwitchCase="'tag'">
+                  <p-tag [value]="item[col.field]" [severity]="getSeverity(item[col.field])" />
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  {{ item[col.field] }}
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="col.template">
+              <ng-container *ngTemplateOutlet="col.template; context: { $implicit: item, rowData: item }"></ng-container>
+            </ng-container>
+          </td>
+        </ng-container>
+        <td>
+          <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editItem(item)" />
+          <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteItem(item)" />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+    </div>
+</div>
+
+  <p-dialog [(visible)]="itemDialog" [style]="{ width: '450px' }" [header]="entityName + ' Details'" [modal]="true">
+
+    <!-- Overlay de bloqueo con BlockUI -->
+    <p-blockUI [blocked]="loading" styleClass="w-full h-full flex items-center justify-center">
+      <ng-template pTemplate>
+        <div class="card flex justify-center">
+          <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+        </div>
+      </ng-template>
+    </p-blockUI>
+
+
+    <ng-template #content>
+      <div class="flex flex-col gap-6">
+        <ng-container *ngTemplateOutlet="formTemplate; context: { $implicit: item }"></ng-container>
+      </div>
+    </ng-template>
+
+    <ng-template #footer>
+      <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+      <p-button label="Save" icon="pi pi-check" (click)="saveItem()" [disabled]="!isFormValid" />
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmDialog [style]="{ width: '450px' }" />
+</div>
+
