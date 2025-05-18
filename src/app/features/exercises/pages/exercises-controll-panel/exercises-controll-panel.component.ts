@@ -46,102 +46,144 @@ import {FileUpload} from 'primeng/fileupload';
 
 
         <form [formGroup]="exerciseForm" (ngSubmit)="saveExercise(exercise)">
-          <div>
-            <label for="name" class="block font-bold mb-2">Name</label>
-            <input type="text" pInputText id="name" [(ngModel)]="exercise.name" formControlName="name" required />
-            <div *ngIf="exerciseForm.get('name')?.hasError('required') && exerciseForm.get('name')?.touched">
-              <p class="text-red-500 tex-sm mt-1">
-                el campo nombre es obligatorio
-              </p>
-            </div>
-          </div>
+          <!-- Capa Acrylic para gradiente suave -->
 
-          <div>
-            <label for="description" class="block font-bold mb-2">Description</label>
-            <textarea pInputTextarea id="description" [(ngModel)]="exercise.description" formControlName="description"></textarea>
-            <div *ngIf="exerciseForm.get('description')?.hasError('required') && exerciseForm.get('description')?.touched">
-              <p class="text-red-500 tex-sm mt-1">
-                el campo descripción es obligatorio
-              </p>
-            </div>
-          </div>
+          <!-- Contenido del formulario -->
 
-          <div>
-            <label for="bodyPart" class="block font-bold mb-2">Body Part</label>
-            <input type="text" pInputText id="bodyPart" [(ngModel)]="exercise.bodyPart" formControlName="bodyPart" required />
-            <div *ngIf="exerciseForm.get('bodyPart')?.hasError('required') && exerciseForm.get('bodyPart')?.touched">
-              <p class="text-red-500 tex-sm mt-1">
-                el campo parte del cuerpo es obligatorio
-              </p>
-            </div>
-          </div>
+            <!-- Grid de campos del formulario -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Columna izquierda -->
+              <div class="space-y-5">
+                <!-- Nombre -->
+                <div class="space-y-2">
+                  <label for="name" class="block font-medium text-gray-800 dark:text-gray-200">Name</label>
+                  <input type="text" pInputText id="name" [(ngModel)]="exercise.name" formControlName="name" required
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                  <div *ngIf="exerciseForm.get('name')?.hasError('required') && exerciseForm.get('name')?.touched"
+                       class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
+                    <p class="text-red-500 text-sm mt-1">
+                      El campo nombre es obligatorio
+                    </p>
+                  </div>
+                </div>
 
-          <div>
-            <label for="muscleGroup" class="block font-bold mb-2">Muscle Group</label>
-            <input type="text" pInputText id="muscleGroup" [(ngModel)]="exercise.muscleGroup" formControlName="muscleGroup" required />
-            <div *ngIf="exerciseForm.get('muscleGroup')?.hasError('required') && exerciseForm.get('muscleGroup')?.touched">
-              <p class="text-red-500 tex-sm mt-1">
-                el campo grupo muscular es obligatorio
-              </p>
-            </div>
-          </div>
+                <!-- Descripción -->
+                <div class="space-y-2">
+                  <label for="description" class="block font-medium text-gray-800 dark:text-gray-200">Description</label>
+                  <textarea pInputTextarea id="description" [(ngModel)]="exercise.description" formControlName="description"
+                            class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500"></textarea>
+                  <div *ngIf="exerciseForm.get('description')?.hasError('required') && exerciseForm.get('description')?.touched"
+                       class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
+                    <p class="text-red-500 text-sm mt-1">
+                      El campo descripción es obligatorio
+                    </p>
+                  </div>
+                </div>
 
-          <div>
-            <label for="equipment" class="block font-bold mb-2">Equipment</label>
-            <input type="text" pInputText id="equipment" [(ngModel)]="exercise.equipment" formControlName="equipment" />
-          </div>
+                <!-- Parte del cuerpo -->
+                <div class="space-y-2">
+                  <label for="bodyPart" class="block font-medium text-gray-800 dark:text-gray-200">Body Part</label>
+                  <input type="text" pInputText id="bodyPart" [(ngModel)]="exercise.bodyPart" formControlName="bodyPart" required
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                  <div *ngIf="exerciseForm.get('bodyPart')?.hasError('required') && exerciseForm.get('bodyPart')?.touched"
+                       class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
+                    <p class="text-red-500 text-sm mt-1">
+                      El campo parte del cuerpo es obligatorio
+                    </p>
+                  </div>
+                </div>
 
-          <div>
-            <label for="caloriesBurned" class="block font-bold mb-2">Calories Burned</label>
-            <p-inputNumber id="caloriesBurned" formControlName="caloriesBurned" [(ngModel)]="exercise.caloriesBurned" [showButtons]="true" [min]="0"></p-inputNumber>
-            <div *ngIf="exerciseForm.get('caloriesBurned')?.hasError('required') && exerciseForm.get('caloriesBurned')?.touched">
-              <p class="text-red-500 tex-sm mt-1">
-                el campo calorías quemadas es obligatorio
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <label for="difficulty" class="block font-bold mb-2">Difficulty</label>
-            <div class="flex flex-column gap-3">
-              <div class="flex align-items-center">
-                <p-radioButton name="difficulty" value="BEGINNER" [(ngModel)]="exercise.difficulty" formControlName="difficulty" inputId="diff1"></p-radioButton>
-                <label for="diff1" class="ml-2">Beginner</label>
+                <!-- Grupo muscular -->
+                <div class="space-y-2">
+                  <label for="muscleGroup" class="block font-medium text-gray-800 dark:text-gray-200">Muscle Group</label>
+                  <input type="text" pInputText id="muscleGroup" [(ngModel)]="exercise.muscleGroup" formControlName="muscleGroup" required
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                  <div *ngIf="exerciseForm.get('muscleGroup')?.hasError('required') && exerciseForm.get('muscleGroup')?.touched"
+                       class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
+                    <p class="text-red-500 text-sm mt-1">
+                      El campo grupo muscular es obligatorio
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div class="flex align-items-center">
-                <p-radioButton name="difficulty" value="INTERMEDIATE" [(ngModel)]="exercise.difficulty" formControlName="difficulty" inputId="diff2"></p-radioButton>
-                <label for="diff2" class="ml-2">Intermediate</label>
-              </div>
-              <div class="flex align-items-center">
-                <p-radioButton name="difficulty" value="ADVANCED" [(ngModel)]="exercise.difficulty" formControlName="difficulty" inputId="diff3"></p-radioButton>
-                <label for="diff3" class="ml-2">Advanced</label>
+
+              <!-- Columna derecha -->
+              <div class="space-y-5">
+                <!-- Equipamiento -->
+                <div class="space-y-2">
+                  <label for="equipment" class="block font-medium text-gray-800 dark:text-gray-200">Equipment</label>
+                  <input type="text" pInputText id="equipment" [(ngModel)]="exercise.equipment" formControlName="equipment"
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                </div>
+
+                <!-- Calorías quemadas -->
+                <div class="space-y-2">
+                  <label for="caloriesBurned" class="block font-medium text-gray-800 dark:text-gray-200">Calories Burned</label>
+                  <p-inputNumber id="caloriesBurned" formControlName="caloriesBurned" [(ngModel)]="exercise.caloriesBurned" [showButtons]="true" [min]="0"
+                                 styleClass="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"></p-inputNumber>
+                  <div *ngIf="exerciseForm.get('caloriesBurned')?.hasError('required') && exerciseForm.get('caloriesBurned')?.touched"
+                       class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
+                    <p class="text-red-500 text-sm mt-1">
+                      El campo calorías quemadas es obligatorio
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Dificultad -->
+                <div class="space-y-2">
+                  <label class="block font-medium text-gray-800 dark:text-gray-200">Difficulty</label>
+                  <div class="p-4 rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm">
+                    <div class="flex flex-col gap-3">
+                      <div class="flex items-center group hover:bg-white/20 dark:hover:bg-gray-700/20 p-2 rounded-md transition-colors duration-200">
+                        <p-radioButton name="difficulty" value="BEGINNER" [(ngModel)]="exercise.difficulty" formControlName="difficulty" inputId="diff1"></p-radioButton>
+                        <label for="diff1" class="ml-2 text-gray-700 dark:text-gray-300 cursor-pointer">Beginner</label>
+                      </div>
+                      <div class="flex items-center group hover:bg-white/20 dark:hover:bg-gray-700/20 p-2 rounded-md transition-colors duration-200">
+                        <p-radioButton name="difficulty" value="INTERMEDIATE" [(ngModel)]="exercise.difficulty" formControlName="difficulty" inputId="diff2"></p-radioButton>
+                        <label for="diff2" class="ml-2 text-gray-700 dark:text-gray-300 cursor-pointer">Intermediate</label>
+                      </div>
+                      <div class="flex items-center group hover:bg-white/20 dark:hover:bg-gray-700/20 p-2 rounded-md transition-colors duration-200">
+                        <p-radioButton name="difficulty" value="ADVANCED" [(ngModel)]="exercise.difficulty" formControlName="difficulty" inputId="diff3"></p-radioButton>
+                        <label for="diff3" class="ml-2 text-gray-700 dark:text-gray-300 cursor-pointer">Advanced</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="exerciseForm.get('difficulty')?.hasError('required') && exerciseForm.get('difficulty')?.touched"
+                       class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
+                    <p class="text-red-500 text-sm mt-1">
+                      El campo dificultad es obligatorio
+                    </p>
+                  </div>
+                </div>
+
+                <!-- URL del video -->
+                <div class="space-y-2">
+                  <label for="videoUrl" class="block font-medium text-gray-800 dark:text-gray-200">Video URL</label>
+                  <input type="text" pInputText [(ngModel)]="exercise.videoUrl" id="videoUrl" formControlName="videoUrl"
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                </div>
               </div>
             </div>
-            <div *ngIf="exerciseForm.get('difficulty')?.hasError('required') && exerciseForm.get('difficulty')?.touched">
-              <p class="text-red-500 tex-sm mt-1">
-                el campo dificultad es obligatorio
+
+            <!-- Subida de archivo -->
+            <div class="mt-6 p-4 rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm">
+              <label class="block font-medium text-gray-800 dark:text-gray-200 mb-2">Upload Video</label>
+              <p-fileupload
+                mode="basic"
+                name="video"
+                chooseIcon="pi pi-upload"
+                accept="video/mp4,video/avi,video/mov,video/mkv,video/wmv"
+                maxFileSize="50000000"
+                formControlName="video"
+                [auto]="false"
+                chooseLabel="Seleccionar Video"
+                (onSelect)="onSelectFile($event)"
+                styleClass="w-full"
+              ></p-fileupload>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                Máximo 2 minutos de duración. Formatos aceptados: MP4, AVI, MOV, MKV, WMV
               </p>
             </div>
-          </div>
-
-          <div>
-            <label for="videoUrl" class="block font-bold mb-2">Video URL</label>
-            <input type="text" pInputText [(ngModel)]="exercise.videoUrl" id="videoUrl" formControlName="videoUrl" />
-          </div>
-
-          <div>
-            <p-fileupload
-              mode="basic"
-              name="video"
-              chooseIcon="pi pi-upload"
-              accept="video/mp4,video/avi,video/mov,video/mkv,video/wmv"
-              maxFileSize="50000000"
-              formControlName="video"
-            [auto]="false"
-            chooseLabel="Seleccionar Video"
-            (onSelect)="onSelectFile($event)"
-            />
-          </div>
         </form>
       </ng-template>
     </generic-table>
