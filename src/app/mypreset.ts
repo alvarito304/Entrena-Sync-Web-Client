@@ -220,7 +220,23 @@ const CustomTheme = definePreset(Aura, {
           background: '{transparent}'
         }
       }
-    }
+    },
+    datepicker: {
+      colorScheme: {
+        light: {
+          panel: {
+            background: '#dedfdf',                         // fondo general
+          },
+          header: {
+            background: '#dedfdf',                         // fondo del encabezado
+            // color del texto del encabezado
+          }
+        },
+        dark: {
+          // ... mantén tu configuración existente para modo oscuro
+        }
+      }
+    },
 
   }
 });

@@ -190,8 +190,7 @@
                             #birthDateModel="ngModel"
                             required
                             placeholder="Fecha de Nacimiento"
-                            styleClass="w-full"
-                            inputClass="w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)] border border-[var(--border-light)] dark:border-[var(--border-dark)] rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            styleClass="w-full bg-transparent"
                     ></p-datepicker>
                     <div *ngIf="birthDateModel.invalid && birthDateModel.touched" class="mt-2 text-sm text-red-500">
                       <span *ngIf="birthDateModel.errors?.['required']">La fecha de nacimiento es obligatoria.</span>

@@ -76,3 +76,16 @@ html.my-app-dark .p-select .p-select-label.p-placeholder {
 html.my-app-dark .p-select .p-select-dropdown-icon {
   @apply text-gray-300;
 }
+
+.p-datepicker .p-datepicker-input {
+  background-color: transparent !important;
+  color: black;
+  border-color: black;
+}
+
+.p-datepicker .p-datepicker-input-icon {
+  background-color: transparent !important;
+  color: black;
+
+}
+
