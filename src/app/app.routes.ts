@@ -16,6 +16,6 @@ export const routes: Routes = [
   { path: 'login', component: KeycloakComponent},
   { path: 'register', component: SignInComponent},
   { path: 'human-body', component: HumanBodyPageComponent},
-  { path: 'admin-panel', component: AdminPanelComponent}
+  { path: 'admin-panel', component: AdminPanelComponent},
   { path: 'exercises', component: ExercisesControllPanelComponent}
 ];
