@@ -5,11 +5,13 @@ import {HumanBodyPageComponent} from './features/human-body/pages/human-body-pag
 import {KeycloakComponent} from './features/keycloak/keycloak.component';
 import {SignInComponent} from './features/keycloak/sing-in/sign-in.component';
 import {AuthGuard} from './features/keycloak/services/AuthGuard';
+import {AdminPanelComponent} from './features/admin-bo/admin-panel/admin-panel.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: HomeComponent },
   { path: 'login', component: KeycloakComponent},
   { path: 'register', component: SignInComponent},
-  { path: 'human-body', component: HumanBodyPageComponent , canActivate: [AuthGuard]},
+  { path: 'human-body', component: HumanBodyPageComponent},
+  { path: 'admin-panel', component: AdminPanelComponent}
 ];

@@ -19,7 +19,7 @@ export class AppComponent {
   constructor(public router: Router) {}
 
   shouldShowLayout(): boolean {
-    const noLayoutRoutes = ['/login', '/register'];
+    const noLayoutRoutes = ['/login', '/register', "/admin-panel"];
     return !noLayoutRoutes.includes(this.router.url);
   }
 }
