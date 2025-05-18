@@ -2,16 +2,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../../../environments/environment';
 import {catchError, map, Observable, of, shareReplay, switchMap} from 'rxjs';
 
 export interface UserResponse {
-  sub: string;
+  id: string;
   username: string;
   email: string;
-  given_name: string;
-  family_name: string;
+  firstName: string;
+  lastName: string;
+  roles: string[];
 }
+
 export interface UserRequest {
   username: string;
   email: string;
@@ -37,13 +39,13 @@ export class AuthService {
   private userInfo$: Observable<UserResponse | null> | undefined;
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(username: string, password: string ) {
-    return this.http.post(`${this.apiUrl}/session/login`,
-    {
-      username,
-        password
-    },{
+  login(email: string, password: string) {
+    return this.http.post(`${this.apiUrl}/session/login`, { username: email, password: password }, {
+      headers: {
+        'content-type' : 'application/json'
+      },
       withCredentials: true,
+      responseType: 'text'
     });
   }
 
@@ -68,7 +70,7 @@ export class AuthService {
 
   getUserInfo(): Observable<UserResponse | null> {
     if (!this.userInfo$) {
-      this.userInfo$ = this.http.get<UserResponse>('/session/me', { withCredentials: true }).pipe(
+      this.userInfo$ = this.http.get<UserResponse>(`${this.apiUrl}/session/me`, { withCredentials: true }).pipe(
         catchError((_) => of(null)),
         shareReplay(1)
       );
