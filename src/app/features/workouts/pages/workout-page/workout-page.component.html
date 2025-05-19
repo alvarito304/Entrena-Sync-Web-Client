@@ -5,21 +5,41 @@
       Create, manage, and track your workout routines in one place
     </p>
 
-    <!-- Header con botón de crear -->
+    <!-- Header con botón de crear y filtros -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <div>
         <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Your Workout Routines</h2>
         <p class="text-gray-600 dark:text-gray-300">
-          {{ workouts.length }} total routines, {{ completedWorkouts.length }} completed
+          {{ totalElements }} total routines, {{ completedWorkouts.length }} completed
         </p>
       </div>
-      <button
-        (click)="isCreating = true"
-        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-        Create Workout
-      </button>
+
+      <div class="flex flex-col sm:flex-row gap-2">
+        <div class="relative">
+          <input
+            type="text"
+            [(ngModel)]="nameFilter"
+            placeholder="Search by name..."
+            (keyup.enter)="applyFilters()"
+            class="h-10 rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm pr-10"
+          />
+          <button
+            *ngIf="nameFilter"
+            (click)="clearFilters()"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+
+        <button
+          (click)="isCreating = true"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+          Create Workout
+        </button>
+      </div>
     </div>
 
     <!-- Tabs -->
@@ -48,8 +68,13 @@
       </nav>
     </div>
 
+    <!-- Estado de carga -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+    </div>
+
     <!-- Upcoming Workouts Tab -->
-    <div *ngIf="activeTab === 'upcoming'" class="mt-6">
+    <div *ngIf="!isLoading && activeTab === 'upcoming'" class="mt-6">
       <div *ngIf="upcomingWorkouts.length === 0"
            class="text-center py-12 bg-white/20 dark:bg-gray-900/20 backdrop-blur-md backdrop-filter border border-white/30 dark:border-gray-700/30 rounded-xl">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto h-12 w-12 text-gray-400"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -83,38 +108,47 @@
           <div class="relative z-10">
             <div class="flex justify-between items-start mb-4">
               <div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ workout.title }}</h3>
-                <p class="text-sm text-gray-600 dark:text-gray-300">{{ formatDate(workout.date) }}</p>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ workout.name }}</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">{{ formatDate(workout.trainingCompletedDate) }}</p>
               </div>
               <span
                 class="inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors bg-secondary text-secondary-foreground"
               >
-                Upcoming
+                {{ formatDuration(workout.trainingDuration) }}
               </span>
             </div>
 
-            <p *ngIf="workout.description" class="text-gray-600 dark:text-gray-300 mb-4">{{ workout.description }}</p>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">{{ workout.workoutDetails.description }}</p>
 
             <div class="space-y-2 mb-4">
               <h4 class="font-medium text-gray-800 dark:text-gray-200 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l2.3 2.3a2.4 2.4 0 0 0 3.4-3.4L15.4 14l2.3-2.3a2.4 2.4 0 0 0-3.4-3.4L12 10.6l-2.3-2.3a2.4 2.4 0 0 0-3.4 3.4L8.6 14l-2.3 2.3a2.4 2.4 0 0 0 0 3.4z"/><path d="M12 6V2"/></svg>
-                Exercises ({{ workout.exercises.length }})
+                Exercises ({{ Object.keys(workout.workoutDetails.exerciseListId).length }})
               </h4>
               <ul class="space-y-1">
-                <li *ngFor="let exercise of workout.exercises.slice(0, 3)" class="text-sm text-gray-600 dark:text-gray-300">
-                  {{ exercise.name }} - {{ exercise.sets }} × {{ exercise.reps }}
-                  {{ exercise.weight ? ' @ ' + exercise.weight + 'lbs' : '' }}
-                  {{ exercise.duration ? ' (' + exercise.duration + ' min)' : '' }}
+                <li *ngFor="let exercise of getExerciseEntries(workout.workoutDetails.exerciseListId) | slice:0:3" class="text-sm text-gray-600 dark:text-gray-300">
+                  {{ exercise.value }}
                 </li>
-                <li *ngIf="workout.exercises.length > 3" class="text-sm text-gray-500 dark:text-gray-400 italic">
-                  +{{ workout.exercises.length - 3 }} more exercises
+                <li *ngIf="Object.keys(workout.workoutDetails.exerciseListId).length > 3" class="text-sm text-gray-500 dark:text-gray-400 italic">
+                  +{{ Object.keys(workout.workoutDetails.exerciseListId).length - 3 }} more exercises
                 </li>
               </ul>
             </div>
 
+            <div class="flex items-center mb-4">
+              <span class="text-sm font-medium mr-2">Intensity:</span>
+              <div class="flex-1 h-2 bg-gray-200 rounded-full dark:bg-gray-700">
+                <div
+                  class="h-2 rounded-full bg-primary"
+                  [style.width]="(workout.workoutDetails.intensity * 10) + '%'"
+                ></div>
+              </div>
+              <span class="ml-2 text-sm">{{ workout.workoutDetails.intensity }}/10</span>
+            </div>
+
             <div class="flex justify-between pt-2">
               <button
-                (click)="toggleComplete(workout)"
+                (click)="toggleWorkoutStatus(workout)"
                 class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/30 bg-background hover:bg-primary/10 text-primary h-9 px-3"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -142,7 +176,7 @@
     </div>
 
     <!-- Completed Workouts Tab -->
-    <div *ngIf="activeTab === 'completed'" class="mt-6">
+    <div *ngIf="!isLoading && activeTab === 'completed'" class="mt-6">
       <div *ngIf="completedWorkouts.length === 0"
            class="text-center py-12 bg-white/20 dark:bg-gray-900/20 backdrop-blur-md backdrop-filter border border-white/30 dark:border-gray-700/30 rounded-xl">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto h-12 w-12 text-gray-400"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -168,38 +202,47 @@
           <div class="relative z-10">
             <div class="flex justify-between items-start mb-4">
               <div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ workout.title }}</h3>
-                <p class="text-sm text-gray-600 dark:text-gray-300">{{ formatDate(workout.date) }}</p>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ workout.name }}</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">{{ formatDate(workout.trainingCompletedDate) }}</p>
               </div>
               <span
                 class="inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
               >
-                Completed
+                {{ formatDuration(workout.trainingDuration) }}
               </span>
             </div>
 
-            <p *ngIf="workout.description" class="text-gray-600 dark:text-gray-300 mb-4">{{ workout.description }}</p>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">{{ workout.workoutDetails.description }}</p>
 
             <div class="space-y-2 mb-4">
               <h4 class="font-medium text-gray-800 dark:text-gray-200 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l2.3 2.3a2.4 2.4 0 0 0 3.4-3.4L15.4 14l2.3-2.3a2.4 2.4 0 0 0-3.4-3.4L12 10.6l-2.3-2.3a2.4 2.4 0 0 0-3.4 3.4L8.6 14l-2.3 2.3a2.4 2.4 0 0 0 0 3.4z"/><path d="M12 6V2"/></svg>
-                Exercises ({{ workout.exercises.length }})
+                Exercises ({{ Object.keys(workout.workoutDetails.exerciseListId).length }})
               </h4>
               <ul class="space-y-1">
-                <li *ngFor="let exercise of workout.exercises.slice(0, 3)" class="text-sm text-gray-600 dark:text-gray-300">
-                  {{ exercise.name }} - {{ exercise.sets }} × {{ exercise.reps }}
-                  {{ exercise.weight ? ' @ ' + exercise.weight + 'lbs' : '' }}
-                  {{ exercise.duration ? ' (' + exercise.duration + ' min)' : '' }}
+                <li *ngFor="let exercise of getExerciseEntries(workout.workoutDetails.exerciseListId) | slice:0:3" class="text-sm text-gray-600 dark:text-gray-300">
+                  {{ exercise.value }}
                 </li>
-                <li *ngIf="workout.exercises.length > 3" class="text-sm text-gray-500 dark:text-gray-400 italic">
-                  +{{ workout.exercises.length - 3 }} more exercises
+                <li *ngIf="Object.keys(workout.workoutDetails.exerciseListId).length > 3" class="text-sm text-gray-500 dark:text-gray-400 italic">
+                  +{{ Object.keys(workout.workoutDetails.exerciseListId).length - 3 }} more exercises
                 </li>
               </ul>
             </div>
 
+            <div class="flex items-center mb-4">
+              <span class="text-sm font-medium mr-2">Intensity:</span>
+              <div class="flex-1 h-2 bg-gray-200 rounded-full dark:bg-gray-700">
+                <div
+                  class="h-2 rounded-full bg-primary"
+                  [style.width]="(workout.workoutDetails.intensity * 10) + '%'"
+                ></div>
+              </div>
+              <span class="ml-2 text-sm">{{ workout.workoutDetails.intensity }}/10</span>
+            </div>
+
             <div class="flex justify-between pt-2">
               <button
-                (click)="toggleComplete(workout)"
+                (click)="toggleWorkoutStatus(workout)"
                 class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/30 bg-background hover:bg-primary/10 text-primary h-9 px-3"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -225,13 +268,57 @@
         </div>
       </div>
     </div>
+
+    <!-- Paginación -->
+    <div *ngIf="!isLoading && totalPages > 1" class="flex justify-center mt-8">
+      <nav class="flex items-center space-x-1">
+        <button
+          (click)="changePage(0)"
+          [disabled]="currentPage === 0"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 w-10 p-0 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+        </button>
+        <button
+          (click)="changePage(currentPage - 1)"
+          [disabled]="currentPage === 0"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 w-10 p-0 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+
+        <button
+          *ngFor="let page of getPageNumbers()"
+          (click)="changePage(page)"
+          [class.bg-primary]="currentPage === page"
+          [class.text-white]="currentPage === page"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 w-10 p-0"
+        >
+          {{ page + 1 }}
+        </button>
+
+        <button
+          (click)="changePage(currentPage + 1)"
+          [disabled]="currentPage === totalPages - 1"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 w-10 p-0 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button
+          (click)="changePage(totalPages - 1)"
+          [disabled]="currentPage === totalPages - 1"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 w-10 p-0 disabled:opacity-50 disabled:pointer-events-none"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+        </button>
+      </nav>
+    </div>
   </div>
 </div>
 
 <!-- Formulario para crear workout -->
 <app-workout-form
   *ngIf="isCreating"
-  (save)="handleSaveWorkout($event)"
   (close)="closeForm()"
 ></app-workout-form>
 
@@ -239,7 +326,6 @@
 <app-workout-form
   *ngIf="selectedWorkout"
   [workout]="selectedWorkout"
-  (save)="handleSaveWorkout($event)"
   (close)="closeForm()"
 ></app-workout-form>
 

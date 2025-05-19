@@ -1,5 +1,5 @@
 <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-  <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md backdrop-filter rounded-lg shadow-lg w-full max-w-[600px] max-h-[90vh] overflow-y-auto">
+  <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md backdrop-filter rounded-lg shadow-lg w-full max-w-[700px] max-h-[90vh] overflow-y-auto">
     <div class="p-6">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">{{ isEditing ? 'Edit Workout' : 'Create New Workout' }}</h2>
@@ -12,21 +12,85 @@
       </div>
 
       <form (ngSubmit)="handleSubmit()" class="space-y-6 py-4">
-        <div class="grid grid-cols-1 gap-4">
+        <!-- Mensaje de error -->
+        <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Información básica del workout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="space-y-2">
-            <label for="title" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Workout Title</label>
+            <label for="name" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Workout Name *
+            </label>
             <input
               type="text"
-              id="title"
-              name="title"
-              [(ngModel)]="formData.title"
+              id="name"
+              name="name"
+              [(ngModel)]="formData.name"
               placeholder="e.g., Upper Body Strength"
               class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
 
           <div class="space-y-2">
-            <label for="description" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Description (Optional)</label>
+            <label for="trainingDuration" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Duration * (e.g., 1h 30m 45s)
+            </label>
+            <input
+              type="text"
+              id="trainingDuration"
+              name="trainingDuration"
+              [(ngModel)]="formData.trainingDuration"
+              placeholder="e.g., 1h 30m 45s"
+              class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+          </div>
+
+          <div class="space-y-2" [class.md:col-span-2]="isEditing">
+            <label for="trainingCompletedDate" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Completion Date *
+            </label>
+            <input
+              type="date"
+              id="trainingCompletedDate"
+              name="trainingCompletedDate"
+              [(ngModel)]="formData.trainingCompletedDate"
+              [disabled]="isEditing"
+              class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <p *ngIf="isEditing" class="text-xs text-gray-500 mt-1">
+              Note: Completion date cannot be changed after creation
+            </p>
+          </div>
+        </div>
+        <!-- Añade esto después del campo de fecha -->
+        <div class="space-y-2">
+          <div class="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="completed"
+              name="completed"
+              [(ngModel)]="formData.completed"
+              class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+            <label for="completed" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Mark as completed
+            </label>
+          </div>
+          <p class="text-xs text-gray-500">
+            Completed workouts will appear in the "Completed" tab
+          </p>
+        </div>
+
+        <!-- Detalles del workout -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-medium">Workout Details</h3>
+
+          <div class="space-y-2">
+            <label for="description" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Description *
+            </label>
             <textarea
               id="description"
               name="description"
@@ -37,23 +101,31 @@
           </div>
 
           <div class="space-y-2">
-            <label for="date" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Workout Date</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              [(ngModel)]="formData.date"
-              class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            />
+            <label for="intensity" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Intensity (0-10) *
+            </label>
+            <div class="flex items-center space-x-2">
+              <input
+                type="range"
+                id="intensity"
+                name="intensity"
+                [(ngModel)]="formData.intensity"
+                min="0"
+                max="10"
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+              />
+              <span class="text-sm font-medium">{{ formData.intensity }}</span>
+            </div>
           </div>
         </div>
 
+        <!-- Ejercicios -->
         <div class="space-y-4">
           <div class="flex justify-between items-center">
-            <label class="text-lg font-medium">Exercises</label>
+            <h3 class="text-lg font-medium">Exercises</h3>
             <button
               type="button"
-              (click)="addExercise()"
+              (click)="addExerciseEntry()"
               class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/30 bg-background hover:bg-primary/10 text-primary h-9 px-3"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
@@ -61,101 +133,81 @@
             </button>
           </div>
 
-          <div class="space-y-4">
+          <div class="space-y-3">
             <div
-              *ngFor="let exercise of formData.exercises; let i = index"
-              class="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              *ngFor="let entry of exerciseEntries; let i = index"
+              class="grid grid-cols-[1fr_1fr_auto] gap-2 items-center"
             >
-              <div class="flex justify-between items-center mb-3">
-                <h4 class="font-medium">Exercise {{ i + 1 }}</h4>
-                <button
-                  type="button"
-                  (click)="removeExercise(exercise.id)"
-                  [disabled]="formData.exercises.length === 1"
-                  class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0 text-gray-500 hover:text-red-500"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-                </button>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div class="space-y-2">
-                  <label [for]="'exercise-name-' + exercise.id" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Exercise Name</label>
-                  <input
-                    [id]="'exercise-name-' + exercise.id"
-                    [(ngModel)]="exercise.name"
-                    [name]="'exercise-name-' + exercise.id"
-                    placeholder="e.g., Bench Press"
-                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <div class="space-y-2">
-                    <label [for]="'exercise-sets-' + exercise.id" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Sets</label>
-                    <input
-                      [id]="'exercise-sets-' + exercise.id"
-                      type="number"
-                      min="1"
-                      [(ngModel)]="exercise.sets"
-                      [name]="'exercise-sets-' + exercise.id"
-                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    />
-                  </div>
-                  <div class="space-y-2">
-                    <label [for]="'exercise-reps-' + exercise.id" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Reps</label>
-                    <input
-                      [id]="'exercise-reps-' + exercise.id"
-                      type="number"
-                      min="1"
-                      [(ngModel)]="exercise.reps"
-                      [name]="'exercise-reps-' + exercise.id"
-                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    />
-                  </div>
-                </div>
-
-                <div class="space-y-2">
-                  <label [for]="'exercise-weight-' + exercise.id" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Weight (lbs, optional)</label>
-                  <input
-                    [id]="'exercise-weight-' + exercise.id"
-                    type="number"
-                    min="0"
-                    [(ngModel)]="exercise.weight"
-                    [name]="'exercise-weight-' + exercise.id"
-                    placeholder="Optional"
-                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-                </div>
-
-                <div class="space-y-2">
-                  <label [for]="'exercise-duration-' + exercise.id" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Duration (min, optional)</label>
-                  <input
-                    [id]="'exercise-duration-' + exercise.id"
-                    type="number"
-                    min="0"
-                    [(ngModel)]="exercise.duration"
-                    [name]="'exercise-duration-' + exercise.id"
-                    placeholder="Optional"
-                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-                </div>
-
-                <div class="space-y-2 md:col-span-2">
-                  <label [for]="'exercise-notes-' + exercise.id" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Notes (Optional)</label>
-                  <input
-                    [id]="'exercise-notes-' + exercise.id"
-                    [(ngModel)]="exercise.notes"
-                    [name]="'exercise-notes-' + exercise.id"
-                    placeholder="Any additional notes"
-                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-                </div>
-              </div>
+              <input
+                type="text"
+                [(ngModel)]="entry.key"
+                [name]="'exercise-key-' + i"
+                placeholder="Exercise ID"
+                class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+              />
+              <input
+                type="text"
+                [(ngModel)]="entry.value"
+                [name]="'exercise-value-' + i"
+                placeholder="Exercise Name"
+                class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+              />
+              <button
+                type="button"
+                (click)="removeExerciseEntry(i)"
+                class="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 w-10 p-0 text-gray-500 hover:text-red-500"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+              </button>
             </div>
           </div>
         </div>
 
+        <!-- Detalles adicionales -->
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-medium">Additional Details</h3>
+            <button
+              type="button"
+              (click)="addDetailEntry()"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/30 bg-background hover:bg-primary/10 text-primary h-9 px-3"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+              Add Detail
+            </button>
+          </div>
+
+          <div class="space-y-3">
+            <div
+              *ngFor="let entry of detailEntries; let i = index"
+              class="grid grid-cols-[1fr_1fr_auto] gap-2 items-center"
+            >
+              <input
+                type="text"
+                [(ngModel)]="entry.key"
+                [name]="'detail-key-' + i"
+                placeholder="Detail Key"
+                class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+              />
+              <input
+                type="text"
+                [(ngModel)]="entry.value"
+                [name]="'detail-value-' + i"
+                placeholder="Detail Value"
+                class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+              />
+              <button
+                type="button"
+                (click)="removeDetailEntry(i)"
+                class="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 w-10 p-0 text-gray-500 hover:text-red-500"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de acción -->
         <div class="flex justify-end space-x-2 pt-4">
           <button
             type="button"
@@ -167,9 +219,14 @@
           </button>
           <button
             type="submit"
+            [disabled]="isSubmitting"
             class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <svg *ngIf="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg *ngIf="!isSubmitting" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
             {{ isEditing ? 'Update Workout' : 'Create Workout' }}
           </button>
         </div>

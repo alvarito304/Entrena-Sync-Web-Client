@@ -1,26 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// Interfaces (puedes importarlas de un archivo compartido)
-interface WorkoutExercise {
-  id: string;
-  name: string;
-  sets: number;
-  reps: number;
-  weight?: number;
-  duration?: number;
-  notes?: string;
-}
-
-interface Workout {
-  id: string;
-  title: string;
-  description?: string;
-  date: string;
-  exercises: WorkoutExercise[];
-  completed: boolean;
-}
+import { WorkoutService } from '../../service/workouts.service';
+import {
+  WorkoutResponse,
+  WorkoutCreateRequest,
+  WorkoutUpdateRequest,
+  WorkoutDetailsCreateRequest,
+  WorkoutDetailsUpdateRequest
+} from '../../../../core/models/workouts/workoutsInterface';
 
 @Component({
   selector: 'app-workout-form',
@@ -29,79 +17,190 @@ interface Workout {
   templateUrl: './workout-form.component.html',
 })
 export class WorkoutFormComponent implements OnInit {
-  @Input() workout?: Workout;
-  @Output() save = new EventEmitter<Workout>();
+  @Input() workout?: WorkoutResponse;
   @Output() close = new EventEmitter<void>();
 
   isEditing = false;
+  isSubmitting = false;
+  errorMessage = '';
 
+  // Modelo para el formulario
   formData: {
-    title: string;
+    name: string;
+    trainingDuration: string; // Formato legible (se convertirá a segundos)
+    trainingCompletedDate: string;
+    completed: boolean;
     description: string;
-    date: string;
-    exercises: WorkoutExercise[];
+    intensity: number;
+    exerciseListId: Record<string, string>;
+    additionalDetails: Record<string, string>;
   } = {
-    title: '',
+    name: '',
+    trainingDuration: '',
+    trainingCompletedDate: new Date().toISOString().split('T')[0],
+    completed: false, // Por defecto, no completado
     description: '',
-    date: new Date().toISOString().split('T')[0],
-    exercises: [
-      { id: Date.now().toString(), name: '', sets: 3, reps: 10, weight: undefined, duration: undefined, notes: '' },
-    ],
+    intensity: 5,
+    exerciseListId: {},
+    additionalDetails: {}
   };
 
-  constructor() {}
+  // Para manejar los ejercicios y detalles adicionales
+  exerciseEntries: { key: string, value: string }[] = [];
+  detailEntries: { key: string, value: string }[] = [];
+
+  constructor(private workoutService: WorkoutService) {}
 
   ngOnInit(): void {
     this.isEditing = !!this.workout;
 
     if (this.workout) {
       this.formData = {
-        title: this.workout.title,
-        description: this.workout.description || '',
-        date: this.workout.date,
-        exercises: JSON.parse(JSON.stringify(this.workout.exercises)), // Deep copy
+        name: this.workout.name,
+        trainingDuration: this.workoutService.formatDuration(this.workout.trainingDuration),
+        trainingCompletedDate: this.workout.trainingCompletedDate,
+        completed: this.workout.completed,
+        description: this.workout.workoutDetails.description,
+        intensity: this.workout.workoutDetails.intensity,
+        exerciseListId: { ...this.workout.workoutDetails.exerciseListId },
+        additionalDetails: { ...this.workout.workoutDetails.additionalDetails }
       };
+
+      // Convertir los mapas a arrays para el formulario
+      this.exerciseEntries = Object.entries(this.formData.exerciseListId).map(([key, value]) => ({ key, value }));
+      this.detailEntries = Object.entries(this.formData.additionalDetails).map(([key, value]) => ({ key, value }));
+
+      // Asegurar que hay al menos una entrada vacía
+      if (this.exerciseEntries.length === 0) this.addExerciseEntry();
+      if (this.detailEntries.length === 0) this.addDetailEntry();
+    } else {
+      // Inicializar con entradas vacías para un nuevo workout
+      this.addExerciseEntry();
+      this.addDetailEntry();
     }
   }
 
-  addExercise(): void {
-    this.formData.exercises.push({
-      id: Date.now().toString(),
-      name: '',
-      sets: 3,
-      reps: 10,
-      weight: undefined,
-      duration: undefined,
-      notes: '',
+  // Manejar ejercicios
+  addExerciseEntry(): void {
+    this.exerciseEntries.push({ key: '', value: '' });
+  }
+
+  removeExerciseEntry(index: number): void {
+    this.exerciseEntries.splice(index, 1);
+    if (this.exerciseEntries.length === 0) this.addExerciseEntry();
+  }
+
+  // Manejar detalles adicionales
+  addDetailEntry(): void {
+    this.detailEntries.push({ key: '', value: '' });
+  }
+
+  removeDetailEntry(index: number): void {
+    this.detailEntries.splice(index, 1);
+    if (this.detailEntries.length === 0) this.addDetailEntry();
+  }
+
+  // Preparar datos para enviar
+  prepareFormData(): WorkoutCreateRequest | WorkoutUpdateRequest {
+    // Convertir arrays a mapas
+    const exerciseListId: Record<string, string> = {};
+    this.exerciseEntries.forEach(entry => {
+      if (entry.key.trim() && entry.value.trim()) {
+        exerciseListId[entry.key] = entry.value;
+      }
     });
-  }
 
-  removeExercise(id: string): void {
-    if (this.formData.exercises.length > 1) {
-      this.formData.exercises = this.formData.exercises.filter((ex) => ex.id !== id);
+    const additionalDetails: Record<string, string> = {};
+    this.detailEntries.forEach(entry => {
+      if (entry.key.trim() && entry.value.trim()) {
+        additionalDetails[entry.key] = entry.value;
+      }
+    });
+
+    // Convertir duración a segundos
+    const trainingDuration = this.workoutService.parseDuration(this.formData.trainingDuration);
+
+    if (this.isEditing) {
+      // Preparar datos para actualización
+      const updateData: WorkoutUpdateRequest = {
+        name: this.formData.name,
+        trainingDuration: trainingDuration,
+        completed: this.formData.completed,
+        workoutDetails: {
+          description: this.formData.description,
+          intensity: this.formData.intensity,
+          exerciseListId: exerciseListId,
+          additionalDetails: additionalDetails
+        }
+      };
+      return updateData;
+    } else {
+      // Preparar datos para creación
+      const createData: WorkoutCreateRequest = {
+        name: this.formData.name,
+        trainingDuration: trainingDuration,
+        trainingCompletedDate: this.formData.trainingCompletedDate,
+        completed: this.formData.completed,
+        workoutDetails: {
+          description: this.formData.description,
+          intensity: this.formData.intensity,
+          exerciseListId: exerciseListId,
+          additionalDetails: additionalDetails
+        }
+      };
+      return createData;
     }
   }
 
+  // Enviar formulario
   handleSubmit(): void {
     // Validar formulario
-    if (!this.formData.title.trim()) {
-      alert('Please enter a workout title');
+    if (!this.formData.name.trim()) {
+      this.errorMessage = 'Please enter a workout name';
       return;
     }
 
-    if (this.formData.exercises.some((ex) => !ex.name.trim())) {
-      alert('Please enter a name for all exercises');
+    if (!this.formData.trainingDuration) {
+      this.errorMessage = 'Please enter a valid training duration';
       return;
     }
 
-    // Crear o actualizar workout
-    const workoutData: Workout = {
-      id: this.workout?.id || Date.now().toString(),
-      ...this.formData,
-      completed: this.workout?.completed || false,
-    };
+    if (!this.formData.description.trim()) {
+      this.errorMessage = 'Please enter a workout description';
+      return;
+    }
 
-    this.save.emit(workoutData);
-    this.close.emit();
+    this.isSubmitting = true;
+    this.errorMessage = '';
+
+    const formData = this.prepareFormData();
+
+    if (this.isEditing && this.workout) {
+      // Actualizar workout existente
+      this.workoutService.updateWorkout(this.workout.id, formData as WorkoutUpdateRequest).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          this.close.emit();
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          this.errorMessage = error.error?.message || 'Error updating workout';
+          console.error('Error updating workout', error);
+        }
+      });
+    } else {
+      // Crear nuevo workout
+      this.workoutService.createWorkout(formData as WorkoutCreateRequest).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          this.close.emit();
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          this.errorMessage = error.error?.message || 'Error creating workout';
+          console.error('Error creating workout', error);
+        }
+      });
+    }
   }
 }
