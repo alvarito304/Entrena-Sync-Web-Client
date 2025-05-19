@@ -9,6 +9,7 @@ import {
   ExercisesControllPanelComponent
 } from './features/exercises/pages/exercises-controll-panel/exercises-controll-panel.component';
 import {AdminPanelComponent} from './features/admin-bo/admin-panel/admin-panel.component';
+import {WorkoutPageComponent} from './features/workouts/pages/workout-page/workout-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'register', component: SignInComponent},
   { path: 'human-body', component: HumanBodyPageComponent},
   { path: 'admin-panel', component: AdminPanelComponent},
-  { path: 'exercises', component: ExercisesControllPanelComponent}
+  { path: 'exercises', component: ExercisesControllPanelComponent},
+  { path: 'workouts', component: WorkoutPageComponent },
 ];
