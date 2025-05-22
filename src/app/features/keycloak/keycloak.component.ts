@@ -52,10 +52,20 @@ export class KeycloakComponent {
       },
       error: (err) => {
         console.error('Error durante el login o al obtener el usuario:', err);
+
+        // Detecta si la respuesta es texto plano
+        let errorMessage = 'Error desconocido';
+
+        if (typeof err.error === 'string') {
+          errorMessage = err.error;
+        } else if (err.status === 401) {
+          errorMessage = 'Credenciales inválidas';
+        }
+
         this.messageService.add({
           severity: 'error',
           summary: 'Error al iniciar sesión',
-          detail: err?.error?.message || 'Credenciales incorrectos',
+          detail: errorMessage,
           life: 5000
         });
       }
