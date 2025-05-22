@@ -18,7 +18,7 @@ export interface UserRequest {
   username: string;
   email: string;
   firstName: string;
-  lasName: string;
+  lastName: string;
   password: string;
   passwordConfirmation: string
 }
@@ -28,8 +28,8 @@ export interface ClientRequest {
   avatar?: string ;
   phone: string;
   birthDate: string;
-  gender: string
-  userId: string
+  gender: string;
+  userId: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -54,6 +54,7 @@ export class AuthService {
   }
 
   register(userRequest: UserRequest, clientRequest: ClientRequest): Observable<any> {
+    console.log('Registering user:', userRequest);
     return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest).pipe(
       switchMap((response) => {
         const keycloakUserId = response.id;
@@ -62,8 +63,13 @@ export class AuthService {
           ...clientRequest,
           userId: keycloakUserId
         };
+        console.log("full client:", fullClientRequest)
 
-        return this.http.post(`${this.apiUrl}/Clients`, fullClientRequest);
+        return this.http.post(`${this.apiUrl}/Clients`, fullClientRequest).pipe(
+          switchMap(() =>
+            this.login(userRequest.email, userRequest.password)
+          )
+        );
       })
     );
   }

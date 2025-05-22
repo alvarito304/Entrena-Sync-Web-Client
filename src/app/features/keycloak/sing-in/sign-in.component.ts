@@ -31,7 +31,6 @@ export class SignInComponent {
   ];
 
   // Campos
-  username = '';
   email = '';
   password = '';
   passwordConfirmation = '';
@@ -42,11 +41,10 @@ export class SignInComponent {
   countryCode = '+34';
   phone = '';
   birthDate: Date | null = null;
-  gender = '';
-  avatarPreview: string | ArrayBuffer | null = null;
-  avatarFile: File | null = null;
+  gender: string | { label: string; value: string } = '';
 
-  countryCodes = [
+
+countryCodes = [
     { label: '+34 ES', value: '+34' },
   ];
   genders = [
@@ -76,25 +74,17 @@ export class SignInComponent {
 
   private isAdult(birthDate: Date): boolean {
     const today = new Date();
-    const adultDate = new Date(
-        birthDate.getFullYear() + 18,
-        birthDate.getMonth(),
-        birthDate.getDate()
+    const eighteenYearsAgo = new Date(
+      today.getFullYear() - 18,
+      today.getMonth(),
+      today.getDate()
     );
-    return today >= adultDate;
+    return birthDate <= eighteenYearsAgo;
   }
   prev() {
     if (this.activeIndex > 0) {
       this.activeIndex--;
     }
-  }
-
-  onAvatarChange(event: { files: File[] }) {
-    const file = event.files[0];
-    this.avatarFile = file;
-    const reader = new FileReader();
-    reader.onload = () => this.avatarPreview = reader.result;
-    reader.readAsDataURL(file);
   }
 
   submit(form: NgForm) {
@@ -103,6 +93,8 @@ export class SignInComponent {
       return;
     }
 
+    console.log("Empezando sign in");
+    console.log(this.birthDate);
     if (!this.birthDate || !this.isAdult(this.birthDate)) {
       this.messageService.add({
         severity: 'warn',
@@ -114,25 +106,23 @@ export class SignInComponent {
     }
 
     const userRequest = {
-      username: this.username,
+      username: this.email,
       email: this.email,
       password: this.password,
       passwordConfirmation: this.passwordConfirmation,
       firstName: this.firstName,
-      lasName: this.lastName,
+      lastName: this.lastName,
     };
-
-    // Formatear fecha de nacimiento (a ISO string por ejemplo)
     const birthDateFormatted = this.birthDate ? this.birthDate.toISOString().split('T')[0] : '';
-
+    console.log('Fecha de nacimiento formateada:', birthDateFormatted);
     const clientRequest = {
       name: this.firstName,
-      surname: this.lastName,
       address: this.address,
       phone: `${this.countryCode} ${this.phone}`,
       birthDate: birthDateFormatted,
-      gender: this.gender,
-      userId: ''
+      gender: typeof this.gender === 'object' ? this.gender.value : this.gender,
+      userId: '',
+      avatar: 'METER URL DEFAULT',
     };
 
     this.authService.register(userRequest, clientRequest).subscribe({
@@ -144,7 +134,7 @@ export class SignInComponent {
           detail: 'Tu cuenta ha sido creada correctamente.',
           life: 3000
         });
-        this.router.navigate(['/']);
+        this.router.navigate(['/human-body']);
       },
       error: (err) => {
         console.error('Error al registrar:', err);
