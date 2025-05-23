@@ -19,5 +19,5 @@ export const routes: Routes = [
   { path: 'human-body', component: HumanBodyPageComponent},
   { path: 'admin-panel', component: AdminPanelComponent},
   { path: 'exercises', component: ExercisesControllPanelComponent},
-  { path: 'workouts', component: WorkoutPageComponent },
+  { path: 'workouts', component: WorkoutPageComponent, canActivate: [AuthGuard], data: { role: 'ROLE_USER' } },
 ];

@@ -22,6 +22,7 @@ export class WorkoutService {
     size: number = 10,
     sortBy: string = 'id',
     direction: string = 'ASC',
+    ids?: number[],
     name?: string | null,
     trainingDuration?: number,
     trainingCompletedDate?: string
@@ -32,6 +33,10 @@ export class WorkoutService {
       .set('sortBy', sortBy)
       .set('direction', direction);
 
+
+    if (ids && ids.length > 0) {
+      params = params.set('ids', ids.join(','));
+    }
     if (name) params = params.set('name', name);
     if (trainingDuration) params = params.set('trainingDuration', trainingDuration.toString());
     if (trainingCompletedDate) params = params.set('trainingCompletedDate', trainingCompletedDate);

@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {environment} from '../../../../../environments/environment';
-import {catchError, map, Observable, of, shareReplay, switchMap} from 'rxjs';
+import {catchError, map, Observable, of, shareReplay, switchMap, throwError} from 'rxjs';
+import {ClientCreateRequest, ClientResponse} from '../../../core/models/clients/clients-interfaces';
+import {ClientService} from '../../clients/service/clients.service';
 
 export interface UserResponse {
   id: string;
@@ -22,22 +24,13 @@ export interface UserRequest {
   password: string;
   passwordConfirmation: string
 }
-export interface ClientRequest {
-  name: string;
-  address: string;
-  avatar?: string ;
-  phone: string;
-  birthDate: string;
-  gender: string
-  userId: string
-}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
   private userInfo$: Observable<UserResponse | null> | undefined;
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private clientService: ClientService) {}
 
   login(email: string, password: string) {
     return this.http.post(`${this.apiUrl}/session/login`, { username: email, password: password }, {
@@ -53,7 +46,7 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  register(userRequest: UserRequest, clientRequest: ClientRequest): Observable<any> {
+  register(userRequest: UserRequest, clientRequest: ClientCreateRequest): Observable<any> {
     return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest).pipe(
       switchMap((response) => {
         const keycloakUserId = response.id;
@@ -86,6 +79,22 @@ export class AuthService {
     return this.getUserInfo().pipe(map(user => {
       return !!user && Array.isArray((user as any).roles) && (user as any).roles.includes(role);
     }));
+  }
+
+  getAuthClient():Observable<ClientResponse>{
+    return this.getUserInfo().pipe(
+      switchMap((user) => {
+        if (user && user.id) {
+          return this.clientService.getClientByUserId(user.id);
+        } else {
+          throw new Error('User not authenticated');
+        }
+      }),
+      catchError((err) => {
+        console.error('Error fetching client:', err);
+        return throwError(() => err);
+      })
+    );
   }
 }
 

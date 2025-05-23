@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {WorkoutFormComponent} from '../../components/workout-form/workout-form.component';
 import {PageResponse, WorkoutResponse} from '../../../../core/models/workouts/workoutsInterface';
 import {WorkoutService} from '../../service/workouts.service';
+import {AuthService} from '../../../keycloak/services/auth.service';
 
 @Component({
   selector: 'app-workout-page',
@@ -32,11 +33,21 @@ export class WorkoutPageComponent implements OnInit {
 
   // Filtros
   nameFilter: string | null = null;
+  idsFilter: number[] | undefined = undefined;
 
-  constructor(private workoutService: WorkoutService) {}
+  constructor(private workoutService: WorkoutService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.loadWorkouts();
+    this.authService.getAuthClient().subscribe({
+      next: (client) => {
+        this.idsFilter = client.workouts ? client.workouts.map(Number) : undefined;
+        this.loadWorkouts();
+      },
+      error: (error) => {
+        console.error('Error fetching client data:', error);
+        this.isLoading = false;
+      }
+    });
   }
 
   loadWorkouts(): void {
@@ -46,9 +57,10 @@ export class WorkoutPageComponent implements OnInit {
       this.pageSize,
       this.sortBy,
       this.direction,
+      this.idsFilter,
       this.nameFilter
     ).subscribe({
-      next: (response: PageResponse<WorkoutResponse>) => {
+      next: (response) => {
         this.workouts = response.content;
         this.totalPages = response.totalPages;
         this.totalElements = response.totalElements;
