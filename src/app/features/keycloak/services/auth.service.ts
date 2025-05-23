@@ -20,7 +20,7 @@ export interface UserRequest {
   username: string;
   email: string;
   firstName: string;
-  lasName: string;
+  lastName: string;
   password: string;
   passwordConfirmation: string
 }
@@ -55,8 +55,13 @@ export class AuthService {
           ...clientRequest,
           userId: keycloakUserId
         };
+        console.log("full client:", fullClientRequest)
 
-        return this.http.post(`${this.apiUrl}/Clients`, fullClientRequest);
+        return this.http.post(`${this.apiUrl}/Clients`, fullClientRequest).pipe(
+          switchMap(() =>
+            this.login(userRequest.email, userRequest.password)
+          )
+        );
       })
     );
   }

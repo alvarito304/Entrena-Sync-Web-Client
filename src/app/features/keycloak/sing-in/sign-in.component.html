@@ -25,24 +25,6 @@
 
             <!-- STEP 1: Cuenta -->
             <div *ngIf="activeIndex === 0" class="space-y-4">
-                <!-- Nombre de usuario -->
-                <p-iftalabel class="peer w-full">
-                    <label for="username"
-                           class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2
-                        peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
-                        Nombre de usuario
-                    </label>
-                    <input pInputText id="username" name="username" [(ngModel)]="username" #usernameModel="ngModel" minlength="3" maxlength="50" required type="text"
-                           class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
-                        border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                        rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                  <div *ngIf="usernameModel.invalid && usernameModel.touched" class="mt-2 text-sm text-red-500">
-                    <span *ngIf="usernameModel.errors?.['required']">El nombre de usuario es obligatorio.</span>
-                    <span *ngIf="usernameModel.errors?.['minlength']">El nombre de usuario debe tener al menos 3 caracteres.</span>
-                    <span *ngIf="usernameModel.errors?.['maxlength']">El nombre de usuario debe tener 50 caracteres máximo</span>
-                  </div>
-                </p-iftalabel>
-
                 <!-- Email -->
                 <p-iftalabel class="peer w-full">
                     <label for="email"
@@ -189,6 +171,7 @@
                             inputId="birthDate"
                             #birthDateModel="ngModel"
                             required
+                            name ="birthDate"
                             placeholder="Fecha de Nacimiento"
                             styleClass="w-full bg-transparent"
                     ></p-datepicker>
@@ -209,29 +192,7 @@
                       <span *ngIf="genderModel.errors?.['required']">Selecciona un género.</span>
                     </div>
                 </p-iftalabel>
-
-                <!-- Avatar -->
-                <p-iftalabel class="peer w-full">
-                    <label class="block text-sm font-medium text-[var(--text-dark)] dark:text-[var(--text-light)] mb-2">
-                        Avatar
-                    </label>
-                    <div class="w-24 h-24 mx-auto rounded-full border-2 border-[var(--border-light)] dark:border-[var(--border-dark)] overflow-hidden relative cursor-pointer">
-                        <p-fileUpload name="avatar" accept="image/png" maxFileSize="1000000" customUpload="true"
-                                      (uploadHandler)="onAvatarChange($event)" chooseLabel=""
-                                      class="w-full h-full opacity-0 absolute top-0 left-0"></p-fileUpload>
-                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 stroke-current text-[var(--text-dark)] dark:text-[var(--text-light)]" fill="none" viewBox="0 0 24 24" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div *ngIf="avatarPreview" class="mt-4 flex justify-center">
-                        <img [src]="avatarPreview" alt="Avatar"
-                             class="h-24 w-24 rounded-full object-cover border-2 border-[var(--border-light)] dark:border-[var(--border-dark)]" />
-                    </div>
-                </p-iftalabel>
             </div>
-
             <!-- Navigation Buttons -->
             <div class="flex justify-between pt-6">
                 <button type="button" pButton label="Atrás" icon="pi pi-chevron-left" (click)="prev()" [disabled]="activeIndex === 0" class="duration-300 ease-in-out"></button>
