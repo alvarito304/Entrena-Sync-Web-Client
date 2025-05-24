@@ -68,6 +68,13 @@ html.my-app-dark .p-select .p-select-label.p-placeholder {
   @apply text-surface-400; /* Color del placeholder en modo oscuro */
 }
 
+/* Fondo blanco para el menú desplegable de PrimeNG */
+.p-menu-panel {
+  background-color: white !important;
+  color: black; /* opcional: para texto negro */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* sombra ligera */
+}
+
 
 /* Icono del dropdown (flecha) si también necesita cambio de color */
 :root:not(.my-app-dark) .p-select .p-select-dropdown-icon {
