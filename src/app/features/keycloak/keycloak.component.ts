@@ -37,7 +37,7 @@ export class KeycloakComponent {
     this.authService.login(this.email, this.password).pipe(
       switchMap(() => {
         console.log('Login OK, token debería estar en cookies');
-        return this.authService.getUserInfo(); // ← debe devolver roles
+        return this.authService.getUserInfo();
       })
     ).subscribe({
       next: (user) => {
@@ -45,7 +45,7 @@ export class KeycloakComponent {
         console.log('Roles:', (user as any).roles);
 
         if ((user as any)?.roles?.includes('admin')) {
-          this.router.navigate(['/admin-panel']);
+          this.router.navigate(['/adminpanel']);
         } else {
           this.router.navigate(['/human-body']);
         }

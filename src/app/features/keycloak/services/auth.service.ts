@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {environment} from '../../../../../environments/environment';
-import {catchError, map, Observable, of, shareReplay, switchMap} from 'rxjs';
+import {BehaviorSubject, catchError, map, Observable, of, shareReplay, switchMap, tap} from 'rxjs';
 
 export interface UserResponse {
   id: string;
@@ -40,14 +40,20 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
-    return this.http.post(`${this.apiUrl}/session/login`, { username: email, password: password }, {
+    return this.http.post(`${this.apiUrl}/session/login`, { username: email, password }, {
       headers: {
-        'content-type' : 'application/json'
+        'content-type': 'application/json'
       },
       withCredentials: true,
       responseType: 'text'
-    });
+    }).pipe(
+      map(res => {
+        this.userInfo$ = undefined;
+        return res;
+      })
+    );
   }
+
 
   logout() {
     this.router.navigate(['/login']);
@@ -77,12 +83,17 @@ export class AuthService {
   getUserInfo(): Observable<UserResponse | null> {
     if (!this.userInfo$) {
       this.userInfo$ = this.http.get<UserResponse>(`${this.apiUrl}/session/me`, { withCredentials: true }).pipe(
-        catchError((_) => of(null)),
+        tap(user => console.log('[AuthService] Usuario cargado en getUserInfo:', user)),
+        catchError(err => {
+          console.warn('[AuthService] Error en getUserInfo:', err);
+          return of(null);
+        }),
         shareReplay(1)
       );
     }
     return this.userInfo$;
   }
+
 
   isAuthenticated(): Observable<boolean> {
     return this.getUserInfo().pipe(map(user => !!user && !!user.username));

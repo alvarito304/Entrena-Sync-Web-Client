@@ -1,24 +1,33 @@
 import {ActivatedRouteSnapshot, CanActivateFn, Router} from '@angular/router';
 import {inject} from '@angular/core';
 import {AuthService} from './auth.service';
-import {map, retry} from 'rxjs';
+import {catchError, map, of, retry} from 'rxjs';
 
 export const RoleGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot
-)=> {
+) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  const requiredRole = route.data['role'];
+  const requiredRoles: string[] = route.data['roles'] || [];
 
   return authService.getUserInfo().pipe(
+    retry(1),
     map(user => {
       const roles = (user as any)?.roles || [];
-      if (roles.includes(requiredRole)) {
+
+      const hasAllRequiredRoles = requiredRoles.every(role => roles.includes(role));
+
+      if (hasAllRequiredRoles) {
         return true;
       } else {
+        console.warn('[RoleGuard] Acceso denegado. Requiere roles:', requiredRoles, 'pero el usuario tiene:', roles);
         router.navigate(['/unauthorized']);
         return false;
       }
+    }),
+    catchError(err => {
+      router.navigate(['/login']);
+      return of(false);
     })
   );
 };
