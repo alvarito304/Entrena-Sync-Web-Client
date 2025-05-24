@@ -1,6 +1,12 @@
 <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-  <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md backdrop-filter rounded-lg shadow-lg w-full max-w-[700px] max-h-[90vh] overflow-y-auto">
-    <div class="p-6">
+  <div class="w-full max-w-[700px] max-h-[90vh] overflow-y-auto rounded-xl p-6
+         bg-white/50 dark:bg-gray-900/20
+         backdrop-blur-md backdrop-filter
+         border border-white/50 dark:border-gray-700/30
+         shadow-lg hover:shadow-xl
+         transition-transform duration-300
+         opacity-0 animate-fade-slide-in">
+    <div>
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold">{{ isEditing ? 'Edit Workout' : 'Create New Workout' }}</h2>
         <button
@@ -29,7 +35,7 @@
               name="name"
               [(ngModel)]="formData.name"
               placeholder="e.g., Upper Body Strength"
-              class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              class="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
 
@@ -43,7 +49,7 @@
               name="trainingDuration"
               [(ngModel)]="formData.trainingDuration"
               placeholder="e.g., 1h 30m 45s"
-              class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              class="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
 
@@ -57,7 +63,7 @@
               name="trainingCompletedDate"
               [(ngModel)]="formData.trainingCompletedDate"
               [disabled]="isEditing"
-              class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              class="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
             />
             <p *ngIf="isEditing" class="text-xs text-gray-500 mt-1">
               Note: Completion date cannot be changed after creation
@@ -72,7 +78,7 @@
               id="completed"
               name="completed"
               [(ngModel)]="formData.completed"
-              class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+              class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary accent-primary"
             />
             <label for="completed" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Mark as completed
@@ -96,7 +102,7 @@
               name="description"
               [(ngModel)]="formData.description"
               placeholder="Describe your workout routine"
-              class="flex min-h-[80px] w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              class="flex min-h-[80px] w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm placeholder:text-muted-foreground transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
             ></textarea>
           </div>
 
@@ -112,7 +118,7 @@
                 [(ngModel)]="formData.intensity"
                 min="0"
                 max="10"
-                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-primary"
               />
               <span class="text-sm font-medium">{{ formData.intensity }}</span>
             </div>
@@ -126,7 +132,7 @@
             <button
               type="button"
               (click)="addExerciseEntry()"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/30 bg-background hover:bg-primary/10 text-primary h-9 px-3"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/30 bg-white/50 dark:bg-gray-800/50 hover:bg-primary/10 text-primary h-9 px-3"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
               Add Exercise
@@ -143,14 +149,14 @@
                 [(ngModel)]="entry.key"
                 [name]="'exercise-key-' + i"
                 placeholder="Exercise ID"
-                class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+                class="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1"
               />
               <input
                 type="text"
                 [(ngModel)]="entry.value"
                 [name]="'exercise-value-' + i"
                 placeholder="Exercise Name"
-                class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+                class="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1"
               />
               <button
                 type="button"
@@ -170,7 +176,7 @@
             <button
               type="button"
               (click)="addDetailEntry()"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/30 bg-background hover:bg-primary/10 text-primary h-9 px-3"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary/30 bg-white/50 dark:bg-gray-800/50 hover:bg-primary/10 text-primary h-9 px-3"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
               Add Detail
@@ -187,14 +193,14 @@
                 [(ngModel)]="entry.key"
                 [name]="'detail-key-' + i"
                 placeholder="Detail Key"
-                class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+                class="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1"
               />
               <input
                 type="text"
                 [(ngModel)]="entry.value"
                 [name]="'detail-value-' + i"
                 placeholder="Detail Value"
-                class="flex h-10 w-full rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+                class="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1"
               />
               <button
                 type="button"
@@ -212,7 +218,7 @@
           <button
             type="button"
             (click)="close.emit()"
-            class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+            class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 hover:bg-primary/10 hover:text-primary h-10 px-4 py-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             Cancel
@@ -220,7 +226,7 @@
           <button
             type="submit"
             [disabled]="isSubmitting"
-            class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+            class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
           >
             <svg *ngIf="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

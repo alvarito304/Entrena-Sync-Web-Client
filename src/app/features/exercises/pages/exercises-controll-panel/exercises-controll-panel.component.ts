@@ -58,7 +58,7 @@ import {FileUpload} from 'primeng/fileupload';
                 <div class="space-y-2">
                   <label for="name" class="block font-medium text-gray-800 dark:text-gray-200">Name</label>
                   <input type="text" pInputText id="name" [(ngModel)]="exercise.name" formControlName="name" required
-                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-primary/60 focus:border-primary" />
                   <div *ngIf="exerciseForm.get('name')?.hasError('required') && exerciseForm.get('name')?.touched"
                        class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
                     <p class="text-red-500 text-sm mt-1">
@@ -71,7 +71,7 @@ import {FileUpload} from 'primeng/fileupload';
                 <div class="space-y-2">
                   <label for="description" class="block font-medium text-gray-800 dark:text-gray-200">Description</label>
                   <textarea pInputTextarea id="description" [(ngModel)]="exercise.description" formControlName="description"
-                            class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500"></textarea>
+                            class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-primary/60 focus:border-primary"></textarea>
                   <div *ngIf="exerciseForm.get('description')?.hasError('required') && exerciseForm.get('description')?.touched"
                        class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
                     <p class="text-red-500 text-sm mt-1">
@@ -84,7 +84,7 @@ import {FileUpload} from 'primeng/fileupload';
                 <div class="space-y-2">
                   <label for="bodyPart" class="block font-medium text-gray-800 dark:text-gray-200">Body Part</label>
                   <input type="text" pInputText id="bodyPart" [(ngModel)]="exercise.bodyPart" formControlName="bodyPart" required
-                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-primary/60 focus:border-primary" />
                   <div *ngIf="exerciseForm.get('bodyPart')?.hasError('required') && exerciseForm.get('bodyPart')?.touched"
                        class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
                     <p class="text-red-500 text-sm mt-1">
@@ -97,7 +97,7 @@ import {FileUpload} from 'primeng/fileupload';
                 <div class="space-y-2">
                   <label for="muscleGroup" class="block font-medium text-gray-800 dark:text-gray-200">Muscle Group</label>
                   <input type="text" pInputText id="muscleGroup" [(ngModel)]="exercise.muscleGroup" formControlName="muscleGroup" required
-                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-primary/60 focus:border-primary" />
                   <div *ngIf="exerciseForm.get('muscleGroup')?.hasError('required') && exerciseForm.get('muscleGroup')?.touched"
                        class="transform origin-top-left transition-all duration-200 animate-fade-slide-in">
                     <p class="text-red-500 text-sm mt-1">
@@ -113,7 +113,7 @@ import {FileUpload} from 'primeng/fileupload';
                 <div class="space-y-2">
                   <label for="equipment" class="block font-medium text-gray-800 dark:text-gray-200">Equipment</label>
                   <input type="text" pInputText id="equipment" [(ngModel)]="exercise.equipment" formControlName="equipment"
-                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-primary/60 focus:border-primary" />
                 </div>
 
                 <!-- Calorías quemadas -->
@@ -160,7 +160,7 @@ import {FileUpload} from 'primeng/fileupload';
                 <div class="space-y-2">
                   <label for="videoUrl" class="block font-medium text-gray-800 dark:text-gray-200">Video URL</label>
                   <input type="text" pInputText [(ngModel)]="exercise.videoUrl" id="videoUrl" formControlName="videoUrl"
-                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500" />
+                         class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:border-primary/60 focus:border-primary" />
                 </div>
               </div>
             </div>
