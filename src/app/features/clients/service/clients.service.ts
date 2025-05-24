@@ -13,7 +13,7 @@ import {PageResponse} from '../../../core/models/page/page-response-interface';
   providedIn: 'root'
 })
 export class ClientService {
-  private readonly API_URL = 'http://localhost:80/Clients';
+  private readonly API_URL = 'http://localhost:8082/Clients';
 
   constructor(private http: HttpClient) {}
 

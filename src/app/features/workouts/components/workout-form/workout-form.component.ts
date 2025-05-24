@@ -9,6 +9,8 @@ import {
   WorkoutDetailsCreateRequest,
   WorkoutDetailsUpdateRequest
 } from '../../../../core/models/workouts/workoutsInterface';
+import {ClientService} from '../../../clients/service/clients.service';
+import {AuthService} from '../../../keycloak/services/auth.service';
 
 @Component({
   selector: 'app-workout-form',
@@ -19,6 +21,7 @@ import {
 export class WorkoutFormComponent implements OnInit {
   @Input() workout?: WorkoutResponse;
   @Output() close = new EventEmitter<void>();
+  @Output() refreshWorkouts = new EventEmitter<number>();
 
   isEditing = false;
   isSubmitting = false;
@@ -49,7 +52,7 @@ export class WorkoutFormComponent implements OnInit {
   exerciseEntries: { key: string, value: string }[] = [];
   detailEntries: { key: string, value: string }[] = [];
 
-  constructor(private workoutService: WorkoutService) {}
+  constructor(private workoutService: WorkoutService, private clientService: ClientService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.isEditing = !!this.workout;
@@ -191,9 +194,29 @@ export class WorkoutFormComponent implements OnInit {
     } else {
       // Crear nuevo workout
       this.workoutService.createWorkout(formData as WorkoutCreateRequest).subscribe({
-        next: () => {
-          this.isSubmitting = false;
-          this.close.emit();
+        next: (workout) => {
+          this.authService.getAuthClient().subscribe({
+            next: (client) => {
+              if (client) {
+                client.workouts.push(workout.id.toString());
+                this.clientService.updateClient(client.id, client).subscribe({
+                  next: () => {
+                    console.log('Client updated successfully');
+                    this.refreshWorkouts.emit(workout.id);
+                    this.isSubmitting = false;
+                    this.close.emit();
+                  },
+                  error: (error) => {
+                    console.error('Error updating client:', error);
+                  }
+                });
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching client:', error);
+            }
+          });
+
         },
         error: (error) => {
           this.isSubmitting = false;

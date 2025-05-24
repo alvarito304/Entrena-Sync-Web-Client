@@ -6,11 +6,12 @@ import {WorkoutFormComponent} from '../../components/workout-form/workout-form.c
 import {PageResponse, WorkoutResponse} from '../../../../core/models/workouts/workoutsInterface';
 import {WorkoutService} from '../../service/workouts.service';
 import {AuthService} from '../../../keycloak/services/auth.service';
+import { PaginatorModule,  } from 'primeng/paginator';
 
 @Component({
   selector: 'app-workout-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, WorkoutFormComponent, HttpClientModule],
+  imports: [CommonModule, FormsModule, WorkoutFormComponent, HttpClientModule, PaginatorModule],
   templateUrl: './workout-page.component.html',
 })
 export class WorkoutPageComponent implements OnInit {
@@ -40,8 +41,14 @@ export class WorkoutPageComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getAuthClient().subscribe({
       next: (client) => {
+        console.log('Client data:', client);
         this.idsFilter = client.workouts ? client.workouts.map(Number) : undefined;
-        this.loadWorkouts();
+        console.log('IDs filter:', this.idsFilter);
+
+        if (this.idsFilter && this.idsFilter.length > 0) {
+          this.loadWorkouts();
+        }
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching client data:', error);
@@ -169,8 +176,26 @@ export class WorkoutPageComponent implements OnInit {
   closeForm(): void {
     this.isCreating = false;
     this.selectedWorkout = null;
-    this.loadWorkouts(); // Recargar datos
+
+    // RECARGA el cliente y actualiza idsFilter
+    this.authService.getAuthClient().subscribe({
+      next: (client) => {
+        console.log('Client data:', client);
+        this.idsFilter = client.workouts ? client.workouts.map(Number) : undefined;
+        console.log('IDs filter:', this.idsFilter);
+
+        if (this.idsFilter && this.idsFilter.length > 0) {
+          this.loadWorkouts();
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching client data:', error);
+        this.isLoading = false;
+      }
+    });
   }
+
 
   // Convertir mapa de ejercicios a array para iterar en la plantilla
   getExerciseEntries(exerciseMap: Record<string, string>): {key: string, value: string}[] {
@@ -204,6 +229,14 @@ export class WorkoutPageComponent implements OnInit {
 
     return pages;
   }
+
+
+  onPageChange(event: any): void {
+    this.currentPage = event.page;
+    this.pageSize    = event.rows;
+    this.loadWorkouts();
+  }
+
 
   protected readonly Object = Object;
 }
