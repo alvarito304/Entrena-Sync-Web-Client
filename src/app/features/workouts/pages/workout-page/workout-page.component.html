@@ -46,7 +46,7 @@
     <div class="border-b border-gray-200 dark:border-gray-700">
       <nav class="flex space-x-8" aria-label="Tabs">
         <button
-          (click)="activeTab = 'upcoming'"
+          (click)="setActiveTab('upcoming')"
           [class.text-primary]="activeTab === 'upcoming'"
           [class.border-primary]="activeTab === 'upcoming'"
           [class.border-transparent]="activeTab !== 'upcoming'"
@@ -56,7 +56,7 @@
           Upcoming
         </button>
         <button
-          (click)="activeTab = 'completed'"
+          (click)="setActiveTab('completed')"
           [class.text-primary]="activeTab === 'completed'"
           [class.border-primary]="activeTab === 'completed'"
           [class.border-transparent]="activeTab !== 'completed'"
@@ -270,14 +270,21 @@
     </div>
 
     <!-- Paginación -->
+    <!-- Paginación con indicador visual del estado actual -->
     <p-paginator
-      *ngIf="!isLoading && totalElements > pageSize"
+      *ngIf="!isLoading && totalElements > 0"
       [rows]="pageSize"
       [first]="currentPage * pageSize"
       [totalRecords]="totalElements"
       (onPageChange)="onPageChange($event)"
+      [alwaysShow]="false"
       styleClass="mt-8 flex justify-center">
-      </p-paginator>
+    </p-paginator>
+    
+    <!-- Indicador de registros mostrados -->
+    <div *ngIf="!isLoading && totalElements > 0" class="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
+      Mostrando {{ currentPage * pageSize + 1 }} - {{ Math.min((currentPage + 1) * pageSize, totalElements) }} de {{ totalElements }} resultados
+    </div>
 
 
   </div>
@@ -287,7 +294,7 @@
 <app-workout-form
   *ngIf="isCreating"
   (close)="closeForm()"
-  (refreshWorkouts)="loadWorkouts()"
+  (refreshWorkouts)="handleRefresh()"
 ></app-workout-form>
 
 <!-- Formulario para editar workout -->

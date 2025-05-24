@@ -24,6 +24,7 @@ export class WorkoutService {
     direction: string = 'ASC',
     ids?: number[],
     name?: string | null,
+    completed?: boolean | null,
     trainingDuration?: number,
     trainingCompletedDate?: string
   ): Observable<PageResponse<WorkoutResponse>> {
@@ -38,6 +39,7 @@ export class WorkoutService {
       params = params.set('ids', ids.join(','));
     }
     if (name) params = params.set('name', name);
+    if (completed !== null && completed !== undefined) params = params.set('completed', completed.toString());
     if (trainingDuration) params = params.set('trainingDuration', trainingDuration.toString());
     if (trainingCompletedDate) params = params.set('trainingCompletedDate', trainingCompletedDate);
 
