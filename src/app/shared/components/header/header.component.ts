@@ -44,7 +44,7 @@ export class HeaderComponent {
     { path: 'human-body', label: 'Ejercicios' },
     { path: 'services', label: 'Services' },
     { path: 'trainers', label: 'Trainers' },
-    { path: 'testimonials', label: 'Testimonials' },
+    { path: 'workouts', label: 'Entrenamientos' },
     { path: 'contact', label: 'Contact' },
   ];
 
