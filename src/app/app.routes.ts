@@ -20,12 +20,12 @@ export const routes: Routes = [
   { path: 'login', component: KeycloakComponent},
   { path: 'register', component: SignInComponent},
   { path: 'human-body', component: HumanBodyPageComponent},
-  { path: 'exercises', component: ExercisesControllPanelComponent},
-  { path: 'workouts', component: WorkoutPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] } },
+  { path: 'workouts', component: WorkoutPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'client'] } },
   { path: 'adminpanel', component: AdminPanelComponent,
     canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] }, children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'user-administration', component: UserAdministrationComponent },
+      { path: 'exercises', component: ExercisesControllPanelComponent},
     ]}
 ];

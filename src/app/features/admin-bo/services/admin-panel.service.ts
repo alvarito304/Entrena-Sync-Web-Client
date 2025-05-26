@@ -24,7 +24,7 @@ export class AdminPanelService {
   }
 
   getUsers(page: number = 0, size: number = 10): Observable<PagedResponse<UserResponse>> {
-    return this.http.get<PagedResponse<UserResponse>>(`${this.apiUrl}/keycloak/users?page=${page}&size=${size}`, { withCredentials: true });
+    return this.http.get<PagedResponse<UserResponse>>(`${this.apiUrl}/keycloak/user?page=${page}&size=${size}`, { withCredentials: true });
   }
 
 }

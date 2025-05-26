@@ -7,63 +7,76 @@ import {
   WorkoutUpdateRequest,
   PageResponse
 } from '../../../core/models/workouts/workoutsInterface';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkoutService {
-  private apiUrl = 'http://localhost:8083/Workouts'; // Ajusta según tu configuración
+  private apiUrl = environment.apiUrl + "/Workouts"; // Ajusta según tu configuración
 
   constructor(private http: HttpClient) {}
 
   // Obtener workouts con paginación y filtros
   getWorkouts(
-    page: number = 0,
-    size: number = 10,
-    sortBy: string = 'id',
-    direction: string = 'ASC',
-    ids?: number[],
-    name?: string | null,
-    completed?: boolean | null,
-    trainingDuration?: number,
-    trainingCompletedDate?: string
+      page: number = 0,
+      size: number = 10,
+      sortBy: string = 'id',
+      direction: string = 'ASC',
+      ids?: number[],
+      name?: string | null,
+      completed?: boolean | null,
+      trainingDuration?: number,
+      trainingCompletedDate?: string
   ): Observable<PageResponse<WorkoutResponse>> {
     let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString())
-      .set('sortBy', sortBy)
-      .set('direction', direction);
-
+        .set('page', page.toString())
+        .set('size', size.toString())
+        .set('sortBy', sortBy)
+        .set('direction', direction);
 
     if (ids && ids.length > 0) {
       params = params.set('ids', ids.join(','));
     }
     if (name) params = params.set('name', name);
-    if (completed !== null && completed !== undefined) params = params.set('completed', completed.toString());
+    if (completed !== null && completed !== undefined) {
+      params = params.set('completed', completed.toString());
+    }
     if (trainingDuration) params = params.set('trainingDuration', trainingDuration.toString());
     if (trainingCompletedDate) params = params.set('trainingCompletedDate', trainingCompletedDate);
 
-    return this.http.get<PageResponse<WorkoutResponse>>(this.apiUrl, { params });
+    return this.http.get<PageResponse<WorkoutResponse>>(this.apiUrl, {
+      withCredentials: true,
+      params
+    });
   }
 
   // Obtener un workout por ID
   getWorkoutById(id: number): Observable<WorkoutResponse> {
-    return this.http.get<WorkoutResponse>(`${this.apiUrl}/${id}`);
+    return this.http.get<WorkoutResponse>(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+    });
   }
 
   // Crear un nuevo workout
   createWorkout(workout: WorkoutCreateRequest): Observable<WorkoutResponse> {
-    return this.http.post<WorkoutResponse>(this.apiUrl, workout);
+    return this.http.post<WorkoutResponse>(this.apiUrl, workout, {
+      withCredentials: true
+    });
   }
 
   // Actualizar un workout existente
   updateWorkout(id: number, workout: WorkoutUpdateRequest): Observable<WorkoutResponse> {
-    return this.http.put<WorkoutResponse>(`${this.apiUrl}/${id}`, workout);
+    return this.http.put<WorkoutResponse>(`${this.apiUrl}/${id}`, workout, {
+      withCredentials: true
+    });
   }
 
   // Eliminar un workout
   deleteWorkout(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+    });
   }
 
   // Utilidad para formatear segundos a formato legible

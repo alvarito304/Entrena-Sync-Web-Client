@@ -8,6 +8,7 @@ import {MultiSelect} from 'primeng/multiselect';
 import {Dialog} from 'primeng/dialog';
 import {PrimeTemplate} from 'primeng/api';
 import {ButtonDirective} from 'primeng/button';
+import {NgTemplateOutlet} from '@angular/common';
 
 @Component({
   selector: 'app-user-administration',
@@ -17,7 +18,8 @@ import {ButtonDirective} from 'primeng/button';
     MultiSelect,
     Dialog,
     PrimeTemplate,
-    ButtonDirective
+    ButtonDirective,
+    NgTemplateOutlet
   ],
   templateUrl: './user-administration.component.html',
   standalone: true,

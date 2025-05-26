@@ -4,6 +4,7 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import {Observable, of, tap, throwError} from 'rxjs';
 import { map, catchError, shareReplay } from 'rxjs/operators';
 import {Exercise} from '../../../core/models/exercise/exercise';
+import {environment} from '../../../../../environments/environment';
 
 export interface PaginatedExercises {
   exercises: Exercise[];
@@ -15,12 +16,12 @@ export interface PaginatedExercises {
 @Injectable({ providedIn: 'root' })
 export class ExerciseService {
   private cache = new Map<string, Observable<PaginatedExercises>>();
-  private baseUrl = 'http://localhost:8081/Exercises';
+  private apiUrl = environment.apiUrl + '/Exercises';
 
   constructor(private http: HttpClient) {}
 
   getAllExercises(): Observable<Exercise[]> {
-    return this.http.get<Exercise[]>(`${this.baseUrl}/all`).pipe(
+    return this.http.get<Exercise[]>(`${this.apiUrl}/all`, { withCredentials: true }).pipe(
       catchError(err => {
         console.error('Error fetching all exercises', err);
         return throwError(() => err);
@@ -42,7 +43,7 @@ export class ExerciseService {
 
     return this.http
       .get<{ content: Exercise[]; totalPages: number; totalElements: number }>(
-        this.baseUrl,
+        this.apiUrl,
         { params: httpParams, observe: 'response' }
       )
       .pipe(
@@ -63,7 +64,7 @@ export class ExerciseService {
 
 // Crear un nuevo ejercicio
   createExercise(form: FormData): Observable<Exercise> {
-    return this.http.post<Exercise>(this.baseUrl, form).pipe(
+    return this.http.post<Exercise>(this.apiUrl, form).pipe(
       tap(() => this.invalidateCache()),
       catchError(err => {
         console.error('Create failed', err);
@@ -73,7 +74,7 @@ export class ExerciseService {
   }
 
   updateExercise(id: string, form: FormData): Observable<Exercise> {
-    return this.http.put<Exercise>(`${this.baseUrl}/${id}`, form).pipe(
+    return this.http.put<Exercise>(`${this.apiUrl}/${id}`, form).pipe(
       tap(() => this.invalidateCache()),
       catchError(err => {
         return throwError(() => err);
@@ -82,7 +83,7 @@ export class ExerciseService {
   }
 
   deleteExercise(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       tap(() => this.invalidateCache()),
       catchError(err => {
         console.error('Delete failed', err);

@@ -8,12 +8,13 @@ import {
   ClientUpdateRequest
 } from '../../../core/models/clients/clients-interfaces';
 import {PageResponse} from '../../../core/models/page/page-response-interface';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
-  private readonly API_URL = 'http://localhost:8082/Clients';
+  private readonly API_URL = `${environment.apiUrl}/Clients`;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +27,7 @@ export class ClientService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get<PageResponse<ClientResponse>>(this.API_URL, { params });
+    return this.http.get<PageResponse<ClientResponse>>(this.API_URL, { withCredentials: true ,params });
   }
 
   /***
