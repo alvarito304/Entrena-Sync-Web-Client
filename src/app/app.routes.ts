@@ -19,6 +19,6 @@ export const routes: Routes = [
   { path: 'register', component: SignInComponent},
   { path: 'human-body', component: HumanBodyPageComponent},
   { path: 'adminpanel', component: AdminPanelComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] } },
-  { path: 'workouts', component: WorkoutPageComponent, canActivate: [AuthGuard], data: { role: 'ROLE_USER' } },
+  { path: 'workouts', component: WorkoutPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] } },
   { path: 'exercises', component: ExercisesControllPanelComponent},
 ];

@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {environment} from '../../../../../environments/environment';
 import {BehaviorSubject, catchError, map, Observable, of, shareReplay, switchMap, throwError, tap} from 'rxjs';
+import {ClientCreateRequest, ClientResponse} from '../../../core/models/clients/clients-interfaces';
+import {ClientService} from '../../clients/service/clients.service';
 
 export interface UserResponse {
   id: string;
