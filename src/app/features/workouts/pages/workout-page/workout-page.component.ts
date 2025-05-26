@@ -88,7 +88,7 @@ export class WorkoutPageComponent implements OnInit {
         this.totalElements = response.totalElements;
         this.filterWorkouts();
         this.isLoading = false;
-        
+
         // Calcular totales por categoría una vez
         this.calculateTotalsByCategory();
       },
@@ -229,12 +229,6 @@ export class WorkoutPageComponent implements OnInit {
     }
   }
 
-  // Manejar paginación
-  changePage(page: number): void {
-    this.currentPage = page;
-    this.loadTabData();
-  }
-
   // Aplicar filtros
   applyFilters(): void {
     this.currentPage = 0; // Resetear a primera página
@@ -277,34 +271,6 @@ export class WorkoutPageComponent implements OnInit {
   // Convertir mapa de ejercicios a array para iterar en la plantilla
   getExerciseEntries(exerciseMap: Record<string, string>): {key: string, value: string}[] {
     return Object.entries(exerciseMap).map(([key, value]) => ({ key, value }));
-  }
-
-  // Generar array para paginación
-  getPageNumbers(): number[] {
-    const pages = [];
-    const maxVisiblePages = 5;
-
-    if (this.totalPages <= maxVisiblePages) {
-      // Mostrar todas las páginas si hay menos que el máximo visible
-      for (let i = 0; i < this.totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      // Mostrar un subconjunto de páginas
-      let startPage = Math.max(0, this.currentPage - Math.floor(maxVisiblePages / 2));
-      let endPage = Math.min(this.totalPages - 1, startPage + maxVisiblePages - 1);
-
-      // Ajustar si estamos cerca del final
-      if (endPage - startPage < maxVisiblePages - 1) {
-        startPage = Math.max(0, endPage - maxVisiblePages + 1);
-      }
-
-      for (let i = startPage; i <= endPage; i++) {
-        pages.push(i);
-      }
-    }
-
-    return pages;
   }
 
   // Manejador de cambio de página para el paginador de PrimeNG
