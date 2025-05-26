@@ -10,6 +10,8 @@ import {
 } from './features/exercises/pages/exercises-controll-panel/exercises-controll-panel.component';
 import {AdminPanelComponent} from './features/admin-bo/admin-panel/admin-panel.component';
 import {RoleGuard} from './features/keycloak/services/RoleGuard';
+import {UserAdministrationComponent} from './features/admin-bo/user-administration/user-administration.component';
+import {DashboardComponent} from './features/admin-bo/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,6 +19,12 @@ export const routes: Routes = [
   { path: 'login', component: KeycloakComponent},
   { path: 'register', component: SignInComponent},
   { path: 'human-body', component: HumanBodyPageComponent},
-  { path: 'adminpanel', component: AdminPanelComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] } },
-  { path: 'exercises', component: ExercisesControllPanelComponent}
+  { path: 'exercises', component: ExercisesControllPanelComponent},
+  { path: 'user-panel', component: UserAdministrationComponent},
+  { path: 'adminpanel', component: AdminPanelComponent,
+    canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] }, children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'user-administration', component: UserAdministrationComponent },
+  ]}
 ];

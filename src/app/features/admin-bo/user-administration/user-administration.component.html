@@ -1,1 +1,90 @@
-<p>user-administration works!</p>
+<!-- Tabla genérica para usuarios -->
+<generic-table
+  [items]="users"
+  [cols]="cols"
+  [globalFilterFields]="['username', 'email', 'firstName', 'lastName', 'roles']"
+  [title]="'Manage Users'"
+  [entityName]="'users'"
+  [idField]="'id'"
+  [nameField]="'username'"
+  [severityMap]="{}"
+  (onSave)="showEditDialog($event)"
+  (onDelete)="deleteUser($event)"
+  (onDeleteMultiple)="deleteSelectedUsers($event)"
+>
+  <ng-template #formTemplate let-user>
+    <div class="p-fluid p-formgrid p-grid">
+      <!-- Username -->
+      <div class="p-field p-col-12">
+        <label for="username" class="block font-bold mb-2">Username</label>
+        <input
+          id="username"
+          type="text"
+          pInputText
+          [(ngModel)]="user.username"
+          required
+        />
+      </div>
+      <!-- Email -->
+      <div class="p-field p-col-12">
+        <label for="email" class="block font-bold mb-2">Email</label>
+        <input
+          id="email"
+          type="email"
+          pInputText
+          [(ngModel)]="user.email"
+          required
+        />
+      </div>
+      <!-- Roles -->
+      <div class="p-field p-col-12">
+        <label for="roles" class="block font-bold mb-2">Roles</label>
+        <p-multiSelect
+          id="roles"
+          [options]="[
+            { label: 'ADMIN', value: 'ADMIN' },
+            { label: 'CLIENT', value: 'CLIENT' },
+            { label: 'TRAINER', value: 'TRAINER' }
+          ]"
+          [(ngModel)]="user.roles"
+          defaultLabel="Select roles"
+          optionLabel="label"
+          optionValue="value"
+        ></p-multiSelect>
+      </div>
+    </div>
+  </ng-template>
+</generic-table>
+
+<!-- Diálogo para crear/editar usuarios -->
+<p-dialog
+  header="{{ isNew ? 'Crear Usuario' : 'Editar Usuario' }}"
+  [(visible)]="displayDialog"
+  [modal]="true"
+  [style]="{ width: '40vw' }"
+  [closeOnEscape]="true"
+  (onHide)="hideDialog()"
+>
+  <div class="p-fluid p-formgrid p-grid" *ngIf="current">
+    <ng-container
+      *ngTemplateOutlet="formTemplate; context: { $implicit: current }"
+    ></ng-container>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      label="Guardar"
+      icon="pi pi-check"
+      (click)="save()"
+      [disabled]="!current?.username || !current?.email"
+    ></button>
+  </ng-template>
+</p-dialog>

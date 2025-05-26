@@ -21,6 +21,6 @@ export class AppComponent {
 
   shouldShowLayout(): boolean {
     const noLayoutRoutes = ['/login', '/register', "/adminpanel"];
-    return !noLayoutRoutes.includes(this.router.url);
+    return !noLayoutRoutes.some(path => this.router.url.startsWith(path));
   }
 }

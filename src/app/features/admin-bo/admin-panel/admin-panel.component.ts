@@ -3,12 +3,19 @@ import {AuthService, UserResponse} from '../../keycloak/services/auth.service';
 import {AdminPanelService} from '../services/admin-panel.service';
 import {MenuItem} from 'primeng/api';
 import {Menu} from 'primeng/menu';
-import {Router} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {UserAdministrationComponent} from '../user-administration/user-administration.component';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-admin-panel',
   imports: [
-    Menu
+    Menu,
+    UserAdministrationComponent,
+    TitleCasePipe,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './admin-panel.component.html',
   standalone: true,
@@ -17,7 +24,7 @@ import {Router} from '@angular/router';
 export class AdminPanelComponent {
   user: UserResponse | null = null;
   userPhotoUrl: string | null = null;
-
+  activePanel: string = 'dashboard';
   constructor(private adminPanelService: AdminPanelService, private authService: AuthService, private router: Router) {
   }
 
@@ -50,5 +57,8 @@ export class AdminPanelComponent {
         }
       }
     ];
+  }
+  setActivePanel(panel: string) {
+    this.activePanel = panel;
   }
 }
