@@ -1,12 +1,12 @@
 <!-- Tabla genérica para usuarios -->
 <generic-table
-  [items]="users"
+  [items]="combinedUsers"
   [cols]="cols"
-  [globalFilterFields]="['username', 'email', 'firstName', 'lastName', 'roles']"
+  [globalFilterFields]="['email', 'firstName', 'lastName', 'address', 'phone', 'birthDate', 'gender'] "
   [title]="'Manage Users'"
   [entityName]="'users'"
   [idField]="'id'"
-  [nameField]="'username'"
+  [nameField]="'email'"
   [severityMap]="{}"
   (onSave)="showEditDialog($event)"
   (onDelete)="deleteUser($event)"
@@ -15,42 +15,80 @@
   <ng-template #formTemplate let-user>
     <div class="p-fluid p-formgrid p-grid">
       <!-- Username -->
-      <div class="p-field p-col-12">
-        <label for="username" class="block font-bold mb-2">Username</label>
-        <input
-          id="username"
-          type="text"
-          pInputText
-          [(ngModel)]="user.username"
-          required
-        />
-      </div>
-      <!-- Email -->
-      <div class="p-field p-col-12">
-        <label for="email" class="block font-bold mb-2">Email</label>
-        <input
-          id="email"
-          type="email"
-          pInputText
-          [(ngModel)]="user.email"
-          required
-        />
-      </div>
-      <!-- Roles -->
-      <div class="p-field p-col-12">
-        <label for="roles" class="block font-bold mb-2">Roles</label>
-        <p-multiSelect
-          id="roles"
-          [options]="[
-            { label: 'ADMIN', value: 'ADMIN' },
-            { label: 'CLIENT', value: 'CLIENT' },
-            { label: 'TRAINER', value: 'TRAINER' }
-          ]"
-          [(ngModel)]="user.roles"
-          defaultLabel="Select roles"
-          optionLabel="label"
-          optionValue="value"
-        ></p-multiSelect>
+      <div class="p-fluid p-formgrid p-grid">
+        <!-- Name -->
+        <div class="p-field p-col-12">
+          <label for="email" class="block font-bold mb-2">Email</label>
+          <input
+            id="email"
+            type="text"
+            pInputText
+            [(ngModel)]="user.name"
+            required
+          />
+        </div>
+        <!-- Description -->
+        <div class="p-field p-col-12">
+          <label for="firstName" class="block font-bold mb-2">Nombre</label>
+          <input
+            id="firstName"
+            pInputText
+            [(ngModel)]="user.firstName"
+            required
+          />
+        </div>
+        <!-- Body Part -->
+        <div class="p-field p-col-6">
+          <label for="lastName" class="block font-bold mb-2">Apellidos</label>
+          <input
+            id="lastName"
+            pInputText
+            [(ngModel)]="user.lastName"
+            required
+          />
+        </div>
+        <!-- Muscle Group -->
+        <div class="p-field p-col-6">
+          <label for="address" class="block font-bold mb-2">Dirección</label>
+          <input
+            id="address"
+            pInputText
+            [(ngModel)]="user.address"
+            required
+          ></input>
+        </div>
+        <!-- Equipment -->
+        <div class="p-field p-col-6">
+          <label for="phone" class="block font-bold mb-2">Teléfono</label>
+          <input
+            id="phone"
+            type="text"
+            pInputText
+            [(ngModel)]="user.phone"
+          />
+        </div>
+        <!-- Calories Burned -->
+        <div class="p-field p-col-6">
+          <label class="block font-bold mb-2">Fecha de Nacimiento</label>
+          <p-datepicker
+            [(ngModel)]="user.birthDate"
+            [showIcon]="true"
+            [placeholder]="'Seleccionar fecha'"
+            inputId="birthDate"
+          ></p-datepicker>
+        </div>
+        <!-- Difficulty -->
+        <div class="p-field p-col-6">
+          <label for="gender" class="block font-bold mb-2">Género</label>
+          <p-dropdown
+            id="gender"
+            [options]="genders"
+            optionLabel="label"
+            optionValue="value"
+            [(ngModel)]="user.gender"
+            placeholder="Select one"
+          ></p-dropdown>
+        </div>
       </div>
     </div>
   </ng-template>
