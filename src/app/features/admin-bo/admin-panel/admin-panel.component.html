@@ -3,7 +3,7 @@
   <!-- Sidebar -->
   <aside class="w-full md:w-64 flex-shrink-0 bg-white dark:bg-slate-800 shadow-lg border-r border-gray-200 dark:border-slate-700 transition-all duration-300 ease-in-out">
     <div class="p-6 border-b border-slate-200 dark:border-slate-700">
-      <p class="text-xl font-light tracking-wide text-transparent bg-gradient-to-r from-indigo-600 to-indigo-400 dark:from-indigo-400 dark:to-indigo-300 bg-clip-text">
+      <p class="text-xl font-light tracking-wide text-transparent bg-gradient-to-r from-primary to-primary dark:from-primary dark:to-primary bg-clip-text">
         AdminPanel
       </p>
     </div>
@@ -11,28 +11,35 @@
     <nav class="py-4">
       <ul class="space-y-1">
         <li>
-          <a routerLink="dashboard"
-             routerLinkActive="text-indigo-600 bg-indigo-50 border-indigo-500 dark:border-indigo-400"
-             class="flex items-center px-6 py-3 border-l-4 transition duration-300 ease-in-out hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-400">
+          <a
+            [routerLink]="'dashboard'"
+            routerLinkActive="bg-primary-500 text-black"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block px-6 py-3 text-base font-medium rounded hover:bg-gray-100 hover:text-primary transition-all duration-200">
             Dashboard
           </a>
         </li>
         <li>
-          <a routerLink="user-administration"
-             routerLinkActive="text-indigo-600 bg-indigo-50 border-indigo-500 dark:border-indigo-400"
-             class="flex items-center px-6 py-3 border-l-4 transition duration-300 ease-in-out hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-400">
+          <a
+            [routerLink]="'user-administration'"
+            routerLinkActive="bg-primary-500 text-black"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block px-6 py-3 text-base font-medium rounded hover:bg-gray-100 hover:text-primary transition-all duration-200">
             Usuarios
           </a>
         </li>
         <li>
-          <a routerLink="exercises"
-             routerLinkActive="text-indigo-600 bg-indigo-50 border-indigo-500 dark:border-indigo-400"
-             class="flex items-center px-6 py-3 border-l-4 transition duration-300 ease-in-out hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-400">
+          <a
+            [routerLink]="'exercises'"
+            routerLinkActive="bg-primary-500 text-black"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block px-6 py-3 text-base font-medium rounded hover:bg-gray-100 hover:text-primary transition-all duration-200">
             Ejercicios
           </a>
         </li>
-        <!-- Más enlaces -->
       </ul>
+
+
     </nav>
   </aside>
 
@@ -40,12 +47,10 @@
   <main class="flex-1 flex flex-col">
 
     <!-- Header -->
-    <header class="bg-white dark:bg-slate-800 shadow-md border-b border-slate-200 dark:border-slate-700">
-      <div class="flex justify-between items-center px-6 py-4">
-        <p class="text-lg font-light tracking-wide text-slate-700 dark:text-slate-300">Dashboard</p>
-
+    <header class="bg-white dark:bg-slate-800">
+      <div class="flex justify-end items-center px-6 py-6">
         <div class="flex items-center space-x-4">
-          <span class="text-sm text-slate-600 dark:text-slate-400 mr-3">{{ user?.username }}</span>
+          <span class="text-m text-slate-600 dark:text-slate-400 mr-3">{{ user?.username }}</span>
           <p-menu #menu [popup]="true" [model]="menuItems"></p-menu>
           <div class="relative">
             <img
