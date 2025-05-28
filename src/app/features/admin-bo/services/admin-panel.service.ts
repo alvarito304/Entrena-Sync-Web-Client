@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {UserResponse} from '../../keycloak/services/auth.service';
-import {ClientResponse} from '../../../core/models/clients/clients-interfaces';
+import {Observable, switchMap} from 'rxjs';
+import {UserRequest, UserResponse} from '../../keycloak/services/auth.service';
+import {ClientCreateRequest, ClientResponse} from '../../../core/models/clients/clients-interfaces';
 export interface PagedResponse<T> {
   content: T[];
   page: number;
@@ -14,7 +14,8 @@ export interface PagedResponse<T> {
 }
 
 export interface CombinedUserClient {
-  id: string; // id del user
+  userId: string; // id del user
+  clientId: string; // id del cliente
   email: string;
   firstName: string;
   lastName: string;
@@ -44,5 +45,27 @@ export class AdminPanelService {
     return this.http.get<ClientResponse[]>(`${this.apiUrl}/Clients/all`, { withCredentials: true });
   }
 
+  registerUserAndClient(userRequest: UserRequest, clientRequest: ClientCreateRequest): Observable<any> {
+    return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest).pipe(
+      switchMap((response) => {
+        const keycloakUserId = response.id;
+
+        const fullClientRequest: ClientCreateRequest = {
+          ...clientRequest,
+          userId: keycloakUserId
+        };
+
+        return this.http.post(`${this.apiUrl}/Clients`, fullClientRequest);
+      })
+    );
+  }
+
+  deleteClientById(clientId: string) {
+    return this.http.delete(`${this.apiUrl}/Clients/${clientId}`, { withCredentials: true });
+  }
+
+  deleteUser(userId: string) {
+    return this.http.delete(`${this.apiUrl}/keycloak/user/${userId}`, { withCredentials: true });
+  }
 
 }

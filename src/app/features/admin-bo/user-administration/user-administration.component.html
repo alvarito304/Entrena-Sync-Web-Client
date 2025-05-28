@@ -14,81 +14,78 @@
 >
   <ng-template #formTemplate let-user>
     <div class="p-fluid p-formgrid p-grid">
-      <!-- Username -->
-      <div class="p-fluid p-formgrid p-grid">
-        <!-- Name -->
-        <div class="p-field p-col-12">
-          <label for="email" class="block font-bold mb-2">Email</label>
-          <input
-            id="email"
-            type="text"
-            pInputText
-            [(ngModel)]="user.name"
-            required
-          />
-        </div>
-        <!-- Description -->
-        <div class="p-field p-col-12">
-          <label for="firstName" class="block font-bold mb-2">Nombre</label>
-          <input
-            id="firstName"
-            pInputText
-            [(ngModel)]="user.firstName"
-            required
-          />
-        </div>
-        <!-- Body Part -->
-        <div class="p-field p-col-6">
-          <label for="lastName" class="block font-bold mb-2">Apellidos</label>
-          <input
-            id="lastName"
-            pInputText
-            [(ngModel)]="user.lastName"
-            required
-          />
-        </div>
-        <!-- Muscle Group -->
-        <div class="p-field p-col-6">
-          <label for="address" class="block font-bold mb-2">Dirección</label>
-          <input
-            id="address"
-            pInputText
-            [(ngModel)]="user.address"
-            required
-          ></input>
-        </div>
-        <!-- Equipment -->
-        <div class="p-field p-col-6">
-          <label for="phone" class="block font-bold mb-2">Teléfono</label>
-          <input
-            id="phone"
-            type="text"
-            pInputText
-            [(ngModel)]="user.phone"
-          />
-        </div>
-        <!-- Calories Burned -->
-        <div class="p-field p-col-6">
-          <label class="block font-bold mb-2">Fecha de Nacimiento</label>
-          <p-datepicker
-            [(ngModel)]="user.birthDate"
-            [showIcon]="true"
-            [placeholder]="'Seleccionar fecha'"
-            inputId="birthDate"
-          ></p-datepicker>
-        </div>
-        <!-- Difficulty -->
-        <div class="p-field p-col-6">
-          <label for="gender" class="block font-bold mb-2">Género</label>
-          <p-dropdown
-            id="gender"
-            [options]="genders"
-            optionLabel="label"
-            optionValue="value"
-            [(ngModel)]="user.gender"
-            placeholder="Select one"
-          ></p-dropdown>
-        </div>
+      <!-- Email -->
+      <div class="p-field p-col-12">
+        <label for="email" class="block font-bold mb-2">Email</label>
+        <input
+          id="email"
+          type="text"
+          pInputText
+          [(ngModel)]="user.email"
+          required
+        />
+      </div>
+      <!-- Nombre -->
+      <div class="p-field p-col-12">
+        <label for="firstName" class="block font-bold mb-2">Nombre</label>
+        <input
+          id="firstName"
+          pInputText
+          [(ngModel)]="user.firstName"
+          required
+        />
+      </div>
+      <!-- Apellidos -->
+      <div class="p-field p-col-6">
+        <label for="lastName" class="block font-bold mb-2">Apellidos</label>
+        <input
+          id="lastName"
+          pInputText
+          [(ngModel)]="user.lastName"
+          required
+        />
+      </div>
+      <!-- Dirección -->
+      <div class="p-field p-col-6">
+        <label for="address" class="block font-bold mb-2">Dirección</label>
+        <input
+          id="address"
+          pInputText
+          [(ngModel)]="user.address"
+          required
+        />
+      </div>
+      <!-- Teléfono -->
+      <div class="p-field p-col-6">
+        <label for="phone" class="block font-bold mb-2">Teléfono</label>
+        <input
+          id="phone"
+          type="text"
+          pInputText
+          [(ngModel)]="user.phone"
+        />
+      </div>
+      <!-- Género -->
+      <div class="p-field p-col-6">
+        <label for="gender" class="block font-bold mb-2">Género</label>
+        <p-dropdown
+          id="gender"
+          [options]="genders"
+          optionLabel="label"
+          optionValue="value"
+          [(ngModel)]="user.gender"
+          placeholder="Select one"
+        ></p-dropdown>
+      </div>
+      <!-- Fecha de Nacimiento -->
+      <div class="p-field p-col-12">
+        <label class="block font-bold mb-2">Fecha de Nacimiento</label>
+        <p-datepicker
+          [(ngModel)]="user.birthDate"
+          [showIcon]="true"
+          [placeholder]="'Seleccionar fecha'"
+          inputId="birthDate"
+        ></p-datepicker>
       </div>
     </div>
   </ng-template>
@@ -109,7 +106,7 @@
     ></ng-container>
   </div>
 
-  <ng-template pTemplate="footer">
+  <p-footer>
     <button
       pButton
       label="Cancelar"
@@ -122,7 +119,6 @@
       label="Guardar"
       icon="pi pi-check"
       (click)="save()"
-      [disabled]="!current?.username || !current?.email"
     ></button>
-  </ng-template>
+    </p-footer>
 </p-dialog>

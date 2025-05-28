@@ -217,8 +217,7 @@ export class ExercisesControllPanelComponent implements OnInit {
     'INTERMEDIATE': 'info',
     'ADVANCED': 'danger'
   };
-  isFormValid: boolean = false;
-  selectedFile?: File;
+  isFormValid: boolean = false;  selectedFile?: File;
   loading = false;
 
   exerciseForm!: FormGroup;

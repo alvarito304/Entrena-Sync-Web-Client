@@ -49,7 +49,16 @@ export class AuthService {
 
 
   logout() {
-    this.router.navigate(['/login']);
+    console.log('Cerrando sesión');
+    this.http.post(`${this.apiUrl}/session/logout`, {}, { withCredentials: true }).subscribe({
+      next: () => {
+        console.log('Logout exitoso');
+        this.router.navigate(['']);
+      },
+      error: (err) => {
+        console.error('Error en logout:', err);
+      }
+    });
   }
 
   register(userRequest: UserRequest, clientRequest: ClientCreateRequest): Observable<any> {

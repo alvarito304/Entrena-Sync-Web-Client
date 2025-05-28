@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import {AdminPanelService, CombinedUserClient} from '../services/admin-panel.service';
-import {AuthService, UserResponse} from '../../keycloak/services/auth.service';
+import {AuthService, UserRequest, UserResponse} from '../../keycloak/services/auth.service';
 import {Router} from '@angular/router';
 import {GenericTableComponent} from '../../../core/components/generic-table/generic-table.component';
 import {FormsModule} from '@angular/forms';
 import {MultiSelect} from 'primeng/multiselect';
 import {Dialog} from 'primeng/dialog';
-import {PrimeTemplate} from 'primeng/api';
+import {MessageService, PrimeTemplate} from 'primeng/api';
 import {ButtonDirective} from 'primeng/button';
 import {NgIf, NgTemplateOutlet} from '@angular/common';
 import {InputText} from 'primeng/inputtext';
 import {DatePicker} from 'primeng/datepicker';
 import {DropdownModule} from 'primeng/dropdown';
+import {ClientCreateRequest} from '../../../core/models/clients/clients-interfaces';
 
 @Component({
   selector: 'app-user-administration',
@@ -33,7 +34,7 @@ import {DropdownModule} from 'primeng/dropdown';
   styleUrl: './user-administration.component.css'
 })
 export class UserAdministrationComponent {
-  constructor(private adminPanelService: AdminPanelService, private router: Router) {
+  constructor(private adminPanelService: AdminPanelService, private router: Router, private messageService: MessageService) {
   }
   cols = [
     { field: 'email', header: 'Email' },
@@ -55,11 +56,21 @@ export class UserAdministrationComponent {
   totalElements = 0;
   displayDialog = false;
 
-  current: UserResponse | null = null;
+  current: CombinedUserClient | null = null;
   isNew = false;
 
   users: UserResponse[] = [];
-  combinedUsers: CombinedUserClient[] = [];
+  combinedUsers: {
+    firstName: string;
+    lastName: string;
+    clientId: string | undefined;
+    address: string | undefined;
+    gender: string | undefined;
+    phone: string | undefined;
+    userId: string;
+    birthDate: string | undefined;
+    email: string
+  }[] = [];
 
   ngOnInit() {
     this.loadCombinedUsers(this.page, this.size);
@@ -82,7 +93,8 @@ export class UserAdministrationComponent {
         this.combinedUsers = users.map(user => {
           const client = clients.find(c => c.userId === user.id);
           return {
-            id: user.id,
+            userId: user.id,
+            clientId: client?.id,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -104,28 +116,108 @@ export class UserAdministrationComponent {
     this.loadCombinedUsers(event.page, event.rows);
   }
 
-  showEditDialog(user: UserResponse) {
-    this.current = { ...user };
-    this.isNew = false;
+  showEditDialog(user?: CombinedUserClient) {
+    this.isNew = !user;
+    this.current = user ? { ...user } : {
+      userId: '',
+      clientId: '',
+      email: '',
+      firstName: '',
+      lastName: '',
+      address: '',
+      phone: '',
+      birthDate: '',
+      gender: ''
+    };
     this.displayDialog = true;
   }
 
-  deleteUser(user: UserResponse) {
-    // Aquí puedes invocar tu servicio para eliminar
-    console.log('Delete user', user);
+
+  deleteUser(user: CombinedUserClient) {
+    if (!user.clientId || !user.userId) {
+      console.error('Faltan los IDs necesarios para eliminar');
+      return;
+    }
+
+    this.adminPanelService.deleteClientById(user.clientId).subscribe({
+      next: () => {
+        this.adminPanelService.deleteUser(user.userId).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Eliminado',
+              detail: 'Usuario y cliente eliminados correctamente',
+              life: 3000
+            });
+            this.loadCombinedUsers(this.page, this.size);
+          },
+          error: err => {
+            console.error('Error al eliminar usuario:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'No se pudo eliminar el usuario',
+              life: 3000
+            });
+          }
+        });
+      },
+      error: err => {
+        console.error('Error al eliminar cliente:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo eliminar el cliente',
+          life: 3000
+        });
+      }
+    });
   }
+
 
   deleteSelectedUsers(users: UserResponse[]) {
     console.log('Delete multiple users', users);
   }
 
   save() {
+    console.log('SAVE CALLED', this.current);
     if (this.current) {
-      // Guardar o actualizar el usuario actual
-      console.log('Saving user', this.current);
-      this.displayDialog = false;
+      const userReq: UserRequest = {
+        username: this.current.email,
+        email: this.current.email,
+        firstName: this.current.firstName,
+        lastName: this.current.lastName,
+        password: 'TempPassword123!', //TODO cambio de contraseña
+        passwordConfirmation: 'TempPassword123!'
+      };
+
+      const clientReq: ClientCreateRequest = {
+        name: `${this.current.firstName} ${this.current.lastName}`,
+        address: this.current.address ?? '',
+        phone: this.current.phone ?? '',
+        birthDate: this.current.birthDate ? new Date(this.current.birthDate).toISOString() : '',
+        gender: this.current.gender ?? '',
+        userId: '' // se completa en el servicio
+      };
+
+      this.adminPanelService.registerUserAndClient(userReq, clientReq).subscribe({
+        next: () => {
+          this.displayDialog = false;
+          this.loadCombinedUsers(this.page, this.size);
+        },
+        error: (err) => {
+          console.error('Error creating user and client:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Registro fallido',
+            detail: err?.error?.message || 'No se pudo completar el registro.',
+            life: 5000
+          });
+        }
+      });
     }
   }
+
 
   hideDialog() {
     this.displayDialog = false;
