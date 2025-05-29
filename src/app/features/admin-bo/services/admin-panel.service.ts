@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {Observable, switchMap} from 'rxjs';
-import {UserRequest, UserResponse} from '../../keycloak/services/auth.service';
+import {catchError, map, Observable, switchMap, throwError} from 'rxjs';
+import {AuthService, UserRequest, UserResponse} from '../../keycloak/services/auth.service';
 import {ClientCreateRequest, ClientResponse} from '../../../core/models/clients/clients-interfaces';
 export interface PagedResponse<T> {
   content: T[];
@@ -30,10 +30,9 @@ export interface CombinedUserClient {
 })
 export class AdminPanelService {
   private apiUrl = environment.apiUrl;
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
 
-  getUserPhotoUrl() {
-    const photoId = 'entrenaSyncLogo_cpm2vo';
+  getUserPhotoUrl(photoId: String) {
     return this.http.get<{ secure_url: string }>(`${this.apiUrl}/storage/images/${photoId}`);
   }
 
@@ -43,6 +42,15 @@ export class AdminPanelService {
 
   getClients(): Observable<ClientResponse[]> {
     return this.http.get<ClientResponse[]>(`${this.apiUrl}/Clients/all`, { withCredentials: true });
+  }
+
+  getClientsByUserId(userId: string): Observable<ClientResponse> {
+    return this.http.get<ClientResponse>(`${this.apiUrl}/Clients/user/${userId}`, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Error obteniendo cliente por ID de usuario:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
   registerUserAndClient(userRequest: UserRequest, clientRequest: ClientCreateRequest): Observable<any> {
@@ -67,5 +75,37 @@ export class AdminPanelService {
   deleteUser(userId: string) {
     return this.http.delete(`${this.apiUrl}/keycloak/user/${userId}`, { withCredentials: true });
   }
+
+  getAuthenticatedUserAndClient(): Observable<CombinedUserClient> {
+    return this.authService.getUserInfo().pipe(
+      switchMap((user) => {
+        if (user && user.id) {
+          return this.http.get<ClientResponse>(`${this.apiUrl}/Clients/user/${user.id}`, { withCredentials: true }).pipe(
+            map((client) => {
+              const combined: CombinedUserClient = {
+                userId: user.id,
+                clientId: client.id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                address: client.address,
+                phone: client.phone,
+                birthDate: client.birthDate,
+                gender: client.gender
+              };
+              return combined;
+            })
+          );
+        } else {
+          throw new Error('Usuario no autenticado');
+        }
+      }),
+      catchError(err => {
+        console.error('Error obteniendo usuario y cliente:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
 
 }

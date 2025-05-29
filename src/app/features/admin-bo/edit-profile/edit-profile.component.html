@@ -1,0 +1,214 @@
+<div class="min-h-screen bg-gray-50 py-8 px-4">
+  <div class="max-w-2xl mx-auto">
+    <p-card styleClass="shadow-lg">
+      <!-- Header -->
+      <ng-template pTemplate="header">
+        <div class="p-6 bg-white rounded-t-lg">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-blue-50 rounded-lg">
+              <i class="pi pi-user text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <h1 class="text-2xl font-semibold text-gray-900">Editar Perfil</h1>
+              <p class="text-gray-600">Actualiza tu información personal y de contacto</p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoadingData" class="p-6">
+        <div class="flex items-center justify-center py-12">
+          <p-progressSpinner styleClass="w-8 h-8" strokeWidth="4"></p-progressSpinner>
+          <span class="ml-3 text-gray-600">Cargando datos del perfil...</span>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form *ngIf="!isLoadingData" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+        <!-- Información Personal -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="pi pi-user text-gray-600"></i>
+            Información Personal
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Nombre -->
+            <div class="space-y-2">
+              <label for="firstName" class="block text-sm font-medium text-gray-700">
+                Nombre <span class="text-red-500">*</span>
+              </label>
+              <span class="p-input-icon-left w-full">
+                <i class="pi pi-user"></i>
+                <input
+                  pInputText
+                  id="firstName"
+                  formControlName="firstName"
+                  class="w-full"
+                  [ngClass]="{'ng-invalid ng-dirty': firstName?.invalid && firstName?.touched}"
+                />
+              </span>
+              <small *ngIf="firstName?.invalid && firstName?.touched" class="p-error block">
+                <span *ngIf="firstName?.errors?.['required']">El nombre es requerido</span>
+                <span *ngIf="firstName?.errors?.['minlength']">El nombre debe tener al menos 2 caracteres</span>
+              </small>
+            </div>
+
+            <!-- Apellidos -->
+            <div class="space-y-2">
+              <label for="lastName" class="block text-sm font-medium text-gray-700">
+                Apellidos <span class="text-red-500">*</span>
+              </label>
+              <span class="p-input-icon-left w-full">
+                <i class="pi pi-user"></i>
+                <input
+                  pInputText
+                  id="lastName"
+                  formControlName="lastName"
+                  class="w-full"
+                  [ngClass]="{'ng-invalid ng-dirty': lastName?.invalid && lastName?.touched}"
+                />
+              </span>
+              <small *ngIf="lastName?.invalid && lastName?.touched" class="p-error block">
+                <span *ngIf="lastName?.errors?.['required']">Los apellidos son requeridos</span>
+                <span *ngIf="lastName?.errors?.['minlength']">Los apellidos deben tener al menos 2 caracteres</span>
+              </small>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Fecha de Nacimiento -->
+            <div class="space-y-2">
+              <label for="birthDate" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                <i class="pi pi-calendar text-gray-600"></i>
+                Fecha de Nacimiento
+              </label>
+              <p-calendar
+                id="birthDate"
+                formControlName="birthDate"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                styleClass="w-full"
+                inputStyleClass="w-full"
+                placeholder="Selecciona una fecha"
+              ></p-calendar>
+            </div>
+
+            <!-- Género -->
+            <div class="space-y-2">
+              <label for="gender" class="block text-sm font-medium text-gray-700">
+                Género
+              </label>
+              <p-dropdown
+                id="gender"
+                formControlName="gender"
+                [options]="[
+                  {label: 'Selecciona tu género', value: ''},
+                  {label: 'Masculino', value: 'masculino'},
+                  {label: 'Femenino', value: 'femenino'},
+                ]"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Selecciona tu género"
+                styleClass="w-full"
+              ></p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <!-- Separador -->
+        <p-divider></p-divider>
+
+        <!-- Información de Contacto -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="pi pi-envelope text-black-600"></i>
+            Información de Contacto
+          </h3>
+
+          <!-- Email -->
+          <div class="space-y-2">
+            <label for="email" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+              <i class="pi pi-envelope text-gray-600"></i>
+              Email <span class="text-red-500">*</span>
+            </label>
+            <span class="p-input-icon-left w-full">
+              <input
+                pInputText
+                id="email"
+                type="email"
+                formControlName="email"
+                class="w-full"
+                [ngClass]="{'ng-invalid ng-dirty': email?.invalid && email?.touched}"
+              />
+            </span>
+            <small *ngIf="email?.invalid && email?.touched" class="p-error block">
+              <span *ngIf="email?.errors?.['required']">El email es requerido</span>
+              <span *ngIf="email?.errors?.['email']">El formato del email no es válido</span>
+            </small>
+          </div>
+
+          <!-- Teléfono -->
+          <div class="space-y-2">
+            <label for="phone" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+              <i class="pi pi-phone text-gray-600"></i>
+              Número de Teléfono
+            </label>
+            <span class="p-input-icon-left w-full">
+              <p-inputMask
+                id="phone"
+                formControlName="phone"
+                mask="+99 999 999 999"
+                placeholder="+34 612 345 678"
+                styleClass="w-full"
+                [ngClass]="{'ng-invalid ng-dirty': phone?.invalid && phone?.touched}"
+              ></p-inputMask>
+            </span>
+            <small *ngIf="phone?.invalid && phone?.touched" class="p-error block">
+              <span *ngIf="phone?.errors?.['pattern']">El formato del teléfono no es válido</span>
+            </small>
+          </div>
+
+          <!-- Dirección -->
+          <div class="space-y-2">
+            <label for="address" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
+              <i class="pi pi-map-marker text-gray-600"></i>
+              Dirección
+            </label>
+            <textarea
+              pInputTextarea
+              id="address"
+              formControlName="address"
+              rows="3"
+              placeholder="Calle, número, ciudad, código postal..."
+              class="w-full resize-none"
+            ></textarea>
+          </div>
+        </div>
+      </form>
+      <!-- Footer con botones -->
+      <ng-template pTemplate="footer">
+        <div class="bg-gray-50 p-6 flex gap-3 justify-end">
+          <p-button
+            type="button"
+            (onClick)="onCancel()"
+            [disabled]="isLoading"
+            styleClass="p-button-outlined p-button-secondary"
+            label="Cancelar"
+            icon="pi pi-times"
+          ></p-button>
+          <p-button
+            type="submit"
+            [disabled]="isLoading || profileForm.invalid"
+            styleClass="p-button-primary"
+            [loading]="isLoading"
+            label="Guardar Cambios"
+            icon="pi pi-check"
+          ></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

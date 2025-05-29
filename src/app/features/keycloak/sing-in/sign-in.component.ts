@@ -112,6 +112,7 @@ countryCodes = [
       passwordConfirmation: this.passwordConfirmation,
       firstName: this.firstName,
       lastName: this.lastName,
+      roles: ['Client']
     };
     const birthDateFormatted = this.birthDate ? this.birthDate.toISOString().split('T')[0] : '';
     console.log('Fecha de nacimiento formateada:', birthDateFormatted);
@@ -122,7 +123,7 @@ countryCodes = [
       birthDate: birthDateFormatted,
       gender: typeof this.gender === 'object' ? this.gender.value : this.gender,
       userId: '',
-      avatar: 'METER URL DEFAULT',
+      avatar: "undefinedAvatar_w8za89",
     };
 
     this.authService.register(userRequest, clientRequest).subscribe({

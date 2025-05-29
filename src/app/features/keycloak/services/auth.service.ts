@@ -23,6 +23,7 @@ export interface UserRequest {
   lastName: string;
   password: string;
   passwordConfirmation: string
+  roles?: string[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -53,13 +54,18 @@ export class AuthService {
     this.http.post(`${this.apiUrl}/session/logout`, {}, { withCredentials: true }).subscribe({
       next: () => {
         console.log('Logout exitoso');
-        this.router.navigate(['']);
+        if (this.router.url === '/' || this.router.url === '') {
+          location.reload();
+        } else {
+          this.router.navigate(['']);
+        }
       },
       error: (err) => {
         console.error('Error en logout:', err);
       }
     });
   }
+
 
   register(userRequest: UserRequest, clientRequest: ClientCreateRequest): Observable<any> {
     return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest).pipe(

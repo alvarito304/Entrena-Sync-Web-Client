@@ -15,9 +15,9 @@ export const RoleGuard: CanActivateFn = (
     map(user => {
       const roles = (user as any)?.roles || [];
 
-      const hasAllRequiredRoles = requiredRoles.every(role => roles.includes(role));
+      const hasRequiredRole = requiredRoles.some(role => roles.includes(role));
 
-      if (hasAllRequiredRoles) {
+      if (hasRequiredRole) {
         return true;
       } else {
         console.warn('[RoleGuard] Acceso denegado. Requiere roles:', requiredRoles, 'pero el usuario tiene:', roles);

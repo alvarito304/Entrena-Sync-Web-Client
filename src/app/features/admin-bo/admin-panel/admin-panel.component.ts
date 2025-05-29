@@ -25,6 +25,7 @@ export class AdminPanelComponent {
   user: UserResponse | null = null;
   userPhotoUrl: string | null = null;
   activePanel: string = 'dashboard';
+  private photoId = 'entrenaSyncLogo_cpm2vo';
   constructor(private adminPanelService: AdminPanelService, private authService: AuthService, private router: Router) {
   }
 
@@ -34,7 +35,7 @@ export class AdminPanelComponent {
     this.authService.getUserInfo().subscribe(user => {
       this.user = user;
       if (user && user.id) {
-        this.adminPanelService.getUserPhotoUrl().subscribe(res => {
+        this.adminPanelService.getUserPhotoUrl(this.photoId).subscribe(res => {
           this.userPhotoUrl = res.secure_url;
         });
       }

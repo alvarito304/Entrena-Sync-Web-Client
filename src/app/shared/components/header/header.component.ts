@@ -1,6 +1,6 @@
 import {Component, computed, HostBinding, HostListener} from '@angular/core';
-import {RouterLink, RouterLinkActive} from '@angular/router';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {Router, RouterLink, RouterLinkActive} from '@angular/router';
+import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {
   trigger,
   transition,
@@ -8,6 +8,11 @@ import {
   animate,
 } from '@angular/animations';
 import {Button} from 'primeng/button';
+import {AuthService, UserResponse} from '../../../features/keycloak/services/auth.service';
+import {Menu} from 'primeng/menu';
+import {MenuItem} from 'primeng/api';
+import {AdminPanelService} from '../../../features/admin-bo/services/admin-panel.service';
+import {switchMap, tap} from 'rxjs';
 
 
 @Component({
@@ -20,7 +25,9 @@ import {Button} from 'primeng/button';
     NgIf,
     NgClass,
     RouterLinkActive,
-    Button
+    Button,
+    Menu,
+    AsyncPipe
   ],
   standalone: true,
   animations: [
@@ -38,6 +45,10 @@ import {Button} from 'primeng/button';
 export class HeaderComponent {
   isScrolled = false;
   isMobileMenuOpen = false;
+  user: UserResponse | null = null;
+  userPhotoUrl: string | null = null;
+  menuItems: MenuItem[] = [];
+  constructor(protected authService: AuthService, private router: Router, private adminPanelService: AdminPanelService) {}
 
   navLinks = [
     { path: '', label: 'Home' },
@@ -57,6 +68,83 @@ export class HeaderComponent {
 
   isDarkTheme() {
     return this.darkTheme;
+  }
+
+  ngOnInit(): void {
+    this.authService.isAuthenticated().subscribe(isAuth => {
+      if (isAuth) {
+        this.loadUserData();
+        this.setupUserMenu();
+      } else {
+        this.user = null;
+        this.userPhotoUrl = null;
+        this.menuItems = [];
+      }
+    });
+  }
+
+
+
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
+  }
+
+  navigateToLogin(): void {
+    this.router.navigate(['/login']);
+  }
+
+  private loadUserData(): void {
+    this.authService.getUserInfo().pipe(
+      tap(user => this.user = user),
+      switchMap(user => {
+        if (!user || !user.id) throw new Error('Usuario no válido');
+        return this.adminPanelService.getClientsByUserId(user.id);
+      }),
+      switchMap(client => {
+        if (!client.avatar) throw new Error('El cliente no tiene photoId');
+        return this.adminPanelService.getUserPhotoUrl(client.avatar).pipe(
+          tap(photo => {
+            this.userPhotoUrl = photo.secure_url;
+          })
+        );
+      })
+    ).subscribe({
+      next: () => {
+        console.log('Usuario y foto cargados correctamente');
+      },
+      error: (err) => {
+        console.error('Error al cargar datos del usuario o la foto:', err);
+        this.user = null;
+        this.userPhotoUrl = null;
+      }
+    });
+  }
+
+  private setupUserMenu(): void {
+    this.menuItems = [
+      {
+        label: 'Ver perfil',
+        icon: 'pi pi-user',
+        command: () => {
+          console.log('Ver perfil');
+          this.router.navigate(['/edit-profile']);
+        }
+      },
+      {
+        label: 'Cerrar sesión',
+        icon: 'pi pi-sign-out',
+        command: () => {
+          this.authService.logout();
+        }
+      }
+    ];
+  }
+
+
+  getUserInitials(): string {
+    if (!this.user) return 'U';
+    const username = this.user.username || '';
+    return username.substring(0, 2).toUpperCase();
   }
 
   toggleDarkMode() {
