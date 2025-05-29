@@ -1,0 +1,69 @@
+<div class="min-h-screen bg-white mt-20 mb-20">
+  <div class = "max-w-7xl mx-auto mt-10 mb-10 px-4">
+    <h1 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-white">Profesionales en el sector</h1>
+    <p class="text-gray-600 dark:text-gray-300 mb-8">
+      Descubre a nuestros entrenadores altamente calificados, listos para ayudarte a alcanzar tus objetivos de fitness. Cada uno de ellos aporta una experiencia única y un enfoque personalizado para maximizar tu rendimiento y bienestar.
+    </p>
+  </div>
+  <!-- Trainers Grid -->
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div
+        *ngFor="let trainer of currentTrainers"
+        class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 overflow-hidden"
+      >
+        <!-- Trainer Image -->
+        <div class="relative">
+          <img
+            [src]="trainer.image"
+            [alt]="trainer.name"
+            class="w-full h-48 object-cover"
+          />
+          <div class="absolute top-4 right-4">
+            <span
+              [class]="'px-3 py-1 rounded-full text-xs font-medium border ' + getFieldClass(trainer.field)"
+            >
+              {{ trainer.field }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Trainer Info -->
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xl font-bold text-gray-900">{{ trainer.name }}</h3>
+            <div class="flex items-center gap-1">
+              <i class="pi pi-star-fill text-yellow-400 text-sm"></i>
+              <span class="text-sm font-medium text-gray-600">{{ trainer.rating }}</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1 mb-3">
+            <i class="pi pi-map-marker text-gray-400 text-sm"></i>
+            <span class="text-sm text-gray-600">{{ trainer.location }}</span>
+          </div>
+
+          <p class="text-gray-600 text-sm leading-relaxed mb-4">{{ trainer.description }}</p>
+
+          <p-button
+            label="Ver Perfil"
+            styleClass="w-full bg-pink-600 hover:bg-pink-700 border-pink-600 hover:border-pink-700"
+            [style]="{'background-color': '#db2777', 'border-color': '#db2777'}"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-12">
+      <p-paginator
+        [rows]="trainersPerPage"
+        [totalRecords]="totalRecords"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} entrenadores"
+        (onPageChange)="onPageChange($event)"
+        styleClass="custom-paginator"
+      ></p-paginator>
+    </div>
+  </div>
+</div>
