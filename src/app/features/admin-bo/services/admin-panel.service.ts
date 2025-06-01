@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {catchError, map, Observable, switchMap, throwError} from 'rxjs';
+import {catchError, forkJoin, map, Observable, switchMap, throwError} from 'rxjs';
 import {AuthService, UserRequest, UserResponse} from '../../keycloak/services/auth.service';
 import {ClientCreateRequest, ClientResponse} from '../../../core/models/clients/clients-interfaces';
 export interface PagedResponse<T> {
@@ -15,7 +15,7 @@ export interface PagedResponse<T> {
 
 export interface CombinedUserClient {
   userId: string; // id del user
-  clientId: string; // id del cliente
+  clientId?: string; // id del cliente
   email: string;
   firstName: string;
   lastName: string;
@@ -23,6 +23,15 @@ export interface CombinedUserClient {
   phone?: string;
   birthDate?: string;
   gender?: string;
+}
+
+export interface UpateUserRequest {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password?: string;
+  passwordConfirmation?: string;
+  roles?: string[];
 }
 
 @Injectable({
@@ -102,6 +111,19 @@ export class AdminPanelService {
       }),
       catchError(err => {
         console.error('Error obteniendo usuario y cliente:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  updateUserAndClient(userId: string, userRequest: UpateUserRequest, clientId: string, clientRequest: ClientCreateRequest): Observable<any> {
+    const updateUser$ = this.http.put(`${this.apiUrl}/keycloak/user/${userId}`, userRequest, { withCredentials: true });
+
+    const updateClient$ = this.http.put(`${this.apiUrl}/Clients/${clientId}`, clientRequest, { withCredentials: true });
+
+    return forkJoin([updateUser$, updateClient$]).pipe(
+      catchError(err => {
+        console.error('Error actualizando usuario y cliente:', err);
         return throwError(() => err);
       })
     );

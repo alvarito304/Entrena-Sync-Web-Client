@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
-import {AdminPanelService, CombinedUserClient} from '../services/admin-panel.service';
+import {AdminPanelService, CombinedUserClient, UpateUserRequest} from '../services/admin-panel.service';
 import {AuthService, UserRequest, UserResponse} from '../../keycloak/services/auth.service';
 import {Router} from '@angular/router';
 import {GenericTableComponent} from '../../../core/components/generic-table/generic-table.component';
-import {FormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MultiSelect} from 'primeng/multiselect';
 import {Dialog} from 'primeng/dialog';
 import {MessageService, PrimeTemplate} from 'primeng/api';
 import {ButtonDirective} from 'primeng/button';
-import {NgIf, NgTemplateOutlet} from '@angular/common';
+import {CommonModule, NgIf, NgTemplateOutlet} from '@angular/common';
 import {InputText} from 'primeng/inputtext';
 import {DatePicker} from 'primeng/datepicker';
 import {DropdownModule} from 'primeng/dropdown';
 import {ClientCreateRequest} from '../../../core/models/clients/clients-interfaces';
+import {CalendarModule} from 'primeng/calendar';
 
 @Component({
   selector: 'app-user-administration',
@@ -20,6 +21,8 @@ import {ClientCreateRequest} from '../../../core/models/clients/clients-interfac
     GenericTableComponent,
     FormsModule,
     MultiSelect,
+    CalendarModule,
+    CommonModule,
     Dialog,
     PrimeTemplate,
     ButtonDirective,
@@ -27,15 +30,28 @@ import {ClientCreateRequest} from '../../../core/models/clients/clients-interfac
     NgIf,
     InputText,
     DatePicker,
-    DropdownModule
+    DropdownModule,
+    ReactiveFormsModule
   ],
   templateUrl: './user-administration.component.html',
   standalone: true,
   styleUrl: './user-administration.component.css'
 })
 export class UserAdministrationComponent {
-  constructor(private adminPanelService: AdminPanelService, private router: Router, private messageService: MessageService) {
+  userForm: FormGroup;
+  constructor(private adminPanelService: AdminPanelService, private router: Router, private messageService: MessageService, private fb: FormBuilder) {
+    this.userForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      address: ['', Validators.required],
+      phone: [''],
+      gender: [''],
+      birthDate: [''],
+    });
   }
+
+
   cols = [
     { field: 'email', header: 'Email' },
     { field: 'firstName', header: 'First Name' },
@@ -60,20 +76,15 @@ export class UserAdministrationComponent {
   isNew = false;
 
   users: UserResponse[] = [];
-  combinedUsers: {
-    firstName: string;
-    lastName: string;
-    clientId: string | undefined;
-    address: string | undefined;
-    gender: string | undefined;
-    phone: string | undefined;
-    userId: string;
-    birthDate: string | undefined;
-    email: string
-  }[] = [];
-
+  combinedUsers: CombinedUserClient[] = [];
+  isFormValid: boolean = false;
+  loading = false;
+  submitted: boolean = false;
   ngOnInit() {
     this.loadCombinedUsers(this.page, this.size);
+    this.userForm.statusChanges.subscribe((status) => {
+      this.isFormValid = status === 'VALID';
+    });
   }
 
   formatDate(dateStr: string): string {
@@ -115,23 +126,6 @@ export class UserAdministrationComponent {
   onPageChange(event: any) {
     this.loadCombinedUsers(event.page, event.rows);
   }
-
-  showEditDialog(user?: CombinedUserClient) {
-    this.isNew = !user;
-    this.current = user ? { ...user } : {
-      userId: '',
-      clientId: '',
-      email: '',
-      firstName: '',
-      lastName: '',
-      address: '',
-      phone: '',
-      birthDate: '',
-      gender: ''
-    };
-    this.displayDialog = true;
-  }
-
 
   deleteUser(user: CombinedUserClient) {
     if (!user.clientId || !user.userId) {
@@ -179,43 +173,88 @@ export class UserAdministrationComponent {
     console.log('Delete multiple users', users);
   }
 
-  save() {
-    console.log('SAVE CALLED', this.current);
-    if (this.current) {
+  save(user: CombinedUserClient) {
+    this.submitted = true;
+    if (this.userForm.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Formulario inválido',
+        detail: 'Por favor, complete todos los campos requeridos.',
+        life: 5000
+      });
+      return;
+    }
+
+    console.log('SAVE CALLED', user);
+    if (user) {
       const userReq: UserRequest = {
-        username: this.current.email,
-        email: this.current.email,
-        firstName: this.current.firstName,
-        lastName: this.current.lastName,
-        password: 'TempPassword123!', //TODO cambio de contraseña
+        username: user.email,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        password: 'TempPassword123!', // En edición probablemente no quieras cambiar contraseña
         passwordConfirmation: 'TempPassword123!'
       };
 
+      const userUpReq: UpateUserRequest = {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      }
+
+      const birthDateFormatted = user.birthDate ? this.formatDateToCustom(new Date(user.birthDate)) : '';
+
       const clientReq: ClientCreateRequest = {
-        name: `${this.current.firstName} ${this.current.lastName}`,
-        address: this.current.address ?? '',
-        phone: this.current.phone ?? '',
-        birthDate: this.current.birthDate ? new Date(this.current.birthDate).toISOString() : '',
-        gender: this.current.gender ?? '',
-        userId: '' // se completa en el servicio
+        name: `${user.firstName} ${user.lastName}`,
+        address: user.address ?? '',
+        phone: user.phone ?? '',
+        birthDate: birthDateFormatted ?? '',
+        gender: user.gender ?? '',
+        userId: user.userId ?? ''  // importante para edición
       };
 
-      this.adminPanelService.registerUserAndClient(userReq, clientReq).subscribe({
-        next: () => {
-          this.displayDialog = false;
-          this.loadCombinedUsers(this.page, this.size);
-        },
-        error: (err) => {
-          console.error('Error creating user and client:', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Registro fallido',
-            detail: err?.error?.message || 'No se pudo completar el registro.',
-            life: 5000
-          });
-        }
-      });
+      if (!user.userId) {
+        this.adminPanelService.registerUserAndClient(userReq, clientReq).subscribe({
+          next: () => {
+            this.displayDialog = false;
+            this.loadCombinedUsers(this.page, this.size);
+          },
+          error: (err) => {
+            console.error('Error creating user and client:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Registro fallido',
+              detail: err?.error?.message || 'No se pudo completar el registro.',
+              life: 5000
+            });
+          }
+        });
+      } else {
+        this.adminPanelService.updateUserAndClient(user.userId, userUpReq, user.clientId ?? '', clientReq).subscribe({
+          next: () => {
+            this.displayDialog = false;
+            this.loadCombinedUsers(this.page, this.size);
+          },
+          error: (err) => {
+            console.error('Error updating user and client:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Actualización fallida',
+              detail: err?.error?.message || 'No se pudo completar la actualización.',
+              life: 5000
+            });
+          }
+        });
+      }
     }
+  }
+
+
+  formatDateToCustom(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
   }
 
 
@@ -223,5 +262,4 @@ export class UserAdministrationComponent {
     this.displayDialog = false;
     this.current = null;
   }
-
 }

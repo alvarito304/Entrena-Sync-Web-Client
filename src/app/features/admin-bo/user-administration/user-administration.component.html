@@ -8,117 +8,126 @@
   [idField]="'id'"
   [nameField]="'email'"
   [severityMap]="{}"
-  (onSave)="showEditDialog($event)"
+  [isFormValid] = "isFormValid"
+  [loading]="loading"
+  (onSave)="save($event)"
   (onDelete)="deleteUser($event)"
   (onDeleteMultiple)="deleteSelectedUsers($event)"
 >
   <ng-template #formTemplate let-user>
-    <div class="p-fluid p-formgrid p-grid">
-      <!-- Email -->
-      <div class="p-field p-col-12">
-        <label for="email" class="block font-bold mb-2">Email</label>
-        <input
-          id="email"
-          type="text"
-          pInputText
-          [(ngModel)]="user.email"
-          required
-        />
+    <form [formGroup]="userForm" (ngSubmit)="save(user)">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Columna izquierda -->
+        <div class="space-y-5">
+          <!-- Email -->
+          <div class="space-y-2">
+            <label for="email" class="block font-medium text-gray-800 dark:text-gray-200">Email</label>
+            <input
+              id="email"
+              type="text"
+              pInputText
+              formControlName ="email"
+              [(ngModel)]="user.email"
+              name="email"
+              class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all hover:border-primary/60 focus:border-primary"
+              required
+            />
+          </div>
+
+          <!-- Nombre -->
+          <div class="space-y-2">
+            <label for="firstName" class="block font-medium text-gray-800 dark:text-gray-200">Nombre</label>
+            <input
+              id="firstName"
+              type="text"
+              pInputText
+              formControlName ="firstName"
+              [(ngModel)]="user.firstName"
+              name="firstName"
+              class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all hover:border-primary/60 focus:border-primary"
+              required
+            />
+          </div>
+
+          <!-- Apellidos -->
+          <div class="space-y-2">
+            <label for="lastName" class="block font-medium text-gray-800 dark:text-gray-200">Apellidos</label>
+            <input
+              id="lastName"
+              formControlName ="lastName"
+              type="text"
+              pInputText
+              [(ngModel)]="user.lastName"
+              name="lastName"
+              class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all hover:border-primary/60 focus:border-primary"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="space-y-5">
+          <!-- Dirección -->
+          <div class="space-y-2">
+            <label for="address" class="block font-medium text-gray-800 dark:text-gray-200">Dirección</label>
+            <input
+              id="address"
+              type="text"
+              formControlName ="address"
+              pInputText
+              [(ngModel)]="user.address"
+              name="address"
+              class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all hover:border-primary/60 focus:border-primary"
+              required
+            />
+          </div>
+
+          <!-- Género -->
+          <div class="space-y-2">
+            <label for="gender" class="block font-medium text-gray-800 dark:text-gray-200">Género</label>
+            <p-dropdown
+              id="gender"
+              [options]="genders"
+              optionLabel="label"
+              optionValue="value"
+              formControlName="gender"
+              [(ngModel)]="user.gender"
+              name="gender"
+              placeholder="Selecciona uno"
+              styleClass="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm z-20"
+            ></p-dropdown>
+          </div>
+
+          <!-- Teléfono -->
+          <div class="space-y-2">
+            <label for="phone" class="block font-medium text-gray-800 dark:text-gray-200">Teléfono</label>
+            <input
+              id="phone"
+              type="text"
+              pInputText
+              formControlName ="phone"
+              [(ngModel)]="user.phone"
+              name="phone"
+              class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all hover:border-primary/60 focus:border-primary"
+            />
+          </div>
+        </div>
       </div>
-      <!-- Nombre -->
-      <div class="p-field p-col-12">
-        <label for="firstName" class="block font-bold mb-2">Nombre</label>
-        <input
-          id="firstName"
-          pInputText
-          [(ngModel)]="user.firstName"
-          required
-        />
-      </div>
-      <!-- Apellidos -->
-      <div class="p-field p-col-6">
-        <label for="lastName" class="block font-bold mb-2">Apellidos</label>
-        <input
-          id="lastName"
-          pInputText
-          [(ngModel)]="user.lastName"
-          required
-        />
-      </div>
-      <!-- Dirección -->
-      <div class="p-field p-col-6">
-        <label for="address" class="block font-bold mb-2">Dirección</label>
-        <input
-          id="address"
-          pInputText
-          [(ngModel)]="user.address"
-          required
-        />
-      </div>
-      <!-- Teléfono -->
-      <div class="p-field p-col-6">
-        <label for="phone" class="block font-bold mb-2">Teléfono</label>
-        <input
-          id="phone"
-          type="text"
-          pInputText
-          [(ngModel)]="user.phone"
-        />
-      </div>
-      <!-- Género -->
-      <div class="p-field p-col-6">
-        <label for="gender" class="block font-bold mb-2">Género</label>
-        <p-dropdown
-          id="gender"
-          [options]="genders"
-          optionLabel="label"
-          optionValue="value"
-          [(ngModel)]="user.gender"
-          placeholder="Select one"
-        ></p-dropdown>
-      </div>
-      <!-- Fecha de Nacimiento -->
-      <div class="p-field p-col-12">
-        <label class="block font-bold mb-2">Fecha de Nacimiento</label>
+
+      <!-- Fecha de nacimiento -->
+      <div class="mt-6 space-y-2">
+        <label class="block font-medium text-gray-800 dark:text-gray-200">Fecha de Nacimiento</label>
         <p-datepicker
           [(ngModel)]="user.birthDate"
+          formControlName="birthDate"
+          [dateFormat]="'yyyy-mm-dd'"
+          name="birthDate"
           [showIcon]="true"
-          [placeholder]="'Seleccionar fecha'"
-          inputId="birthDate"
+          placeholder="Seleccionar fecha"
+          class="w-full"
+          styleClass="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm z-50"
         ></p-datepicker>
       </div>
-    </div>
+    </form>
   </ng-template>
 </generic-table>
-
-<!-- Diálogo para crear/editar usuarios -->
-<p-dialog
-  header="{{ isNew ? 'Crear Usuario' : 'Editar Usuario' }}"
-  [(visible)]="displayDialog"
-  [modal]="true"
-  [style]="{ width: '40vw' }"
-  [closeOnEscape]="true"
-  (onHide)="hideDialog()"
->
-  <div class="p-fluid p-formgrid p-grid" *ngIf="current">
-    <ng-container
-      *ngTemplateOutlet="formTemplate; context: { $implicit: current }"
-    ></ng-container>
-  </div>
-
-  <p-footer>
-    <button
-      pButton
-      label="Cancelar"
-      icon="pi pi-times"
-      (click)="hideDialog()"
-      class="p-button-text"
-    ></button>
-    <button
-      pButton
-      label="Guardar"
-      icon="pi pi-check"
-      (click)="save()"
-    ></button>
-    </p-footer>
-</p-dialog>
