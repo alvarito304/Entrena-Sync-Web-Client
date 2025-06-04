@@ -4,13 +4,22 @@ import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {catchError, forkJoin, map, Observable, switchMap, throwError} from 'rxjs';
 import {AuthService, UserRequest, UserResponse} from '../../keycloak/services/auth.service';
-import {ClientCreateRequest, ClientResponse} from '../../../core/models/clients/clients-interfaces';
+import {
+  ClientCreateRequest,
+  ClientResponse,
+  ClientUpdateRequest
+} from '../../../core/models/clients/clients-interfaces';
 export interface PagedResponse<T> {
   content: T[];
   page: number;
   size: number;
   totalElements: number;
   totalPages: number;
+}
+
+export interface CloudinaryUploadResponse {
+  publicId: string; // ID de la imagen en Cloudinary
+  secureUrl: string; // URL segura de la imagen
 }
 
 export interface CombinedUserClient {
@@ -23,6 +32,7 @@ export interface CombinedUserClient {
   phone?: string;
   birthDate?: string;
   gender?: string;
+  avatar?: string;
 }
 
 export interface UpateUserRequest {
@@ -39,11 +49,65 @@ export interface UpateUserRequest {
 })
 export class AdminPanelService {
   private apiUrl = environment.apiUrl;
+  private readonly DEFAULT_AVATAR_ID = 'undefinedAvatar_w8za89';
   constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
 
   getUserPhotoUrl(photoId: String) {
     return this.http.get<{ secure_url: string }>(`${this.apiUrl}/storage/images/${photoId}`);
   }
+
+  updatePhoto(photoId: string, file: File, clientId: string) {
+    const isDefaultAvatar = photoId === this.DEFAULT_AVATAR_ID;
+
+    // Crear el observable inicial basado en si necesitamos eliminar o no
+    let initialStep;
+
+    if (isDefaultAvatar) {
+      // No eliminar, crear un observable que no hace nada
+      initialStep = new Observable(subscriber => {
+        subscriber.next(null);
+        subscriber.complete();
+      });
+    } else {
+      // Eliminar la imagen existente
+      initialStep = this.http.delete(`${this.apiUrl}/storage/images/${photoId}`, { withCredentials: true });
+    }
+
+    return initialStep.pipe(
+      switchMap(() => {
+        // Subir la nueva imagen
+        const formData = new FormData();
+        formData.append('file', file);
+        return this.http.post<CloudinaryUploadResponse>(`${this.apiUrl}/storage/images`, formData, {
+          withCredentials: true,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+      }),
+      switchMap((uploadResponse: CloudinaryUploadResponse) => {
+        // Actualizar el campo avatar del cliente
+        console.log("Subida exitosa de la imagen:", uploadResponse);
+        const updateData = {
+          avatar: uploadResponse.publicId
+        };
+        console.log('Actualizando cliente con avatar:', updateData);
+        return this.http.put(`${this.apiUrl}/Clients/${clientId}`, updateData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).pipe(
+          map(() => uploadResponse)
+        );
+      }),
+      catchError(err => {
+        console.error('Error actualizando foto:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
 
   getUsers(page: number = 0, size: number = 10): Observable<PagedResponse<UserResponse>> {
     return this.http.get<PagedResponse<UserResponse>>(`${this.apiUrl}/keycloak/user?page=${page}&size=${size}`, { withCredentials: true });
@@ -100,7 +164,8 @@ export class AdminPanelService {
                 address: client.address,
                 phone: client.phone,
                 birthDate: client.birthDate,
-                gender: client.gender
+                gender: client.gender,
+                avatar: client.avatar
               };
               return combined;
             })
@@ -116,7 +181,7 @@ export class AdminPanelService {
     );
   }
 
-  updateUserAndClient(userId: string, userRequest: UpateUserRequest, clientId: string, clientRequest: ClientCreateRequest): Observable<any> {
+  updateUserAndClient(userId: string, userRequest: UpateUserRequest, clientId: string, clientRequest: ClientUpdateRequest): Observable<any> {
     const updateUser$ = this.http.put(`${this.apiUrl}/keycloak/user/${userId}`, userRequest, { withCredentials: true });
 
     const updateClient$ = this.http.put(`${this.apiUrl}/Clients/${clientId}`, clientRequest, { withCredentials: true });

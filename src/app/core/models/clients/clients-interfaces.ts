@@ -19,7 +19,7 @@ export interface ClientCreateRequest {
   address: string;
   avatar?: string;
   phone: string;
-  birthDate: string;    // ISO date string
+  birthDate: string;
   gender: string;
   userId: string;
   hiredServicesIds?: string[];
@@ -31,4 +31,7 @@ export interface ClientUpdateRequest {
   address?: string;
   avatar?: string;
   phone?: string;
+  gender?: string;
+  hiredServicesIds?: string[];
+  workouts?: string[];
 }
