@@ -13,6 +13,7 @@ export interface UserResponse {
   email: string;
   firstName: string;
   lastName: string;
+  type: string;
   roles: string[];
 }
 
@@ -23,6 +24,7 @@ export interface UserRequest {
   lastName: string;
   password: string;
   passwordConfirmation: string
+  type: string
   roles?: string[];
 }
 

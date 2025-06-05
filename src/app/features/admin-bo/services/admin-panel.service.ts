@@ -22,6 +22,11 @@ export interface CloudinaryUploadResponse {
   secureUrl: string; // URL segura de la imagen
 }
 
+export interface WorkerTypeResponse {
+  id: string;
+  name: string;
+}
+
 export interface CombinedUserClient {
   userId: string; // id del user
   clientId?: string; // id del cliente
@@ -35,6 +40,36 @@ export interface CombinedUserClient {
   avatar?: string;
 }
 
+export interface WorkerResponse {
+  id: string;
+  userId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  phone: string;
+  birthdate: string;
+  workerType: string;
+  gender: string;
+}
+
+export interface WorkerRequest {
+  id_user: string;
+  fullName: string;
+  address: string;
+  phone: string;
+  birthdate: string;
+  gender: string;
+  workerType: string;
+}
+
+export interface WorkerUpdateRequest {
+  fullName?: string;
+  address?: string;
+  phone?: string;
+  gender?: string;
+  workerType?: string;
+}
 export interface UpateUserRequest {
   email: string;
   firstName: string;
@@ -111,6 +146,15 @@ export class AdminPanelService {
 
   getUsers(page: number = 0, size: number = 10): Observable<PagedResponse<UserResponse>> {
     return this.http.get<PagedResponse<UserResponse>>(`${this.apiUrl}/keycloak/user?page=${page}&size=${size}`, { withCredentials: true });
+  }
+
+  getWorkersUsers(page: number = 0, size: number = 10, type:string = "worker"): Observable<PagedResponse<UserResponse>> {
+    return this.http.get<PagedResponse<UserResponse>>(`${this.apiUrl}/keycloak/user?page=${page}&size=${size}&type=${type}`, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Error obteniendo usuarios trabajadores:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
   getClients(): Observable<ClientResponse[]> {
@@ -194,5 +238,45 @@ export class AdminPanelService {
     );
   }
 
+  getWorkers(page: number = 0, size: number = 10): Observable<PagedResponse<WorkerResponse>> {
+    return this.http.get<PagedResponse<WorkerResponse>>(`${this.apiUrl}/workers`, { withCredentials: true });
+  }
+
+  getWorkerTypeById(workerId: string): Observable<WorkerTypeResponse> {
+    return this.http.get<WorkerTypeResponse>(`${this.apiUrl}/workers/type/${workerId}`, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Error obteniendo tipo de trabajador por ID:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  registerUserAndWorker(userRequest: UserRequest, workerRequest: WorkerRequest): Observable<any> {
+    return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest).pipe(
+      switchMap((response) => {
+        const keycloakUserId = response.id;
+
+        const fullWorkertRequest: WorkerRequest = {
+          ...workerRequest,
+          id_user: keycloakUserId
+        };
+
+        return this.http.post(`${this.apiUrl}/workers`, fullWorkertRequest);
+      })
+    );
+  }
+
+  updateUserAndWorker(userId: string, userRequest: UpateUserRequest, workerId: string, workerRequest: WorkerUpdateRequest): Observable<any> {
+    const updateUser$ = this.http.put(`${this.apiUrl}/keycloak/user/${userId}`, userRequest, { withCredentials: true });
+
+    const updateClient$ = this.http.put(`${this.apiUrl}/workers/${workerId}`, workerRequest, { withCredentials: true });
+
+    return forkJoin([updateUser$, updateClient$]).pipe(
+      catchError(err => {
+        console.error('Error actualizando usuario y cliente:', err);
+        return throwError(() => err);
+      })
+    );
+  }
 
 }

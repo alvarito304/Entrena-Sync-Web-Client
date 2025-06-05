@@ -1,20 +1,28 @@
-<!-- Tabla genérica para usuarios -->
 <generic-table
-  [items]="combinedUsers"
+  [items]="combinedWorkers"
   [cols]="cols"
-  [globalFilterFields]="['email', 'firstName', 'lastName', 'address', 'phone', 'birthDate', 'gender'] "
-  [title]="'Manage Users'"
-  [entityName]="'Usuario'"
+  [globalFilterFields]="['email', 'firstName', 'lastName', 'address', 'phone', 'birthdate', 'gender', 'workerType'] "
+  [title]="'Manage Workers'"
+  [entityName]="'Entrenador'"
   [idField]="'id'"
   [nameField]="'email'"
   [severityMap]="{}"
   [isFormValid] = "isFormValid"
   [loading]="loading"
   (onSave)="save($event)"
-  (onDelete)="deleteUser($event)"
+  (onDelete)="delete($event)"
 >
   <ng-template #formTemplate let-user>
-    <form [formGroup]="userForm" (ngSubmit)="save(user)">
+    <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px; font-size: 12px;">
+      <strong>Debug Info:</strong><br>
+      User: {{ user | json }}<br>
+      Is Editing: {{ isEditing(user) }}<br>
+      Current Mode: {{ currentMode }}
+    </div>
+
+    <!-- Llamar al método para establecer el modo -->
+    {{ setMode(user) }}
+    <form [formGroup]="workerForm" (ngSubmit)="save(user)">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Columna izquierda -->
         <div class="space-y-5">
@@ -66,21 +74,19 @@
 
         <!-- Columna derecha -->
         <div class="space-y-5">
-          <!-- Dirección -->
+          <!-- Teléfono -->
           <div class="space-y-2">
-            <label for="address" class="block font-medium text-gray-800 dark:text-gray-200">Dirección</label>
+            <label for="workerType" class="block font-medium text-gray-800 dark:text-gray-200">Tipo de Entrenador</label>
             <input
-              id="address"
+              id="workerType"
               type="text"
-              formControlName ="address"
               pInputText
-              [(ngModel)]="user.address"
-              name="address"
+              formControlName ="workerType"
+              [(ngModel)]="user.workerType"
+              name="workerType"
               class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all hover:border-primary/60 focus:border-primary"
-              required
             />
           </div>
-
           <!-- Género -->
           <div class="space-y-2">
             <label for="gender" class="block font-medium text-gray-800 dark:text-gray-200">Género</label>
@@ -112,21 +118,50 @@
           </div>
         </div>
       </div>
-
-      <!-- Fecha de nacimiento -->
       <div class="mt-6 space-y-2">
-        <label class="block font-medium text-gray-800 dark:text-gray-200">Fecha de Nacimiento</label>
+        <!-- Dirección -->
+        <div class="space-y-2">
+          <label for="address" class="block font-medium text-gray-800 dark:text-gray-200">Dirección</label>
+          <input
+            id="address"
+            type="text"
+            formControlName ="address"
+            pInputText
+            [(ngModel)]="user.address"
+            name="address"
+            class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-all hover:border-primary/60 focus:border-primary"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Fecha de nacimiento - Siempre visible pero con diferentes estilos -->
+      <div class="mt-6 space-y-2">
+        <label class="block font-medium text-gray-800 dark:text-gray-200">
+          Fecha de Nacimiento
+          <span *ngIf="isEditing(user)" class="text-sm text-red-500 ml-2">(No editable)</span>
+        </label>
+
+        <!-- Datepicker para modo creación -->
         <p-datepicker
-          [(ngModel)]="user.birthDate"
-          formControlName="birthDate"
-          [dateFormat]="'yyyy-mm-dd'"
-          name="birthDate"
+          *ngIf="!isEditing(user)"
+          formControlName="birthdate"
+          name="birthdate"
           [showIcon]="true"
           [appendTo]="'body'"
           placeholder="Seleccionar fecha"
+          [(ngModel)]="user.birthDate"
           class="w-full"
           styleClass="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm z-50"
         ></p-datepicker>
+
+        <!-- Campo de solo lectura para modo edición -->
+        <div
+          *ngIf="isEditing(user)"
+          class="w-full rounded-lg border border-white/30 dark:border-gray-700/30 bg-gray-100 dark:bg-gray-700 p-3 text-gray-600 dark:text-gray-300"
+        >
+          {{ user.birthdate || 'No disponible' }}
+        </div>
       </div>
     </form>
   </ng-template>

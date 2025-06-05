@@ -112,6 +112,7 @@ countryCodes = [
       passwordConfirmation: this.passwordConfirmation,
       firstName: this.firstName,
       lastName: this.lastName,
+      type: 'client',
       roles: ['Client']
     };
     const birthDateFormatted = this.birthDate ? this.birthDate.toISOString().split('T')[0] : '';

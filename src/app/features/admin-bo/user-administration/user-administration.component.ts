@@ -97,32 +97,46 @@ export class UserAdministrationComponent {
 
 
   loadCombinedUsers(page: number, size: number) {
-    this.adminPanelService.getUsers(page, size).subscribe(userPaged => {
-      const users = userPaged.content;
+    this.loading = true;
 
-      this.adminPanelService.getClients().subscribe(clients => {
-        this.combinedUsers = users.map(user => {
-          const client = clients.find(c => c.userId === user.id);
-          return {
-            userId: user.id,
-            clientId: client?.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            address: client?.address,
-            phone: client?.phone.trim(),
-            birthDate: client?.birthDate ? this.formatDate(client.birthDate) : undefined,
-            gender: client?.gender
-          };
+    this.adminPanelService.getUsers(page, size).subscribe({
+      next: userPaged => {
+        const users = userPaged.content;
+
+        this.adminPanelService.getClients().subscribe({
+          next: clients => {
+            this.combinedUsers = users.map(user => {
+              const client = clients.find(c => c.userId === user.id);
+              return {
+                userId: user.id,
+                clientId: client?.id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                address: client?.address,
+                phone: client?.phone?.trim(),
+                birthDate: client?.birthDate ? this.formatDate(client.birthDate) : undefined,
+                gender: client?.gender
+              };
+            });
+            console.log('combinedUsers:', this.combinedUsers);
+            this.page = userPaged.page;
+            this.size = userPaged.size;
+            this.totalElements = userPaged.totalElements;
+            this.loading = false;
+          },
+          error: (error) => {
+            console.error('Error loading clients:', error);
+            this.loading = false;
+          }
         });
-        console.log('combinedUsers:', this.combinedUsers);
-        this.page = userPaged.page;
-        this.size = userPaged.size;
-        this.totalElements = userPaged.totalElements;
-      });
+      },
+      error: (error) => {
+        console.error('Error loading users:', error);
+        this.loading = false;
+      }
     });
   }
-
   onPageChange(event: any) {
     this.loadCombinedUsers(event.page, event.rows);
   }
@@ -168,11 +182,6 @@ export class UserAdministrationComponent {
     });
   }
 
-
-  deleteSelectedUsers(users: UserResponse[]) {
-    console.log('Delete multiple users', users);
-  }
-
   save(user: CombinedUserClient) {
     this.submitted = true;
     if (this.userForm.invalid) {
@@ -192,7 +201,8 @@ export class UserAdministrationComponent {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        password: 'TempPassword123!', // En edición probablemente no quieras cambiar contraseña
+        password: 'TempPassword123!',
+        type: 'client',
         passwordConfirmation: 'TempPassword123!'
       };
 

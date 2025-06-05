@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {AdminPanelService, CombinedUserClient, UpateUserRequest} from '../services/admin-panel.service';
+import {AdminPanelService, CombinedUserClient, UpateUserRequest} from '../admin-bo/services/admin-panel.service';
 import { CommonModule } from '@angular/common';
 
 // PrimeNG Imports
@@ -13,11 +13,11 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DividerModule } from 'primeng/divider';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import {routes} from '../../../app.routes';
+import {routes} from '../../app.routes';
 import {FileUpload} from 'primeng/fileupload';
 import {catchError, EMPTY, finalize, map, of, switchMap} from 'rxjs';
-import {AuthService, UserResponse} from '../../keycloak/services/auth.service';
-import {ClientCreateRequest, ClientUpdateRequest} from '../../../core/models/clients/clients-interfaces';
+import {AuthService, UserResponse} from '../keycloak/services/auth.service';
+import {ClientCreateRequest, ClientUpdateRequest} from '../../core/models/clients/clients-interfaces';
 import {MessageService} from 'primeng/api';
 
 @Component({

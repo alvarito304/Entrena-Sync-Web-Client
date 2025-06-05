@@ -266,8 +266,22 @@ export class ExercisesControllPanelComponent implements OnInit {
   }
 
   loadExercises() {
-    this.exerciseService.getAllExercises().subscribe((res) => {
-      this.exercises = res;
+    this.loading = true;
+
+    this.exerciseService.getAllExercises().subscribe({
+      next: (res) => {
+        this.exercises = res;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading exercises:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar los ejercicios'
+        });
+        this.loading = false;
+      }
     });
   }
 
