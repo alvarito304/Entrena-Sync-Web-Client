@@ -13,14 +13,6 @@
   (onDelete)="delete($event)"
 >
   <ng-template #formTemplate let-user>
-    <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px; font-size: 12px;">
-      <strong>Debug Info:</strong><br>
-      User: {{ user | json }}<br>
-      Is Editing: {{ isEditing(user) }}<br>
-      Current Mode: {{ currentMode }}
-    </div>
-
-    <!-- Llamar al método para establecer el modo -->
     {{ setMode(user) }}
     <form [formGroup]="workerForm" (ngSubmit)="save(user)">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
