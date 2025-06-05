@@ -66,12 +66,11 @@
 
               <!-- File Upload usando PrimeNG -->
               <p-fileUpload
-                #fileUpload
                 mode="basic"
                 name="profileImage"
                 accept="image/*"
                 [maxFileSize]="5000000"
-                [auto]="false"
+                [auto]="true"
                 chooseLabel="Seleccionar imagen"
                 styleClass="custom-file-upload w-full"
                 (onSelect)="onImageSelect($event)"
