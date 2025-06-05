@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gray-50 py-8 px-4">
   <div class="max-w-2xl mx-auto">
-    <p-card styleClass="shadow-lg">
+    <p-card styleClass="shadow-lg bg-white">
       <!-- Header -->
       <ng-template pTemplate="header">
         <div class="p-6 bg-white rounded-t-lg">
@@ -25,7 +25,93 @@
       </div>
 
       <!-- Form -->
-      <form *ngIf="!isLoadingData" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <form *ngIf="!isLoadingData" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6 bg-white p-6">
+
+        <!-- Foto de Perfil -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="pi pi-image text-gray-600"></i>
+            Foto de Perfil
+          </h3>
+
+          <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+            <!-- Preview de la imagen actual -->
+            <div class="flex-shrink-0">
+              <div class="relative">
+                <div class="w-24 h-24 rounded-full overflow-hidden bg-gray-100 border-2 border-gray-200">
+                  <img
+                    *ngIf="currentProfileImage; else defaultAvatar"
+                    [src]="currentProfileImage"
+                    alt="Foto de perfil actual"
+                    class="w-full h-full object-cover"
+                  />
+                  <ng-template #defaultAvatar>
+                    <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                      <i class="pi pi-user text-gray-400 text-2xl"></i>
+                    </div>
+                  </ng-template>
+                </div>
+                <!-- Badge de cambio -->
+                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                  <i class="pi pi-camera text-white text-xs"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload de nueva imagen -->
+            <div class="flex-1 w-full">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Actualizar foto de perfil
+              </label>
+
+              <!-- File Upload usando PrimeNG -->
+              <p-fileUpload
+                mode="basic"
+                name="profileImage"
+                accept="image/*"
+                [maxFileSize]="5000000"
+                [auto]="true"
+                chooseLabel="Seleccionar imagen"
+                styleClass="custom-file-upload w-full"
+                (onSelect)="onImageSelect($event)"
+                (onClear)="onImageClear()"
+              ></p-fileUpload>
+
+              <!-- Información adicional -->
+              <div class="mt-2 space-y-1">
+                <p class="text-xs text-gray-500">
+                  Formatos soportados: JPG, PNG (máx. 5MB)
+                </p>
+                <p class="text-xs text-gray-500">
+                  Recomendado: imagen cuadrada de al menos 200x200px
+                </p>
+              </div>
+
+              <!-- Preview de la nueva imagen seleccionada -->
+              <div *ngIf="newImagePreview" class="mt-3">
+                <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <div class="w-12 h-12 rounded-lg overflow-hidden bg-white">
+                    <img [src]="newImagePreview" alt="Vista previa" class="w-full h-full object-cover">
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-blue-900">Nueva imagen seleccionada</p>
+                    <p class="text-xs text-blue-700">{{selectedFileName}}</p>
+                  </div>
+                  <button
+                    type="button"
+                    (click)="removeNewImage()"
+                    class="text-blue-600 hover:text-blue-800 transition-colors"
+                  >
+                    <i class="pi pi-times text-sm"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Separador -->
+        <p-divider></p-divider>
 
         <!-- Información Personal -->
         <div class="space-y-4">
@@ -46,12 +132,11 @@
                   pInputText
                   id="firstName"
                   formControlName="firstName"
-                  class="w-full"
+                  class="w-full !bg-white"
                   [ngClass]="{'ng-invalid ng-dirty': firstName?.invalid && firstName?.touched}"
                 />
               </span>
               <small *ngIf="firstName?.invalid && firstName?.touched" class="p-error block">
-                <span *ngIf="firstName?.errors?.['required']">El nombre es requerido</span>
                 <span *ngIf="firstName?.errors?.['minlength']">El nombre debe tener al menos 2 caracteres</span>
               </small>
             </div>
@@ -67,35 +152,17 @@
                   pInputText
                   id="lastName"
                   formControlName="lastName"
-                  class="w-full"
+                  class="w-full !bg-white"
                   [ngClass]="{'ng-invalid ng-dirty': lastName?.invalid && lastName?.touched}"
                 />
               </span>
               <small *ngIf="lastName?.invalid && lastName?.touched" class="p-error block">
-                <span *ngIf="lastName?.errors?.['required']">Los apellidos son requeridos</span>
                 <span *ngIf="lastName?.errors?.['minlength']">Los apellidos deben tener al menos 2 caracteres</span>
               </small>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Fecha de Nacimiento -->
-            <div class="space-y-2">
-              <label for="birthDate" class="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                <i class="pi pi-calendar text-gray-600"></i>
-                Fecha de Nacimiento
-              </label>
-              <p-calendar
-                id="birthDate"
-                formControlName="birthDate"
-                [showIcon]="true"
-                dateFormat="dd/mm/yy"
-                styleClass="w-full"
-                inputStyleClass="w-full"
-                placeholder="Selecciona una fecha"
-              ></p-calendar>
-            </div>
-
             <!-- Género -->
             <div class="space-y-2">
               <label for="gender" class="block text-sm font-medium text-gray-700">
@@ -112,7 +179,7 @@
                 optionLabel="label"
                 optionValue="value"
                 placeholder="Selecciona tu género"
-                styleClass="w-full"
+                styleClass="w-full custom-dropdown"
               ></p-dropdown>
             </div>
           </div>
@@ -124,7 +191,7 @@
         <!-- Información de Contacto -->
         <div class="space-y-4">
           <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <i class="pi pi-envelope text-black-600"></i>
+            <i class="pi pi-envelope text-gray-600"></i>
             Información de Contacto
           </h3>
 
@@ -140,12 +207,11 @@
                 id="email"
                 type="email"
                 formControlName="email"
-                class="w-full"
+                class="w-full !bg-white"
                 [ngClass]="{'ng-invalid ng-dirty': email?.invalid && email?.touched}"
               />
             </span>
             <small *ngIf="email?.invalid && email?.touched" class="p-error block">
-              <span *ngIf="email?.errors?.['required']">El email es requerido</span>
               <span *ngIf="email?.errors?.['email']">El formato del email no es válido</span>
             </small>
           </div>
@@ -162,7 +228,7 @@
                 formControlName="phone"
                 mask="+99 999 999 999"
                 placeholder="+34 612 345 678"
-                styleClass="w-full"
+                styleClass="w-full custom-input-mask"
                 [ngClass]="{'ng-invalid ng-dirty': phone?.invalid && phone?.touched}"
               ></p-inputMask>
             </span>
@@ -177,20 +243,19 @@
               <i class="pi pi-map-marker text-gray-600"></i>
               Dirección
             </label>
-            <textarea
-              pInputTextarea
-              id="address"
-              formControlName="address"
-              rows="3"
-              placeholder="Calle, número, ciudad, código postal..."
-              class="w-full resize-none"
-            ></textarea>
+            <span class="p-input-icon-left w-full">
+              <input
+                pInputText
+                id="address"
+                formControlName="address"
+                placeholder="Calle, número, ciudad, código postal..."
+                class="w-full !bg-white"
+              />
+            </span>
           </div>
         </div>
-      </form>
-      <!-- Footer con botones -->
-      <ng-template pTemplate="footer">
-        <div class="bg-gray-50 p-6 flex gap-3 justify-end">
+        <!-- Footer con botones -->
+        <div class="bg-white p-6 flex gap-3 justify-end border-t border-gray-200">
           <p-button
             type="button"
             (onClick)="onCancel()"
@@ -208,7 +273,7 @@
             icon="pi pi-check"
           ></p-button>
         </div>
-      </ng-template>
+      </form>
     </p-card>
   </div>
 </div>

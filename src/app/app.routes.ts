@@ -10,11 +10,10 @@ import {
 } from './features/exercises/pages/exercises-controll-panel/exercises-controll-panel.component';
 import {AdminPanelComponent} from './features/admin-bo/admin-panel/admin-panel.component';
 import {RoleGuard} from './features/keycloak/services/RoleGuard';
-import {DashboardComponent} from './features/admin-bo/dashboard/dashboard.component';
 import {UserAdministrationComponent} from './features/admin-bo/user-administration/user-administration.component';
 import {WorkoutPageComponent} from './features/workouts/pages/workout-page/workout-page.component';
-import {EditProfileComponent} from './features/admin-bo/edit-profile/edit-profile.component';
-import {WorkerPageComponent} from './features/worker-page/worker-page.component';
+import {EditProfileComponent} from './features/edit-profile/edit-profile.component';
+import {WorkerAdministrationComponent} from './features/admin-bo/worker-administration/worker-administration.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,13 +22,12 @@ export const routes: Routes = [
   { path: 'register', component: SignInComponent},
   { path: 'human-body', component: HumanBodyPageComponent},
   { path: 'workouts', component: WorkoutPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] } },
-  { path: 'trainers', component: WorkerPageComponent },
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] } },
   { path: 'adminpanel', component: AdminPanelComponent,
     canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] }, children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
+      { path: '', redirectTo: 'user-administration', pathMatch: 'full' },
       { path: 'user-administration', component: UserAdministrationComponent },
       { path: 'exercises', component: ExercisesControllPanelComponent},
+      { path: 'worker-administration', component: WorkerAdministrationComponent }
     ]}
 ];
