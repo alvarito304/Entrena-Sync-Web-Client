@@ -69,14 +69,14 @@ export class WorkerAdministrationComponent {
   loading = false;
   submitted: boolean = false;
   cols = [
-    { field: 'email', header: 'Email' },
-    { field: 'firstName', header: 'First Name' },
-    { field: 'lastName', header: 'Last Name' },
-    { field: 'address', header: 'Address' },
-    { field: 'phone', header: 'Phone' },
-    { field: 'birthdate', header: 'Birth Date' },
-    { field: 'gender', header: 'Gender' },
-    { field: 'workerType', header: 'Worker Type' }
+    { field: 'email', header: 'Email', style: 'min-width: 16rem' },
+    { field: 'firstName', header: 'First Name', style: 'min-width: 12rem' },
+    { field: 'lastName', header: 'Last Name', style: 'min-width: 12rem' },
+    { field: 'address', header: 'Address', style: 'min-width: 16rem' },
+    { field: 'phone', header: 'Phone', style: 'min-width: 10rem' },
+    { field: 'birthdate', header: 'Birth Date', style: 'min-width: 12rem' },
+    { field: 'gender', header: 'Gender', style: 'min-width: 8rem' },
+    { field: 'workerType', header: 'Worker Type', style: 'min-width: 14rem' }
   ];
 
   page = 0;
