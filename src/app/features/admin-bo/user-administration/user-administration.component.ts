@@ -142,40 +142,65 @@ export class UserAdministrationComponent {
   }
 
   deleteUser(user: CombinedUserClient) {
-    if (!user.clientId || !user.userId) {
-      console.error('Faltan los IDs necesarios para eliminar');
+    if (!user.userId) {
+      console.error('Falta el ID de usuario necesario para eliminar');
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se puede eliminar: falta información del usuario',
+        life: 3000
+      });
       return;
     }
 
-    this.adminPanelService.deleteClientById(user.clientId).subscribe({
-      next: () => {
-        this.adminPanelService.deleteUser(user.userId).subscribe({
-          next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Eliminado',
-              detail: 'Usuario y cliente eliminados correctamente',
-              life: 3000
-            });
-            this.loadCombinedUsers(this.page, this.size);
-          },
-          error: err => {
-            console.error('Error al eliminar usuario:', err);
+    // Si tiene clientId, intentar eliminar el cliente primero
+    if (user.clientId) {
+      this.adminPanelService.deleteClientById(user.clientId).subscribe({
+        next: () => {
+          // Cliente eliminado exitosamente, ahora eliminar usuario
+          this.deleteUserOnly(user.userId);
+        },
+        error: err => {
+          console.error('Error al eliminar cliente:', err);
+
+          // Si el cliente no existe (404) o ya fue eliminado, proceder a eliminar solo el usuario
+          if (err.status === 404 || err.status === 410) {
+            console.log('Cliente no encontrado, procediendo a eliminar solo el usuario');
+            this.deleteUserOnly(user.userId);
+          } else {
+            // Error real al eliminar cliente
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'No se pudo eliminar el usuario',
+              detail: 'No se pudo eliminar el cliente',
               life: 3000
             });
           }
+        }
+      });
+    } else {
+      this.deleteUserOnly(user.userId);
+    }
+  }
+
+
+  private deleteUserOnly(userId: string) {
+    this.adminPanelService.deleteUser(userId).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Usuario eliminado correctamente',
+          life: 3000
         });
+        this.loadCombinedUsers(this.page, this.size);
       },
       error: err => {
-        console.error('Error al eliminar cliente:', err);
+        console.error('Error al eliminar usuario:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'No se pudo eliminar el cliente',
+          detail: 'No se pudo eliminar el usuario',
           life: 3000
         });
       }

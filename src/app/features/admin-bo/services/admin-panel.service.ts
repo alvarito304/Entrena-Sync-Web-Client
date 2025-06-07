@@ -252,7 +252,7 @@ export class AdminPanelService {
   }
 
   registerUserAndWorker(userRequest: UserRequest, workerRequest: WorkerRequest): Observable<any> {
-    return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest).pipe(
+    return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest, {withCredentials: true}).pipe(
       switchMap((response) => {
         const keycloakUserId = response.id;
 
@@ -261,7 +261,7 @@ export class AdminPanelService {
           id_user: keycloakUserId
         };
 
-        return this.http.post(`${this.apiUrl}/workers`, fullWorkertRequest);
+        return this.http.post(`${this.apiUrl}/workers`, fullWorkertRequest, {withCredentials: true});
       })
     );
   }
