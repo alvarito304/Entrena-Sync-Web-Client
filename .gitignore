@@ -45,4 +45,4 @@ Thumbs.db
 
 DockerCompose
 
-/environments
+/environments/environment.ts
