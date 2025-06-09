@@ -51,6 +51,7 @@ export interface WorkerResponse {
   birthdate: string;
   workerType: string;
   gender: string;
+  service_list?: string[];
 }
 
 export interface WorkerRequest {
@@ -274,6 +275,16 @@ export class AdminPanelService {
     return forkJoin([updateUser$, updateClient$]).pipe(
       catchError(err => {
         console.error('Error actualizando usuario y cliente:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  getWorkerById(workerId: string): Observable<WorkerResponse> {
+    console.log("Obteniendo trabajador por ID:", workerId);
+    return this.http.get<WorkerResponse>(`${this.apiUrl}/workers/${workerId}`, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Error obteniendo trabajador por ID:', err);
         return throwError(() => err);
       })
     );

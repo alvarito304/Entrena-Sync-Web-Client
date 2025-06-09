@@ -14,6 +14,9 @@ import {UserAdministrationComponent} from './features/admin-bo/user-administrati
 import {WorkoutPageComponent} from './features/workouts/pages/workout-page/workout-page.component';
 import {EditProfileComponent} from './features/edit-profile/edit-profile.component';
 import {WorkerAdministrationComponent} from './features/admin-bo/worker-administration/worker-administration.component';
+import {WorkerPageComponent} from './features/worker-page/worker-page.component';
+import {ServicesPageComponent} from './features/services-page/services-page.component';
+import {PaymentSuccessComponent} from './features/services-page/payment-success/payment-success.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,6 +26,9 @@ export const routes: Routes = [
   { path: 'human-body', component: HumanBodyPageComponent},
   { path: 'workouts', component: WorkoutPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] } },
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] } },
+  { path: 'trainers', component: WorkerPageComponent},
+  { path: 'services/:id', component: ServicesPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client', 'Worker'] }},
+  { path: 'payment-success', component: PaymentSuccessComponent},
   { path: 'adminpanel', component: AdminPanelComponent,
     canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] }, children: [
       { path: '', redirectTo: 'user-administration', pathMatch: 'full' },

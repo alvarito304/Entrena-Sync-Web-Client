@@ -4,15 +4,24 @@ import {NgClass, NgForOf} from '@angular/common';
 import {Button} from 'primeng/button';
 import {Tag} from 'primeng/tag';
 import {Avatar} from 'primeng/avatar';
+import {AdminPanelService} from '../admin-bo/services/admin-panel.service';
+import {Router, RouterLink} from '@angular/router';
+import {catchError, forkJoin, map, of} from 'rxjs';
 
 export interface Trainer {
-  id: number
+  userId: string
+  workerId: string | undefined
   name: string
   field: string
   description: string
-  image: string
+  avatar: string
   rating: number
   location: string
+  email: string
+  phone?: string
+  gender?: string
+  birthdate?: string
+  service_list?: string[]
 }
 
 @Component({
@@ -23,127 +32,136 @@ export interface Trainer {
     Button,
     Tag,
     Avatar,
-    NgForOf
+    NgForOf,
+    RouterLink
   ],
   templateUrl: './worker-page.component.html',
   standalone: true,
   styleUrl: './worker-page.component.css'
 })
 export class WorkerPageComponent implements OnInit {
-  trainers: Trainer[] = [
-    {
-      id: 1,
-      name: "María González",
-      field: "Gym",
-      description:
-        "Especialista en entrenamiento funcional y pérdida de peso. 5 años de experiencia ayudando a personas a alcanzar sus objetivos fitness.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.9,
-      location: "Madrid Centro",
-    },
-    {
-      id: 2,
-      name: "Carlos Ruiz",
-      field: "Powerlifting",
-      description:
-        "Entrenador certificado en powerlifting con múltiples competencias nacionales. Especializado en fuerza máxima y técnica.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.8,
-      location: "Barcelona",
-    },
-    {
-      id: 3,
-      name: "Ana Martín",
-      field: "Nutrición",
-      description:
-        "Nutricionista deportiva con enfoque en planes personalizados. Ayudo a optimizar el rendimiento a través de la alimentación.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.9,
-      location: "Valencia",
-    },
-    {
-      id: 4,
-      name: "David López",
-      field: "Fisio",
-      description:
-        "Fisioterapeuta especializado en lesiones deportivas y rehabilitación. Trabajo con atletas de alto rendimiento.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.7,
-      location: "Sevilla",
-    },
-    {
-      id: 5,
-      name: "Laura Sánchez",
-      field: "Fútbol",
-      description:
-        "Ex-jugadora profesional, ahora entreno equipos juveniles y adultos. Especializada en técnica y preparación física.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.8,
-      location: "Bilbao",
-    },
-    {
-      id: 6,
-      name: "Roberto Fernández",
-      field: "Gym",
-      description:
-        "Personal trainer con 8 años de experiencia. Me especializo en hipertrofia muscular y transformaciones corporales.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.6,
-      location: "Málaga",
-    },
-    {
-      id: 7,
-      name: "Elena Torres",
-      field: "Yoga",
-      description:
-        "Instructora certificada de yoga y mindfulness. Ayudo a encontrar el equilibrio entre cuerpo y mente.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.9,
-      location: "Granada",
-    },
-    {
-      id: 8,
-      name: "Miguel Ángel",
-      field: "Crossfit",
-      description:
-        "Coach de CrossFit nivel 2. Especializado en entrenamientos de alta intensidad y preparación para competencias.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.7,
-      location: "Zaragoza",
-    },
-    {
-      id: 9,
-      name: "Carmen Jiménez",
-      field: "Pilates",
-      description:
-        "Instructora de Pilates con formación en rehabilitación. Trabajo con personas de todas las edades y condiciones físicas.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.8,
-      location: "Murcia",
-    },
-    {
-      id: 10,
-      name: "Alejandro Vega",
-      field: "Natación",
-      description:
-        "Ex-nadador olímpico, ahora entreno a nadadores de todas las edades. Especializado en técnica y resistencia.",
-      image: "/placeholder.svg?height=200&width=200",
-      rating: 4.9,
-      location: "Las Palmas",
-    },
-  ]
-
+  constructor(private adminService: AdminPanelService, private router: Router) {
+  }
+  trainers: Trainer[] = []
   currentTrainers: Trainer[] = []
   trainersPerPage = 6
   totalRecords = 0
   currentPage = 0
+  loading = false
 
   ngOnInit() {
-    this.totalRecords = this.trainers.length
     this.loadTrainers()
   }
 
   loadTrainers() {
+    this.loading = true
+
+    // Cargar todos los trabajadores para obtener el total
+    this.adminService.getWorkersUsers(0, 1000).subscribe({
+      next: (userPaged) => {
+        const users = userPaged.content
+
+        this.adminService.getWorkers().subscribe({
+          next: (workersResponse) => {
+            const workers = Array.isArray(workersResponse) ? workersResponse : workersResponse.content
+
+            const combinedObservables = users.map((user) => {
+              const worker = workers.find((w) => w.id_user === user.id)
+
+              if (!worker) {
+                return of({
+                  userId: user.id,
+                  workerId: undefined,
+                  name: `${user.firstName} ${user.lastName}`,
+                  field: "Desconocido",
+                  description: "Información no disponible",
+                  avatar: "undefinedAvatar_w8za89",
+                  rating: 0,
+                  location: "No especificada",
+                  email: user.email,
+                  phone: undefined,
+                  gender: undefined,
+                  birthdate: undefined,
+                })
+              }
+
+              return this.adminService.getWorkerTypeById(worker.id_workerType).pipe(
+                map((workerType) => {
+                  const trainer: Trainer = {
+                    userId: user.id,
+                    workerId: worker.id,
+                    name: `${user.firstName} ${user.lastName}`,
+                    field: workerType?.name ?? "Desconocido",
+                    description: this.generateDescription(workerType?.name ?? "Desconocido"),
+                    avatar: worker.avatar,
+                    rating: this.generateRandomRating(),
+                    location: worker.address || "No especificada",
+                    email: user.email,
+                    phone: worker.phone?.trim(),
+                    gender: worker.gender,
+                    birthdate: worker.birthdate,
+                  }
+
+                  // Cargar imagen si el usuario tiene avatar
+                  if (worker.avatar) {
+                    this.loadUserPhoto(worker.avatar, trainer)
+                  }
+
+                  return trainer
+                }),
+                catchError(() =>
+                  of({
+                    userId: user.id,
+                    workerId: worker.id,
+                    name: `${user.firstName} ${user.lastName}`,
+                    field: "Desconocido",
+                    description: "Información no disponible",
+                    avatar: "undefinedAvatar_w8za89",
+                    rating: this.generateRandomRating(),
+                    location: worker.address || "No especificada",
+                    email: user.email,
+                    phone: worker.phone?.trim(),
+                    gender: worker.gender,
+                    birthdate: worker.birthdate,
+                  }),
+                ),
+              )
+            })
+
+            forkJoin(combinedObservables).subscribe((combined) => {
+              this.trainers = combined
+              this.totalRecords = this.trainers.length
+              this.updateCurrentTrainers()
+              this.loading = false
+              console.log("trainers loaded:", this.trainers)
+            })
+          },
+          error: (error) => {
+            console.error("Error loading workers:", error)
+            this.loading = false
+          },
+        })
+      },
+      error: (error) => {
+        console.error("Error loading worker users:", error)
+        this.loading = false
+      },
+    })
+  }
+
+  loadUserPhoto(photoId: string, trainer: Trainer) {
+    this.adminService.getUserPhotoUrl(photoId).subscribe({
+      next: (response) => {
+        trainer.avatar = response.secure_url
+      },
+      error: (error) => {
+        console.error("Error loading user photo:", error)
+        // Mantener imagen placeholder en caso de error
+      },
+    })
+  }
+
+  updateCurrentTrainers() {
     const startIndex = this.currentPage * this.trainersPerPage
     const endIndex = startIndex + this.trainersPerPage
     this.currentTrainers = this.trainers.slice(startIndex, endIndex)
@@ -153,6 +171,27 @@ export class WorkerPageComponent implements OnInit {
     this.currentPage = event.page
     this.loadTrainers()
     window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  generateDescription(workerType: string): string {
+    const descriptions: { [key: string]: string } = {
+      Gym: "Especialista en entrenamiento funcional y acondicionamiento físico general.",
+      Powerlifting: "Entrenador especializado en fuerza máxima y técnicas de powerlifting.",
+      Nutrición: "Profesional en nutrición deportiva con enfoque en planes personalizados.",
+      Fisio: "Fisioterapeuta especializado en lesiones deportivas y rehabilitación.",
+      Fútbol: "Entrenador de fútbol con experiencia en técnica y preparación física.",
+      Yoga: "Instructor certificado de yoga y mindfulness.",
+      Crossfit: "Coach de CrossFit especializado en entrenamientos de alta intensidad.",
+      Pilates: "Instructor de Pilates con formación en rehabilitación.",
+      Natación: "Entrenador de natación especializado en técnica y resistencia.",
+      Desconocido: "Profesional del fitness con experiencia en entrenamiento personalizado.",
+    }
+    return descriptions[workerType] || descriptions["Desconocido"]
+  }
+
+  generateRandomRating(): number {
+    // Generar rating entre 4.5 y 5.0
+    return Math.round((4.5 + Math.random() * 0.5) * 10) / 10
   }
 
   getFieldSeverity(field: string): string {

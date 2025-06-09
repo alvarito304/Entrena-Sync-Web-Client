@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-white mt-20 mb-20">
+  <!-- Header Section -->
+  <div class="max-w-7xl mx-auto mt-10 mb-10 px-4">
+    <!-- Back Button -->
+    <div class="mb-6">
+      <p-button
+        icon="pi pi-arrow-left"
+        label="Volver a Entrenadores"
+        styleClass="p-button-text text-gray-600 hover:text-pink-600"
+        (click)="goBack()"
+      ></p-button>
+    </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
+  </div>
+
+  <!-- Services Grid -->
+  <div *ngIf="!loading" class="max-w-7xl mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div
+        *ngFor="let service of services"
+        class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden"
+      >
+        <!-- Service Header -->
+        <div class="p-6 border-b border-gray-100">
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-gray-900 flex-1">{{ service.name }}</h3>
+          </div>
+
+          <p class="text-gray-600 text-sm leading-relaxed mb-4">{{ service.description }}</p>
+
+          <!-- Service Details -->
+          <div class="space-y-2">
+            <!-- Duration -->
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+              <i class="pi pi-clock text-gray-400"></i>
+              <span>{{ service.time || 'Hasta que se acabe la suscripcción' }}</span>
+            </div>
+
+            <!-- Location -->
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+              <i [class]="getCategoryClass(service)"></i>
+              <span>{{ service.location || 'Sesión Online' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Footer -->
+        <div class="p-6 bg-gray-50">
+          <div class="flex items-center justify-between">
+            <div class="text-left">
+              <span class="text-2xl font-bold text-gray-900">{{ service.price }}€</span>
+              <span class="text-gray-600 text-sm ml-1">/ sesión</span>
+            </div>
+            <p-button
+              label="Suscribirse"
+              icon="pi pi-plus"
+              styleClass="bg-pink-600 hover:bg-pink-700 border-pink-600 hover:border-pink-700"
+              [style]="{'background-color': '#db2777', 'border-color': '#db2777'}"
+              (click)="subscribeToService(service)"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="services.length === 0 && !loading" class="text-center py-12">
+      <i class="pi pi-calendar text-gray-400 text-6xl mb-4"></i>
+      <h3 class="text-xl font-semibold text-gray-600 mb-2">No hay servicios disponibles</h3>
+      <p class="text-gray-500">Este entrenador aún no ha publicado servicios.</p>
+    </div>
+  </div>
+</div>
+</div>
