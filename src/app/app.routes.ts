@@ -17,6 +17,7 @@ import {WorkerAdministrationComponent} from './features/admin-bo/worker-administ
 import {WorkerPageComponent} from './features/worker-page/worker-page.component';
 import {ServicesPageComponent} from './features/services-page/services-page.component';
 import {PaymentSuccessComponent} from './features/services-page/payment-success/payment-success.component';
+import {MyHireServicesComponent} from './features/services-page/my-hire-services/my-hire-services.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +27,7 @@ export const routes: Routes = [
   { path: 'human-body', component: HumanBodyPageComponent},
   { path: 'workouts', component: WorkoutPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] } },
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] } },
+  { path: 'my-services', component: MyHireServicesComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] }},
   { path: 'trainers', component: WorkerPageComponent},
   { path: 'services/:id', component: ServicesPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client', 'Worker'] }},
   { path: 'payment-success', component: PaymentSuccessComponent},

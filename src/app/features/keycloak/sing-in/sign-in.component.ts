@@ -30,6 +30,8 @@ export class SignInComponent {
     { label: 'Perfil' }
   ];
 
+  isLoading = false;
+
   // Campos
   email = '';
   password = '';
@@ -104,7 +106,7 @@ countryCodes = [
       });
       return;
     }
-
+    this.isLoading = true;
     const userRequest = {
       username: this.email,
       email: this.email,
@@ -129,6 +131,7 @@ countryCodes = [
 
     this.authService.register(userRequest, clientRequest).subscribe({
       next: () => {
+        this.isLoading = false;
         console.log('Usuario y cliente creados correctamente');
         this.messageService.add({
           severity: 'success',
@@ -139,6 +142,7 @@ countryCodes = [
         this.router.navigate(['/human-body']);
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error al registrar:', err);
         this.messageService.add({
           severity: 'error',

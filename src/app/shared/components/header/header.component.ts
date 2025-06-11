@@ -53,7 +53,6 @@ export class HeaderComponent {
   navLinks = [
     { path: '', label: 'Home' },
     { path: 'human-body', label: 'Ejercicios' },
-    { path: 'services', label: 'Services' },
     { path: 'trainers', label: 'Trainers' },
     { path: 'workouts', label: 'Entrenamientos' },
     { path: 'contact', label: 'Contact' },
@@ -128,6 +127,13 @@ export class HeaderComponent {
         command: () => {
           console.log('Ver perfil');
           this.router.navigate(['/edit-profile']);
+        }
+      },
+      {
+        label: 'Mis suscripciones',
+        icon: 'pi pi-list',
+        command: () => {
+          this.router.navigate(['/my-services']);
         }
       },
       {

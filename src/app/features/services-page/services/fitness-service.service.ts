@@ -13,6 +13,17 @@ export interface FitnessService {
   time: string | undefined;
   location: string | undefined;
 }
+
+export interface FitnessPlanResponse {
+  id: string;
+  price: number
+  clientId: string;
+  serviceId: string;
+  description: string;
+  createdAt: string | undefined;
+  renovation: string | undefined;
+  isDeleted: boolean;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -59,6 +70,28 @@ export class FitnessServiceService {
     );
   }
 
+  loadClientHiredServices(clientId: string): Observable<FitnessPlanResponse[]> {
+    console.log('Cargando servicios contratados para el cliente:', clientId);
+    return this.http.get<FitnessPlanResponse[]>(`${this.apiUrl}/services/plans/${clientId}`, {
+      withCredentials: true
+    }).pipe(
+      catchError((err) => {
+        console.error('❌ Error real al cargar cliente:', err);
+        return throwError(() => err);
+      })
+    );
+  }
 
+  deleteClientHiredService(serviceId: string): Observable<void> {
+    console.log('Eliminando servicio contratado: ', serviceId);
+    return this.http.delete<void>(`${this.apiUrl}/services/plans/${serviceId}`, {
+      withCredentials: true
+    }).pipe(
+      catchError((err) => {
+        console.error('❌ Error real al eliminar servicio contratado:', err);
+        return throwError(() => err);
+      })
+    );
+  }
 
 }

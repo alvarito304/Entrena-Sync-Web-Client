@@ -1,6 +1,13 @@
 <!-- register.component.html refactorizado -->
 <div class="min-h-screen bg-[var(--bg-light)] dark:bg-[var(--bg-dark)] flex items-center justify-center p-6">
-    <div class="relative container max-w-md p-6 md:p-8
+  <div *ngIf="isLoading"
+       class="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-2xl flex items-center justify-center z-10">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg flex flex-col items-center">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-3"></div>
+      <p class="text-sm text-gray-600 dark:text-gray-300">Iniciando sesión...</p>
+    </div>
+  </div>
+  <div class="relative container max-w-md p-6 md:p-8
               bg-gradient-to-br from-white/10 to-white/5 dark:from-black/20 dark:to-black/10
               backdrop-blur-md border border-white/30 dark:border-white/30
               rounded-2xl shadow-lg">

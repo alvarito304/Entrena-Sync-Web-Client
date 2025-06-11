@@ -56,17 +56,17 @@ export class AuthService {
     this.http.post(`${this.apiUrl}/session/logout`, {}, { withCredentials: true }).subscribe({
       next: () => {
         console.log('Logout exitoso');
-        if (this.router.url === '/' || this.router.url === '') {
-          location.reload();
-        } else {
-          this.router.navigate(['']);
-        }
+        this.router.navigate(['']).then(() => {
+          // Una vez redirigido a la ruta raíz, recarga la página completamente
+          window.location.reload();
+        });
       },
       error: (err) => {
         console.error('Error en logout:', err);
       }
     });
   }
+
 
 
   register(userRequest: UserRequest, clientRequest: ClientCreateRequest): Observable<any> {
