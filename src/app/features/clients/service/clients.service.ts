@@ -36,7 +36,7 @@ export class ClientService {
    * @return Observable<ClientResponse>
    */
   getClientByUserId(userId: string): Observable<ClientResponse> {
-    return this.http.get<ClientResponse>(`${this.API_URL}/user/${userId}`);
+    return this.http.get<ClientResponse>(`${this.API_URL}/user/${userId}`, { withCredentials: true });
   }
 
   /**
@@ -45,7 +45,7 @@ export class ClientService {
    * @return Observable<ClientResponse>
    */
   getClientById(id: string): Observable<ClientResponse> {
-    return this.http.get<ClientResponse>(`${this.API_URL}/${id}`);
+    return this.http.get<ClientResponse>(`${this.API_URL}/${id}`, { withCredentials: true });
   }
 
   /**
@@ -54,7 +54,7 @@ export class ClientService {
    * @return Observable<ClientResponse>
    */
   createClient(client: ClientCreateRequest): Observable<ClientResponse> {
-    return this.http.post<ClientResponse>(this.API_URL, client);
+    return this.http.post<ClientResponse>(this.API_URL, client, { withCredentials: true });
   }
 
   /**
@@ -64,7 +64,7 @@ export class ClientService {
    * @return Observable<ClientResponse>
    */
   updateClient(id: string, client: ClientUpdateRequest): Observable<ClientResponse> {
-    return this.http.put<ClientResponse>(`${this.API_URL}/${id}`, client);
+    return this.http.put<ClientResponse>(`${this.API_URL}/${id}`, client, { withCredentials: true });
   }
 
   /**
@@ -73,6 +73,6 @@ export class ClientService {
    * @return Observable<void>
    */
   deleteClient(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`);
+    return this.http.delete<void>(`${this.API_URL}/${id}`, { withCredentials: true });
   }
 }

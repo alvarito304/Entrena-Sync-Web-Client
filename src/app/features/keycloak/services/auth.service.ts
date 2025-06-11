@@ -1,11 +1,11 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+// auth.service.ts
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
-import { BehaviorSubject, catchError, map, Observable, of, shareReplay, switchMap, throwError, tap } from 'rxjs';
-import { ClientCreateRequest, ClientResponse } from '../../../core/models/clients/clients-interfaces';
-import { ClientService } from '../../clients/service/clients.service';
+import {environment} from '../../../../../environments/environment';
+import {BehaviorSubject, catchError, map, Observable, of, shareReplay, switchMap, throwError, tap} from 'rxjs';
+import {ClientCreateRequest, ClientResponse} from '../../../core/models/clients/clients-interfaces';
+import {ClientService} from '../../clients/service/clients.service';
 
 export interface UserResponse {
   id: string;
@@ -31,14 +31,9 @@ export interface UserRequest {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = environment.apiUrl;
-  private userInfo$: Observable<UserResponse | null> | undefined;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private clientService: ClientService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  private userInfo$: Observable<UserResponse | null> | undefined;
+  constructor(private http: HttpClient, private router: Router, private clientService: ClientService) {}
 
   login(email: string, password: string) {
     return this.http.post(`${this.apiUrl}/session/login`, { username: email, password }, {
@@ -55,16 +50,16 @@ export class AuthService {
     );
   }
 
+
   logout() {
     console.log('Cerrando sesión');
     this.http.post(`${this.apiUrl}/session/logout`, {}, { withCredentials: true }).subscribe({
       next: () => {
         console.log('Logout exitoso');
-        if (this.router.url === '/' || this.router.url === '') {
-          location.reload();
-        } else {
-          this.router.navigate(['']);
-        }
+        this.router.navigate(['']).then(() => {
+          // Una vez redirigido a la ruta raíz, recarga la página completamente
+          window.location.reload();
+        });
       },
       error: (err) => {
         console.error('Error en logout:', err);
@@ -72,15 +67,18 @@ export class AuthService {
     });
   }
 
+
+
   register(userRequest: UserRequest, clientRequest: ClientCreateRequest): Observable<any> {
     return this.http.post<{ id: string }>(`${this.apiUrl}/keycloak/user`, userRequest).pipe(
       switchMap((response) => {
         const keycloakUserId = response.id;
+
         const fullClientRequest = {
           ...clientRequest,
           userId: keycloakUserId
         };
-        console.log("full client:", fullClientRequest);
+        console.log("full client:", fullClientRequest)
 
         return this.http.post(`${this.apiUrl}/Clients`, fullClientRequest).pipe(
           switchMap(() =>
@@ -92,12 +90,6 @@ export class AuthService {
   }
 
   getUserInfo(): Observable<UserResponse | null> {
-    // 🔥 SOLUCIÓN: No hacer llamadas HTTP en el servidor
-    if (!isPlatformBrowser(this.platformId)) {
-      console.log('[AuthService] Ejecutándose en servidor, retornando null');
-      return of(null);
-    }
-
     if (!this.userInfo$) {
       this.userInfo$ = this.http.get<UserResponse>(`${this.apiUrl}/session/me`, { withCredentials: true }).pipe(
         tap(user => console.log('[AuthService] Usuario cargado en getUserInfo:', user)),
@@ -111,6 +103,7 @@ export class AuthService {
     return this.userInfo$;
   }
 
+
   isAuthenticated(): Observable<boolean> {
     return this.getUserInfo().pipe(map(user => !!user && !!user.username));
   }
@@ -121,7 +114,7 @@ export class AuthService {
     }));
   }
 
-  getAuthClient(): Observable<ClientResponse> {
+  getAuthClient():Observable<ClientResponse>{
     return this.getUserInfo().pipe(
       switchMap((user) => {
         if (user && user.id) {
@@ -137,3 +130,4 @@ export class AuthService {
     );
   }
 }
+

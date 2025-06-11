@@ -1,0 +1,52 @@
+<p-confirmDialog></p-confirmDialog>
+
+<div class="container mx-auto p-6 pt-20 m-20 mb-30">
+  <div *ngIf="isLoading; else content" class="flex justify-center items-center min-h-[300px]">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+  </div>
+ <ng-template #content>
+   <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">Mis Suscripciones</h2>
+
+   <div *ngIf="subscriptions.length > 0; else noSubscriptions" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+     <div *ngFor="let sub of subscriptions" class="rounded-2xl shadow-lg p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+       <div class="flex justify-between items-center mb-2">
+         <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ sub.name }}</h3>
+         <p-badge
+           [value]="sub.isDeleted ? 'Cancelada' : 'Activa'"
+           [severity]="sub.isDeleted ? 'danger' : 'success'"
+           class="text-xs">
+         </p-badge>
+
+       </div>
+       <div class="mb-2">
+         <p class="text-sm text-gray-600 dark:text-gray-300">
+           Horario: <span class="font-medium">{{ sub.time || 'No especificado' }}</span>
+         </p>
+         <p class="text-sm text-gray-600 dark:text-gray-300">
+           Ubicación: <span class="font-medium">{{ sub.location || 'No especificada' }}</span>
+         </p>
+       </div>
+       <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ sub.description }}</p>
+       <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Próxima renovación:
+         <span class="font-medium">{{ sub.nextBillingDate }}</span>
+       </p>
+       <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 mb-4">€{{ sub.price }} / mes</p>
+
+       <p-button
+         label="Cancelar suscripción"
+         icon="pi pi-times"
+         severity="danger"
+         class="w-full"
+         (onClick)="confirmDelete(sub.id)">
+       </p-button>
+     </div>
+   </div>
+
+ </ng-template>
+  <ng-template #noSubscriptions>
+    <div class="text-center py-10 text-gray-500 dark:text-gray-400">
+      <i class="pi pi-info-circle text-2xl mb-2"></i>
+      <p>No tienes ninguna suscripción activa.</p>
+    </div>
+  </ng-template>
+</div>

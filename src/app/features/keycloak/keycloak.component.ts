@@ -8,7 +8,7 @@ import {Router, RouterLink} from '@angular/router';
 import {IftaLabel} from 'primeng/iftalabel';
 import {AuthService} from './services/auth.service';
 import {MessageService} from 'primeng/api';
-import {switchMap} from 'rxjs';
+import {finalize, switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-keycloak',
@@ -21,6 +21,7 @@ export class KeycloakComponent {
 
   password: string = "";
   email: string = "";
+  isLoading: boolean = false;
 
   constructor(private authService: AuthService, private messageService: MessageService, private router: Router) {
   }
@@ -32,13 +33,17 @@ export class KeycloakComponent {
       return;
     }
 
+    this.isLoading = true;
     console.log('Iniciando login con:', this.email);
 
     this.authService.login(this.email, this.password).pipe(
       switchMap(() => {
         console.log('Login OK, token debería estar en cookies');
         return this.authService.getUserInfo();
-      })
+      }),
+    finalize(() => {
+      this.isLoading = false
+    }),
     ).subscribe({
       next: (user) => {
         console.log('User recibido:', user);
