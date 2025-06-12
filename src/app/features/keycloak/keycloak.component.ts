@@ -52,13 +52,15 @@ export class KeycloakComponent {
         const pendingServiceId = sessionStorage.getItem('pendingServiceId');
         const pendingServicePrice = sessionStorage.getItem('pendingServicePrice');
 
-        if (pendingServiceId && pendingServicePrice) {
-          sessionStorage.removeItem('pendingServiceId');
-          sessionStorage.removeItem('pendingServicePrice');
+       if(typeof !!sessionStorage){
+         if (pendingServiceId && pendingServicePrice) {
+           sessionStorage.removeItem('pendingServiceId');
+           sessionStorage.removeItem('pendingServicePrice');
 
-          this.fitnessService.makePayment(pendingServicePrice);
-          return;
-        }
+           this.fitnessService.makePayment(pendingServicePrice);
+           return;
+         }
+       }
 
         if ((user as any)?.roles?.includes('admin')) {
           this.router.navigate(['/adminpanel']);

@@ -46,7 +46,8 @@ export const routes: Routes = [
     path: 'worker-panel', component: WorkerPanelComponent, canActivate: [AuthGuard, RoleGuard],    data: { roles: ['Worker'] },
     children: [
       { path: '', redirectTo: 'my-clients', pathMatch: 'full' },
-      { path: 'my-clients', component: WorkerClientAdministrationComponent }
+      { path: 'my-clients', component: WorkerClientAdministrationComponent },
+      { path: 'exercises', component: ExercisesControllPanelComponent}
     ]
   }
 
