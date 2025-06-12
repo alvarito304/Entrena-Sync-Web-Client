@@ -116,4 +116,16 @@ export class FitnessServiceService {
     );
   }
 
+  deleteService(serviceId: string): Observable<void> {
+    console.log('Eliminando servicio: ', serviceId);
+    return this.http.delete<void>(`${this.apiUrl}/services/${serviceId}`, {
+      withCredentials: true
+    }).pipe(
+      catchError((err) => {
+        console.error('❌ Error real al eliminar servicio:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
 }

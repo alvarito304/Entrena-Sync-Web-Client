@@ -22,6 +22,7 @@ import {WorkerPanelComponent} from './features/worker-bo/worker-panel/worker-pan
 import {
   WorkerClientAdministrationComponent
 } from './features/worker-bo/worker-client-administration/worker-client-administration.component';
+import {WorkerServicesComponent} from './features/worker-bo/worker-services/worker-services.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -47,7 +48,8 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'my-clients', pathMatch: 'full' },
       { path: 'my-clients', component: WorkerClientAdministrationComponent },
-      { path: 'exercises', component: ExercisesControllPanelComponent}
+      { path: 'exercises', component: ExercisesControllPanelComponent},
+      { path: 'my-services', component: WorkerServicesComponent },
     ]
   }
 

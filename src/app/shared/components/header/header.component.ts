@@ -55,7 +55,6 @@ export class HeaderComponent {
     { path: 'human-body', label: 'Ejercicios' },
     { path: 'trainers', label: 'Trainers' },
     { path: 'workouts', label: 'Entrenamientos' },
-    { path: 'contact', label: 'Contact' },
   ];
 
   @HostListener('window:scroll')

@@ -185,7 +185,8 @@ export class WorkerAdministrationComponent {
         lastName: formValues.lastName,
         password: 'TempPassword123!', // O generar una contraseña temporal
         type: 'worker', // Asumiendo que hay un tipo 'worker'
-        passwordConfirmation: 'TempPassword123!'
+        passwordConfirmation: 'TempPassword123!',
+        roles: ['Worker']
       };
 
       const birthDateFormatted = formValues.birthdate ? this.formatDateToCustom(new Date(formValues.birthdate)) : '';

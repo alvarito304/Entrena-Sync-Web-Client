@@ -99,7 +99,7 @@ export class UserAdministrationComponent {
   loadCombinedUsers(page: number, size: number) {
     this.loading = true;
 
-    this.adminPanelService.getUsers(page, size).subscribe({
+    this.adminPanelService.getUsersCLients(page, size).subscribe({
       next: userPaged => {
         const users = userPaged.content;
 
@@ -228,7 +228,8 @@ export class UserAdministrationComponent {
         lastName: user.lastName,
         password: 'TempPassword123!',
         type: 'client',
-        passwordConfirmation: 'TempPassword123!'
+        passwordConfirmation: 'TempPassword123!',
+        roles: ['Client']
       };
 
       const userUpReq: UpateUserRequest = {
