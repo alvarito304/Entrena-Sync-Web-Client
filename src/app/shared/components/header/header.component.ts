@@ -96,12 +96,22 @@ export class HeaderComponent {
     this.authService.getUserInfo().pipe(
       tap(user => this.user = user),
       switchMap(user => {
-        if (!user || !user.id) throw new Error('Usuario no válido');
-        return this.adminPanelService.getClientsByUserId(user.id);
+        if (!user || !user.id || !user.type) throw new Error('Usuario no válido o sin tipo');
+
+        const userId = user.id;
+
+
+        if (user.type === 'client') {
+          return this.adminPanelService.getClientsByUserId(userId);
+        } else if (user.type === 'worker') {
+          return this.adminPanelService.getWorkerByUserId(userId);
+        } else {
+          throw new Error(`Tipo de usuario no soportado: ${user.type}`);
+        }
       }),
-      switchMap(client => {
-        if (!client.avatar) throw new Error('El cliente no tiene photoId');
-        return this.adminPanelService.getUserPhotoUrl(client.avatar).pipe(
+      switchMap(userData => {
+        if (!userData.avatar) throw new Error('El usuario no tiene avatar');
+        return this.adminPanelService.getUserPhotoUrl(userData.avatar).pipe(
           tap(photo => {
             this.userPhotoUrl = photo.secure_url;
           })
@@ -118,6 +128,7 @@ export class HeaderComponent {
       }
     });
   }
+
 
   private setupUserMenu(): void {
     this.menuItems = [

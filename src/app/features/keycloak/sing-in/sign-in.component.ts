@@ -74,7 +74,8 @@ countryCodes = [
     this.activeIndex++;
   }
 
-  private isAdult(birthDate: Date): boolean {
+  isAdult(birthDate: Date): boolean {
+    if (!birthDate) return true;
     const today = new Date();
     const eighteenYearsAgo = new Date(
       today.getFullYear() - 18,

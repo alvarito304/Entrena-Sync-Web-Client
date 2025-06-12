@@ -47,6 +47,7 @@ export interface WorkerResponse {
   firstName: string;
   lastName: string;
   address: string;
+  avatar: string;
   phone: string;
   birthdate: string;
   workerType: string;
@@ -144,6 +145,14 @@ export class AdminPanelService {
     );
   }
 
+  getUserById(userId: string): Observable<UserResponse> {
+    return this.http.get<UserResponse>(`${this.apiUrl}/keycloak/user/${userId}`, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Error obteniendo usuario por ID:', err);
+        return throwError(() => err);
+      })
+    );
+  }
 
   getUsers(page: number = 0, size: number = 10): Observable<PagedResponse<UserResponse>> {
     return this.http.get<PagedResponse<UserResponse>>(`${this.apiUrl}/keycloak/user?page=${page}&size=${size}`, { withCredentials: true });
@@ -285,6 +294,16 @@ export class AdminPanelService {
     return this.http.get<WorkerResponse>(`${this.apiUrl}/workers/${workerId}`, { withCredentials: true }).pipe(
       catchError(err => {
         console.error('Error obteniendo trabajador por ID:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  getWorkerByUserId(userId: string): Observable<WorkerResponse> {
+    console.log("Obteniendo trabajador por ID de usuario:", userId);
+    return this.http.get<WorkerResponse>(`${this.apiUrl}/workers/user/${userId}`, { withCredentials: true }).pipe(
+      catchError(err => {
+        console.error('Error obteniendo trabajador por ID de usuario:', err);
         return throwError(() => err);
       })
     );

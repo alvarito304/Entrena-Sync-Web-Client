@@ -12,14 +12,24 @@ export interface FitnessService {
   price: number;
   time: string | undefined;
   location: string | undefined;
+  type: string;
+  createdAt: string ;
 }
 
+export interface FitnessPlanCreateRequest {
+    price: number;
+    clientId: string;
+    serviceId: string;
+    description: string;
+    type: string;
+}
 export interface FitnessPlanResponse {
   id: string;
   price: number
   clientId: string;
   serviceId: string;
   description: string;
+  type: string;
   createdAt: string | undefined;
   renovation: string | undefined;
   isDeleted: boolean;
@@ -65,6 +75,18 @@ export class FitnessServiceService {
     }).pipe(
       catchError((err) => {
         console.error('❌ Error real al actualizar cliente:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  createServicePlan(request: FitnessPlanCreateRequest): Observable<FitnessPlanResponse> {
+    console.log('Creando plan de servicio para el cliente:', request.clientId, 'con datos:', request);
+    return this.http.post<FitnessPlanResponse>(`${this.apiUrl}/services/plans`, request, {
+      withCredentials: true
+    }).pipe(
+      catchError((err) => {
+        console.error('❌ Error real al crear plan de servicio:', err);
         return throwError(() => err);
       })
     );

@@ -1,0 +1,71 @@
+<div class="flex flex-col md:flex-row w-full min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-full md:w-64 flex-shrink-0 bg-white dark:bg-slate-800 shadow-lg border-r border-gray-200 dark:border-slate-700 transition-all duration-300 ease-in-out">
+    <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+      <img src="/entrenaSyncLogo.png" height="250" width="250"/>
+    </div>
+    <nav class="py-4">
+      <ul class="space-y-1">
+        <li>
+          <a
+            [routerLink]="'worker-administration'"
+            routerLinkActive="bg-primary-500 text-black"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block px-6 py-3 text-base font-medium rounded hover:bg-gray-100 hover:text-primary transition-all duration-200">
+            Mis Clientes
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="'user-administration'"
+            routerLinkActive="bg-primary-500 text-black"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block px-6 py-3 text-base font-medium rounded hover:bg-gray-100 hover:text-primary transition-all duration-200">
+            Usuarios
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="'exercises'"
+            routerLinkActive="bg-primary-500 text-black"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block px-6 py-3 text-base font-medium rounded hover:bg-gray-100 hover:text-primary transition-all duration-200">
+            Ejercicios
+          </a>
+        </li>
+      </ul>
+
+
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800">
+      <div class="flex justify-end items-center px-6 py-6">
+        <div class="flex items-center space-x-4">
+          <span class="text-m text-slate-600 dark:text-slate-400 mr-3">{{ user?.username }}</span>
+          <p-menu #menu [popup]="true" [model]="menuItems"></p-menu>
+          <div class="relative">
+            <img
+              alt="Admin profile picture"
+              [src]="userPhotoUrl || 'https://placehold.co/40x40/indigo/white?text=AU'"
+              class="w-10 h-10 rounded-full object-cover border-2 border-indigo-200 dark:border-indigo-800 shadow-lg cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1"
+              (click)="menu.toggle($event)"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <div class="max-w-6xl mx-auto overflow-x-auto p-3">
+      <router-outlet></router-outlet>
+    </div>
+
+  </main>
+
+</div>

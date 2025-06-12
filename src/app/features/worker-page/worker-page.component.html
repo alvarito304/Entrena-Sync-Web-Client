@@ -1,12 +1,21 @@
 <div class="min-h-screen bg-white mt-20 mb-20">
-  <div class = "max-w-7xl mx-auto mt-10 mb-10 px-4">
+  <div class="max-w-7xl mx-auto mt-10 mb-10 px-4">
     <h1 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-white">Profesionales en el sector</h1>
     <p class="text-gray-600 dark:text-gray-300 mb-8">
       Descubre a nuestros entrenadores altamente calificados, listos para ayudarte a alcanzar tus objetivos de fitness. Cada uno de ellos aporta una experiencia única y un enfoque personalizado para maximizar tu rendimiento y bienestar.
     </p>
   </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center items-center py-20 min-h-[400px]">
+    <div class="flex flex-col items-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-600"></div>
+      <p class="mt-4 text-gray-600">Cargando profesionales...</p>
+    </div>
+  </div>
+
   <!-- Trainers Grid -->
-  <div class="max-w-7xl mx-auto px-4 py-12">
+  <div *ngIf="!loading" class="max-w-7xl mx-auto px-4 py-12">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <div
         *ngFor="let trainer of currentTrainers"
@@ -18,6 +27,7 @@
             [src]="trainer.avatar"
             [alt]="trainer.name"
             class="w-full h-48 object-cover"
+            (error)="trainer.avatar = '/placeholder.svg?height=200&width=200'"
           />
           <div class="absolute top-4 right-4">
             <span
@@ -55,8 +65,15 @@
       </div>
     </div>
 
+    <!-- Empty State -->
+    <div *ngIf="currentTrainers.length === 0" class="text-center py-12">
+      <i class="pi pi-users text-gray-400 text-6xl mb-4"></i>
+      <h3 class="text-xl font-semibold text-gray-600 mb-2">No hay entrenadores disponibles</h3>
+      <p class="text-gray-500">No se encontraron profesionales en este momento.</p>
+    </div>
+
     <!-- Pagination -->
-    <div class="flex justify-center mt-12">
+    <div *ngIf="totalRecords > trainersPerPage" class="flex justify-center mt-12">
       <p-paginator
         [rows]="trainersPerPage"
         [totalRecords]="totalRecords"

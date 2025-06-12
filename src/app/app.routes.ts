@@ -18,6 +18,10 @@ import {WorkerPageComponent} from './features/worker-page/worker-page.component'
 import {ServicesPageComponent} from './features/services-page/services-page.component';
 import {PaymentSuccessComponent} from './features/services-page/payment-success/payment-success.component';
 import {MyHireServicesComponent} from './features/services-page/my-hire-services/my-hire-services.component';
+import {WorkerPanelComponent} from './features/worker-bo/worker-panel/worker-panel.component';
+import {
+  WorkerClientAdministrationComponent
+} from './features/worker-bo/worker-client-administration/worker-client-administration.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,7 +33,7 @@ export const routes: Routes = [
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] } },
   { path: 'my-services', component: MyHireServicesComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] }},
   { path: 'trainers', component: WorkerPageComponent},
-  { path: 'services/:id', component: ServicesPageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client', 'Worker'] }},
+  { path: 'services/:id', component: ServicesPageComponent},
   { path: 'payment-success', component: PaymentSuccessComponent},
   { path: 'adminpanel', component: AdminPanelComponent,
     canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] }, children: [
@@ -37,5 +41,13 @@ export const routes: Routes = [
       { path: 'user-administration', component: UserAdministrationComponent },
       { path: 'exercises', component: ExercisesControllPanelComponent},
       { path: 'worker-administration', component: WorkerAdministrationComponent }
-    ]}
+    ]},
+  {
+    path: 'worker-panel', component: WorkerPanelComponent, canActivate: [AuthGuard, RoleGuard],    data: { roles: ['Worker'] },
+    children: [
+      { path: '', redirectTo: 'my-clients', pathMatch: 'full' },
+      { path: 'my-clients', component: WorkerClientAdministrationComponent }
+    ]
+  }
+
 ];

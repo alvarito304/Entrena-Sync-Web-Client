@@ -119,10 +119,18 @@ export class ServicesPageComponent implements OnInit {
   }
 
   subscribeToService(service: FitnessService) {
-    const amountInCents = service.price * 100;
-    sessionStorage.setItem('pendingServiceId', service.id);
-    this.fitnessService.makePayment(amountInCents.toString());
+    this.authService.isAuthenticated().subscribe(isAuth => {
+      const amountInCents = service.price * 100;
+      sessionStorage.setItem('pendingServiceId', service.id);
+      sessionStorage.setItem('pendingServicePrice', amountInCents.toString());
+      if (!isAuth) {
+        this.router.navigate(['/login']);
+        return;
+      }
+      this.fitnessService.makePayment(amountInCents.toString());
+    });
   }
+
 
 
   retryLoadServices() {

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Paginator} from 'primeng/paginator';
-import {NgClass, NgForOf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {Button} from 'primeng/button';
 import {Tag} from 'primeng/tag';
 import {Avatar} from 'primeng/avatar';
@@ -33,7 +33,8 @@ export interface Trainer {
     Tag,
     Avatar,
     NgForOf,
-    RouterLink
+    RouterLink,
+    NgIf
   ],
   templateUrl: './worker-page.component.html',
   standalone: true,

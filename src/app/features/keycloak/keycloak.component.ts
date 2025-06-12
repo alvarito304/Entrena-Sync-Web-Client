@@ -9,6 +9,7 @@ import {IftaLabel} from 'primeng/iftalabel';
 import {AuthService} from './services/auth.service';
 import {MessageService} from 'primeng/api';
 import {finalize, switchMap} from 'rxjs';
+import {FitnessServiceService} from '../services-page/services/fitness-service.service';
 
 @Component({
   selector: 'app-keycloak',
@@ -23,7 +24,7 @@ export class KeycloakComponent {
   email: string = "";
   isLoading: boolean = false;
 
-  constructor(private authService: AuthService, private messageService: MessageService, private router: Router) {
+  constructor(private authService: AuthService, private messageService: MessageService, private router: Router, private fitnessService: FitnessServiceService) {
   }
 
   onSubmit(form: NgForm): void {
@@ -48,17 +49,28 @@ export class KeycloakComponent {
       next: (user) => {
         console.log('User recibido:', user);
         console.log('Roles:', (user as any).roles);
+        const pendingServiceId = sessionStorage.getItem('pendingServiceId');
+        const pendingServicePrice = sessionStorage.getItem('pendingServicePrice');
+
+        if (pendingServiceId && pendingServicePrice) {
+          sessionStorage.removeItem('pendingServiceId');
+          sessionStorage.removeItem('pendingServicePrice');
+
+          this.fitnessService.makePayment(pendingServicePrice);
+          return;
+        }
 
         if ((user as any)?.roles?.includes('admin')) {
           this.router.navigate(['/adminpanel']);
-        } else {
+        } else if ((user as any)?.roles?.includes('Worker')) {
+          this.router.navigate(['/worker-panel']);
+        }else {
           this.router.navigate(['/human-body']);
         }
       },
       error: (err) => {
         console.error('Error durante el login o al obtener el usuario:', err);
 
-        // Detecta si la respuesta es texto plano
         let errorMessage = 'Error desconocido';
 
         if (typeof err.error === 'string') {
