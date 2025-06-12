@@ -33,7 +33,7 @@ export const routes: Routes = [
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] } },
   { path: 'my-services', component: MyHireServicesComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin', 'Client'] }},
   { path: 'trainers', component: WorkerPageComponent},
-  { path: 'services/:id', component: ServicesPageComponent},
+  { path: 'services/:id', component: ServicesPageComponent },
   { path: 'payment-success', component: PaymentSuccessComponent},
   { path: 'adminpanel', component: AdminPanelComponent,
     canActivate: [AuthGuard, RoleGuard], data: { roles: ['admin'] }, children: [
