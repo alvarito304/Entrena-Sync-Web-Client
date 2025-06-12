@@ -9,6 +9,9 @@ import {FormsModule} from '@angular/forms';
 import {Table, TableModule} from 'primeng/table';
 import {InputText, InputTextModule} from 'primeng/inputtext';
 import {CalendarModule} from 'primeng/calendar';
+import {Ripple} from 'primeng/ripple';
+import {BlockUI} from 'primeng/blockui';
+import {ProgressSpinner} from 'primeng/progressspinner';
 
 export interface Column {
   field: string
@@ -37,6 +40,9 @@ export interface Column {
     MultiSelectModule,
     TagModule,
     TooltipModule,
+    Ripple,
+    BlockUI,
+    ProgressSpinner,
   ],
   styleUrls: ['reusable-data-table.component.css'],
   template: `
@@ -48,9 +54,7 @@ export interface Column {
         [paginator]="true"
         [rows]="10"
         [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 25, 50]"
         [globalFilterFields]="getGlobalFilterFields()"
-        [loading]="loading"
         styleClass="p-datatable-gridlines p-datatable-striped"
         [tableStyle]="{ 'min-width': '50rem' }"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
@@ -66,7 +70,7 @@ export interface Column {
             <div class="flex align-items-center">
               <!-- En el template -->
               <span class="mr-2">
-                <input pInputText type="text" placeholder="Buscar..." (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
+                <input pInputText type="text" placeholder="Buscar..." class="bg-white text-black placeholder-black" (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
               </span>
               <button
                 pButton
@@ -235,6 +239,13 @@ export interface Column {
         </ng-template>
       </p-table>
     </div>
+    <p-blockUI [blocked]="loading" styleClass="w-full h-full flex items-center justify-center">
+      <ng-template pTemplate>
+        <div class="card flex justify-center">
+          <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+        </div>
+      </ng-template>
+    </p-blockUI>
   `,
 })
 export class GenericTableComponent {

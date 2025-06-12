@@ -10,8 +10,8 @@ import {GenericTableComponent} from '../../../shared/reusable-data-table/reusabl
 import {Calendar} from 'primeng/calendar';
 import {Column} from '../../../core/models/colum/column';
 import {NgIf} from '@angular/common';
-import {AuthService} from '../../keycloak/services/auth.service';
-import {forkJoin, map, of, switchMap} from 'rxjs';
+import {AuthService, UserResponse} from '../../keycloak/services/auth.service';
+import {forkJoin, map, Observable, of, switchMap} from 'rxjs';
 import {FitnessServiceService} from '../../services-page/services/fitness-service.service';
 
 
@@ -31,6 +31,7 @@ export interface CombinedUserClientService {
   hiredDate: string;
   price: number
 }
+
 @Component({
   selector: 'app-worker-client-administration',
   imports: [
@@ -81,13 +82,11 @@ export class WorkerClientAdministrationComponent implements OnInit {
       switchMap(user => {
         console.log("👤 Usuario autenticado:", user);
         if (!user) throw new Error("No se pudo obtener el usuario autenticado.");
-        const userId = user.id;
-        return this.adminPanelService.getWorkerByUserId(userId);
+        return this.adminPanelService.getWorkerByUserId(user.id);
       }),
       switchMap(worker => {
         console.log("🧑‍🔧 Trabajador encontrado:", worker);
         const serviceIdsOfWorker = worker.service_list;
-        console.log("🛠️ Servicios asociados al trabajador:", serviceIdsOfWorker);
         if (!serviceIdsOfWorker?.length) {
           console.warn("⚠️ El trabajador no tiene servicios asignados.");
           return of([]);
@@ -96,32 +95,36 @@ export class WorkerClientAdministrationComponent implements OnInit {
         return this.adminPanelService.getClients().pipe(
           switchMap(clients => {
             console.log("📋 Lista completa de clientes:", clients);
-
             const filteredClients = clients.filter(client =>
               client.hiredServicesIds?.some(serviceId => serviceIdsOfWorker.includes(serviceId))
             );
-            console.log("🧪 Clientes filtrados que coinciden con los servicios del trabajador:", filteredClients);
 
             const userIds = filteredClients.map(c => c.userId);
             console.log("🔍 IDs de usuarios asociados a los clientes filtrados:", userIds);
 
-            return forkJoin(userIds.map(id => this.adminPanelService.getUserById(id))).pipe(
-              switchMap(users => {
-                console.log("📦 Usuarios obtenidos por ID:", users);
+            // 🔁 Obtener todos los usuarios paginados (asumiendo pocas páginas, si son muchas, esto hay que optimizar)
+            return this.getAllUsersClients().pipe(
+              switchMap(allUsers => {
+                const matchedUsers = allUsers.filter(user => userIds.includes(user.id));
+                console.log("📦 Usuarios filtrados por userId:", matchedUsers);
 
                 return this.fitnessService.getServicesByIds(serviceIdsOfWorker).pipe(
                   map(workerServices => {
                     console.log("💼 Servicios completos del trabajador:", workerServices);
 
                     const combined: CombinedUserClientService[] = [];
+                    const addedKeys = new Set<string>();
 
                     filteredClients.forEach(client => {
-                      const user = users.find(u => u.id === client.userId);
+                      const user = matchedUsers.find(u => u.id === client.userId);
                       const matchedServiceIds = client.hiredServicesIds?.filter(serviceId =>
                         serviceIdsOfWorker.includes(serviceId)
                       );
 
                       matchedServiceIds?.forEach(serviceId => {
+                        const key = `${client.id}-${serviceId}`;
+                        if (addedKeys.has(key)) return;
+
                         const service = workerServices.find(s => s.id === serviceId);
                         if (user && service) {
                           combined.push({
@@ -140,6 +143,7 @@ export class WorkerClientAdministrationComponent implements OnInit {
                             hiredDate: service.createdAt,
                             price: service.price
                           });
+                          addedKeys.add(key);
                         }
                       });
                     });
@@ -170,6 +174,33 @@ export class WorkerClientAdministrationComponent implements OnInit {
       }
     });
   }
+
+  private getAllUsersClients(): Observable<UserResponse[]> {
+    const pageSize = 50;
+    let currentPage = 0;
+    const users: UserResponse[] = [];
+
+    return new Observable<UserResponse[]>(observer => {
+      const fetchPage = () => {
+        this.adminPanelService.getUsersCLients(currentPage, pageSize).subscribe({
+          next: res => {
+            users.push(...res.content);
+            if ((currentPage + 1) >= res.totalPages) {
+              observer.next(users);
+              observer.complete();
+            } else {
+              currentPage++;
+              fetchPage();
+            }
+          },
+          error: err => observer.error(err)
+        });
+      };
+      fetchPage();
+    });
+  }
+
+
 
 
 

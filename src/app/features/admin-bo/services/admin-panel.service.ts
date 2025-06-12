@@ -145,17 +145,12 @@ export class AdminPanelService {
     );
   }
 
-  getUserById(userId: string): Observable<UserResponse> {
-    return this.http.get<UserResponse>(`${this.apiUrl}/keycloak/user/${userId}`, { withCredentials: true }).pipe(
-      catchError(err => {
-        console.error('Error obteniendo usuario por ID:', err);
-        return throwError(() => err);
-      })
-    );
-  }
 
   getUsers(page: number = 0, size: number = 10): Observable<PagedResponse<UserResponse>> {
     return this.http.get<PagedResponse<UserResponse>>(`${this.apiUrl}/keycloak/user?page=${page}&size=${size}`, { withCredentials: true });
+  }
+  getUsersCLients(page: number = 0, size: number = 10): Observable<PagedResponse<UserResponse>> {
+    return this.http.get<PagedResponse<UserResponse>>(`${this.apiUrl}/keycloak/user?page=${page}&size=${size}&type=Client`, { withCredentials: true });
   }
 
   getWorkersUsers(page: number = 0, size: number = 10, type:string = "worker"): Observable<PagedResponse<UserResponse>> {
