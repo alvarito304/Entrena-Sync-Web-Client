@@ -63,12 +63,35 @@ export class HeaderComponent {
   }
 
   darkTheme = false;
+  
+  private detectSystemTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      this.darkTheme = true;
+      document.querySelector('html')?.classList.add('my-app-dark');
+    } else {
+      this.darkTheme = false;
+      document.querySelector('html')?.classList.remove('my-app-dark');
+    }
+  }
 
   isDarkTheme() {
     return this.darkTheme;
   }
 
   ngOnInit(): void {
+    // Detecta el tema del sistema al iniciar
+    this.detectSystemTheme();
+    
+    // Escucha cambios en el tema del sistema
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      this.darkTheme = e.matches;
+      if (e.matches) {
+        document.querySelector('html')?.classList.add('my-app-dark');
+      } else {
+        document.querySelector('html')?.classList.remove('my-app-dark');
+      }
+    });
+    
     this.authService.isAuthenticated().subscribe(isAuth => {
       if (isAuth) {
         this.loadUserData();

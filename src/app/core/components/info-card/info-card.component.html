@@ -1,5 +1,5 @@
-<div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-all duration-300">
-  <div class="text-primary-400 mb-4">
+<div class="bg-white dark:bg-gray-800 rounded-lg p-6 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md border-l-4 border-primary-500 transition-colors duration-300 h-full flex flex-col animate-fade-in-up" style="animation-delay: 0.2s">
+  <div class="text-primary-500 mb-4 flex-shrink-0">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-12 w-12"
@@ -15,6 +15,8 @@
       ></path>
     </svg>
   </div>
-  <p class="text-xl font-bold mb-2">{{ title }}</p>
-  <p class="text-gray-400">{{ content }}</p>
+  <div class="flex-grow flex flex-col">
+    <p class="text-xl font-bold mb-2 text-gray-800 dark:text-white transition-colors duration-300">{{ title }}</p>
+    <p class="text-gray-600 dark:text-gray-400 transition-colors duration-300 flex-grow">{{ content }}</p>
+  </div>
 </div>

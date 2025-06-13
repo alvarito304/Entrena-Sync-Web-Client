@@ -7,6 +7,34 @@
 
 
 @layer utilities {
+  @keyframes logo-bounce-infinite {
+    0%, 80%, 100% { transform: scale(1) rotate(0deg); }
+    10% { transform: scale(1.1, 0.95) rotate(-5deg); }
+    20% { transform: scale(0.98, 1.05) rotate(3deg); }
+    30% { transform: scale(1.05, 0.98) rotate(-2deg); }
+    40% { transform: scale(0.97, 1.07) rotate(2deg); }
+    50% { transform: scale(1.03, 0.97) rotate(-1deg); }
+    60% { transform: scale(1, 1) rotate(0deg); }
+  }
+
+  .animate-logo-boing {
+    animation: logo-bounce-infinite 5s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+  }
+
+  @keyframes wave {
+    0%, 80%, 100% { transform: rotate(0deg); }
+    10% { transform: rotate(6deg); }
+    20% { transform: rotate(-6deg); }
+    30% { transform: rotate(4deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(2deg); }
+    60% { transform: rotate(-2deg); }
+    70% { transform: rotate(1deg); }
+  }
+
+  .animate-wave {
+    animation: wave 4.5s ease-in-out infinite;
+  }
   @keyframes grow-line {
     0% {
       width: 0%;
@@ -18,6 +46,22 @@
 
   .animate-grow-line {
     animation: grow-line 0.8s ease-out forwards;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 
   @keyframes fade-slide-in {
