@@ -225,19 +225,312 @@ const CustomTheme = definePreset(Aura, {
       colorScheme: {
         light: {
           panel: {
-            background: '#dedfdf',                         // fondo general
+            background: '#dedfdf',
+            border: {
+              color: '#333333'
+            }
           },
           header: {
-            background: '#dedfdf',                         // fondo del encabezado
-            // color del texto del encabezado
+            background: '#dedfdf',
+            color: '#333333'
+          },
+          dropdown: {
+            border: {
+              color: '#333333'
+            },
+            hover: {
+              border: {
+                color: '#000000'
+              }
+            },
+            active: {
+              border: {
+                color: '{primary.color}'
+              }
+            },
+            background: '#dedfdf',
+            color: '#333333'
+          },
+          input: {
+            icon: {
+              color: '#333333'
+            }
+          },
+          date: {
+            color: '#333333',
+            hover: {
+              background: '#c0c0c0',
+              color: '#000000'
+            },
+            selected: {
+              background: '{primary.color}',
+              color: '#ffffff'
+            }
           }
         },
         dark: {
-          // ... mantén tu configuración existente para modo oscuro
+          panel: {
+            background: '#2c2c34',
+            border: {
+              color: '#4a4a4a'
+            }
+          },
+          header: {
+            background: '#2c2c34',
+            color: '#dedfdf'
+          },
+          dropdown: {
+            border: {
+              color: '#ffffff'
+            },
+            hover: {
+              border: {
+                color: '#ffffff'
+              }
+            },
+            active: {
+              border: {
+                color: '{primary.color}'
+              }
+            },
+            background: '#2c2c34',
+            color: '#dedfdf'
+          },
+          input: {
+            icon: {
+              color: '#dedfdf'
+            }
+          },
+          date: {
+            color: '#dedfdf',
+            hover: {
+              background: '#3f4046',
+              color: '#ffffff'
+            },
+            selected: {
+              background: '{primary.color}',
+              color: '#ffffff'
+            }
+          }
         }
       }
     },
-
+    select: {
+      colorScheme: {
+        light: {
+          root: {
+            background: '#dedfdf',
+            border: {
+              color: '#333333'
+            },
+            color: '#333333',
+            hover: {
+              border: {
+                color: '#000000'
+              },
+              background: '#d0d0d0'
+            },
+            focus: {
+              border: {
+                color: '{primary.color}'
+              }
+            }
+          },
+          dropdown: {
+            color: '#333333',
+            hover: {
+              background: '#c0c0c0',
+              color: '#000000'
+            }
+          },
+          overlay: {
+            background: '#dedfdf',
+            border: {
+              color: '#333333'
+            },
+            shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+          },
+          option: {
+            color: '#333333',
+            background: 'transparent',
+            hover: {
+              background: '#c0c0c0',
+              color: '#000000'
+            },
+            focus: {
+              background: '#c0c0c0',
+              color: '#000000'
+            },
+            selected: {
+              background: '{primary.color}',
+              color: '#ffffff'
+            }
+          },
+          placeholder: {
+            color: '#666666'
+          }
+        },
+        dark: {
+          root: {
+            background: '#2c2c34',
+            border: {
+              color: '#4a4a4a'
+            },
+            color: '#dedfdf',
+            hover: {
+              border: {
+                color: '#ffffff'
+              },
+              background: '#3f4046'
+            },
+            focus: {
+              border: {
+                color: '{primary.color}'
+              }
+            }
+          },
+          dropdown: {
+            color: '#dedfdf',
+            hover: {
+              background: '#3f4046',
+              color: '#ffffff'
+            }
+          },
+          overlay: {
+            background: '#2c2c34',
+            border: {
+              color: '#4a4a4a'
+            },
+            shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)'
+          },
+          option: {
+            color: '#dedfdf',
+            background: 'transparent',
+            hover: {
+              background: '#3f4046',
+              color: '#ffffff'
+            },
+            focus: {
+              background: '#3f4046',
+              color: '#ffffff'
+            },
+            selected: {
+              background: '{primary.color}',
+              color: '#ffffff'
+            }
+          },
+          placeholder: {
+            color: '#97979b'
+          }
+        }
+      }
+    },
+    inputtext: {
+      colorScheme: {
+        light: {
+          root: {
+            background: '#dedfdf',
+            border: {
+              color: '#333333'
+            },
+            color: '#333333',
+            placeholder: {
+              color: '#666666'
+            },
+            hover: {
+              border: {
+                color: '#000000'
+              }
+            },
+            focus: {
+              border: {
+                color: '{primary.color}'
+              }
+            }
+          }
+        },
+        dark: {
+          root: {
+            background: '#2c2c34',
+            border: {
+              color: '#4a4a4a'
+            },
+            color: '#dedfdf',
+            placeholder: {
+              color: '#97979b'
+            },
+            hover: {
+              border: {
+                color: '#ffffff'
+              }
+            },
+            focus: {
+              border: {
+                color: '{primary.color}'
+              }
+            }
+          }
+        }
+      }
+    },
+    inputnumber: {
+      colorScheme: {
+        light: {
+          root: {
+            background: '#dedfdf',
+            border: {
+              color: '#333333'
+            },
+            color: '#333333',
+            hover: {
+              border: {
+                color: '#000000'
+              }
+            },
+            focus: {
+              border: {
+                color: '{primary.color}'
+              }
+            }
+          },
+          button: {
+            background: '#c0c0c0',
+            color: '#333333',
+            hover: {
+              background: '#b0b0b0',
+              color: '#000000'
+            }
+          }
+        },
+        dark: {
+          root: {
+            background: '#2c2c34',
+            border: {
+              color: '#4a4a4a'
+            },
+            color: '#dedfdf',
+            hover: {
+              border: {
+                color: '#ffffff'
+              }
+            },
+            focus: {
+              border: {
+                color: '{primary.color}'
+              }
+            }
+          },
+          button: {
+            background: '#3f4046',
+            color: '#dedfdf',
+            hover: {
+              background: '#55565b',
+              color: '#ffffff'
+            }
+          }
+        }
+      }
+    }
   }
 });
 

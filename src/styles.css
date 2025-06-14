@@ -120,7 +120,7 @@ html.my-app-dark .p-select .p-select-label.p-placeholder {
 }
 
 
-/* Icono del dropdown (flecha) si también necesita cambio de color */
+/* Icono del dropdown (flecha) si también necesita cambio de color
 :root:not(.my-app-dark) .p-select .p-select-dropdown-icon {
   @apply text-gray-600;
 }
@@ -139,4 +139,4 @@ html.my-app-dark .p-select .p-select-dropdown-icon {
   color: black;
 
 }
-
+ */

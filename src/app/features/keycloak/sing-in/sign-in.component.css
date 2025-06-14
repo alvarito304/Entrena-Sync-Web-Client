@@ -1,0 +1,29 @@
+/* DatePicker input background fix for dark mode */
+:host ::ng-deep .dark .p-datepicker .p-datepicker-input {
+  background-color: var(--input-bg-dark) !important;
+  background: var(--input-bg-dark) !important;
+  border-color: var(--border-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+:host ::ng-deep .dark .p-datepicker-input {
+  background-color: var(--input-bg-dark) !important;
+  background: var(--input-bg-dark) !important;
+  border-color: var(--border-dark) !important;
+  color: var(--text-dark) !important;
+}
+
+/* Light mode consistency */
+:host ::ng-deep .p-datepicker .p-datepicker-input {
+  background-color: var(--input-bg-light) !important;
+  background: var(--input-bg-light) !important;
+  border-color: var(--border-light) !important;
+  color: var(--text-light) !important;
+}
+
+:host ::ng-deep .p-datepicker-input {
+  background-color: var(--input-bg-light) !important;
+  background: var(--input-bg-light) !important;
+  border-color: var(--border-light) !important;
+  color: var(--text-light) !important;
+}
