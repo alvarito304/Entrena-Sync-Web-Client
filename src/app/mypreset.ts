@@ -425,6 +425,74 @@ const CustomTheme = definePreset(Aura, {
         }
       }
     },
+    autocomplete: {
+      colorScheme: {
+        light: {
+          overlay: {
+            background: '#dedfdf',
+            border: {
+              color: '#333333'
+            },
+            shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+          },
+          option: {
+            color: '#333333',
+            background: 'transparent',
+            hover: {
+              background: '#c0c0c0',
+              color: '#000000'
+            },
+            focus: {
+              background: '#c0c0c0',
+              color: '#000000'
+            },
+            selected: {
+              background: '{primary.color}',
+              color: '#ffffff'
+            }
+          },
+          dropdown: {
+            color: '#333333',
+            hover: {
+              background: '#c0c0c0',
+              color: '#000000'
+            }
+          }
+        },
+        dark: {
+          overlay: {
+            background: '#2c2c34',
+            border: {
+              color: '#4a4a4a'
+            },
+            shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)'
+          },
+          option: {
+            color: '#dedfdf',
+            background: 'transparent',
+            hover: {
+              background: '#3f4046',
+              color: '#ffffff'
+            },
+            focus: {
+              background: '#3f4046',
+              color: '#ffffff'
+            },
+            selected: {
+              background: '{primary.color}',
+              color: '#ffffff'
+            }
+          },
+          dropdown: {
+            color: '#dedfdf',
+            hover: {
+              background: '#3f4046',
+              color: '#ffffff'
+            }
+          }
+        }
+      }
+    },
     inputtext: {
       colorScheme: {
         light: {
