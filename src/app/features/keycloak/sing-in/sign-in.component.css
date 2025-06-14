@@ -1,4 +1,4 @@
-/* DatePicker input background fix for dark mode */
+/* Dark mode datepicker consistency */
 :host ::ng-deep .dark .p-datepicker .p-datepicker-input {
   background-color: var(--input-bg-dark) !important;
   background: var(--input-bg-dark) !important;
@@ -26,4 +26,86 @@
   background: var(--input-bg-light) !important;
   border-color: var(--border-light) !important;
   color: var(--text-light) !important;
+}
+
+/* Datepicker hover and focus effects using proper variables */
+:host ::ng-deep .p-datepicker-input:hover {
+  border-color: rgb(244 63 94 / 0.6) !important; /* Rose-500 with 60% opacity */
+  transition: all 0.2s ease-in-out !important;
+}
+
+:host ::ng-deep .p-datepicker-input:focus,
+:host ::ng-deep .p-datepicker-input:focus-visible {
+  outline: none !important;
+  border-color: rgb(244 63 94) !important; /* Rose-500 */
+  box-shadow: 0 0 0 1px rgb(244 63 94) !important; /* Rose-500 ring */
+}
+
+/* Dropdown hover and focus effects with better selectors */
+:host ::ng-deep .p-dropdown:hover,
+:host ::ng-deep .p-dropdown:hover .p-inputwrapper {
+  border-color: rgb(244 63 94 / 0.6) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+:host ::ng-deep .p-dropdown:focus,
+:host ::ng-deep .p-dropdown:focus-visible,
+:host ::ng-deep .p-dropdown.p-focus {
+  outline: none !important;
+  border-color: rgb(244 63 94) !important;
+  box-shadow: 0 0 0 1px rgb(244 63 94) !important;
+}
+
+/* Dropdown click/active effects */
+:host ::ng-deep .p-dropdown.p-dropdown-open,
+:host ::ng-deep .p-dropdown:active {
+  border-color: rgb(244 63 94) !important;
+  box-shadow: 0 0 0 1px rgb(244 63 94) !important;
+}
+
+/* More specific dropdown selectors for stubborn cases */
+:host ::ng-deep .p-dropdown .p-dropdown-trigger:hover,
+:host ::ng-deep .p-dropdown .p-dropdown-label:hover {
+  border-color: rgb(244 63 94 / 0.6) !important;
+}
+
+:host ::ng-deep .p-dropdown.p-focus .p-dropdown-trigger,
+:host ::ng-deep .p-dropdown.p-focus .p-dropdown-label {
+  border-color: rgb(244 63 94) !important;
+  box-shadow: 0 0 0 1px rgb(244 63 94) !important;
+}
+
+/* Add style with white ring for datepicker and dropdown to match inputs */
+:host ::ng-deep .p-dropdown:focus,
+:host ::ng-deep .p-dropdown.p-focus,
+:host ::ng-deep .p-dropdown.p-dropdown-open,
+:host ::ng-deep .p-dropdown:active {
+  border-color: rgb(244 63 94) !important;
+  box-shadow: 0 0 0 1px rgb(244 63 94), 0 0 0 2px rgba(255, 255, 255, 0.7) !important;
+  outline: none !important;
+}
+
+:host ::ng-deep .p-datepicker-input:focus,
+:host ::ng-deep .p-datepicker-input:focus-visible,
+:host ::ng-deep .p-datepicker-input:active {
+  border-color: rgb(244 63 94) !important;
+  box-shadow: 0 0 0 1px rgb(244 63 94), 0 0 0 2px rgba(255, 255, 255, 0.7) !important;
+  outline: none !important;
+}
+
+:host ::ng-deep .dark .p-dropdown:focus,
+:host ::ng-deep .dark .p-dropdown.p-focus,
+:host ::ng-deep .dark .p-dropdown.p-dropdown-open,
+:host ::ng-deep .dark .p-dropdown:active {
+  border-color: rgb(244 63 94) !important;
+  box-shadow: 0 0 0 1px rgb(244 63 94), 0 0 0 2px rgba(255, 255, 255, 0.3) !important;
+  outline: none !important;
+}
+
+:host ::ng-deep .dark .p-datepicker-input:focus,
+:host ::ng-deep .dark .p-datepicker-input:focus-visible,
+:host ::ng-deep .dark .p-datepicker-input:active {
+  border-color: rgb(244 63 94) !important;
+  box-shadow: 0 0 0 1px rgb(244 63 94), 0 0 0 2px rgba(255, 255, 255, 0.3) !important;
+  outline: none !important;
 }
