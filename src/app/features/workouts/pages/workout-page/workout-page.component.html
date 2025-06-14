@@ -21,7 +21,9 @@
             [(ngModel)]="nameFilter"
             placeholder="Search by name..."
             (keyup.enter)="applyFilters()"
-            class="h-10 rounded-md border border-input bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm pr-10"
+            class="peer pl-2.5 w-full h-10 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+            border border-[var(--border-light)] dark:border-[var(--border-dark)]
+            rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200"
           />
           <button
             *ngIf="nameFilter"

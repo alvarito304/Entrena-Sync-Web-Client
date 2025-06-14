@@ -14,11 +14,13 @@ import {AuthService} from '../../../keycloak/services/auth.service';
 import {ExerciseService} from '../../../human-body/services/exercise.service';
 import {Exercise} from '../../../../core/models/exercise/exercise';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { SliderModule } from 'primeng/slider';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-workout-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, AutoCompleteModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, AutoCompleteModule, SliderModule, InputTextModule],
   templateUrl: './workout-form.component.html',
 })
 export class WorkoutFormComponent implements OnInit {

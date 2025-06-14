@@ -110,17 +110,28 @@
             <label for="intensity" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Intensity (0-10) *
             </label>
-            <div class="flex items-center space-x-2">
-              <input
-                type="range"
-                id="intensity"
-                name="intensity"
-                [(ngModel)]="formData.intensity"
-                min="0"
-                max="10"
-                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-primary"
-              />
-              <span class="text-sm font-medium">{{ formData.intensity }}</span>
+            <div class="flex items-center gap-4">
+              <div class="flex-1">
+                <p-slider 
+                  [(ngModel)]="formData.intensity" 
+                  [min]="0" 
+                  [max]="10" 
+                  [step]="1" 
+                  styleClass="w-full"
+                  [ngModelOptions]="{standalone: true}"
+                ></p-slider>
+              </div>
+              <div>
+                <input 
+                  type="number" 
+                  pInputText 
+                  [(ngModel)]="formData.intensity" 
+                  name="intensity"
+                  min="0"
+                  max="10"
+                  class="w-14 h-10 rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+                />
+              </div>
             </div>
           </div>
         </div>
