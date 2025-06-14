@@ -1,93 +1,38 @@
-/* Estilos para campos con fondo blanco - VERSIÓN MEJORADA */
-/* Panel del dropdown cuando se abre */
-::ng-deep .p-dropdown-panel {
-  background-color: white !important;
-  background: white !important;
-}
-/* Calendar - Estilos mejorados */
-::ng-deep .custom-calendar .p-calendar .p-inputtext {
-  background-color: white !important;
-  background: white !important;
-}
+/* Se eliminaron los estilos del fondo animado ya que ahora utilizamos la implementación exacta del Hero component */
 
-::ng-deep .custom-calendar .p-calendar .p-inputtext:hover {
-  background-color: white !important;
-  background: white !important;
+/* Agregamos la animación de pulso que usa el hero component, si no está definida globalmente */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
-::ng-deep .custom-calendar .p-calendar .p-inputtext:focus {
-  background-color: white !important;
-  background: white !important;
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(20px, -20px) rotate(180deg);
+  }
+  100% {
+    transform: translate(-20px, 20px) rotate(360deg);
+  }
 }
 
-/* Input Mask - Estilos mejorados */
-::ng-deep .custom-input-mask .p-inputmask {
-  background-color: white !important;
-  background: white !important;
-}
-
-::ng-deep .custom-input-mask .p-inputmask:hover {
-  background-color: white !important;
-  background: white !important;
-}
-
-::ng-deep .custom-input-mask .p-inputmask:focus {
-  background-color: white !important;
-  background: white !important;
-}
-
-/* Estilos globales para todos los inputs de PrimeNG */
-::ng-deep .p-inputtext {
-  background-color: white !important;
-  background: white !important;
-}
-
-::ng-deep .p-inputtext:enabled:hover {
-  background-color: white !important;
-  background: white !important;
-}
-
-::ng-deep .p-inputtext:enabled:focus {
-  background-color: white !important;
-  background: white !important;
-}
-
-::ng-deep .p-inputtextarea {
-  background-color: white !important;
-  background: white !important;
-}
-
-::ng-deep .p-inputtextarea:enabled:hover {
-  background-color: white !important;
-  background: white !important;
-}
-
-::ng-deep .p-inputtextarea:enabled:focus {
-  background-color: white !important;
-  background: white !important;
-}
-
-/* Estilos adicionales para asegurar consistencia total */
-::ng-deep .p-component {
-  font-family: inherit;
-}
-
-/* OPCIÓN NUCLEAR - Solo usar si los estilos anteriores no funcionan */
-
-/* Forzar todos los elementos del dropdown a fondo blanco */
-::ng-deep .custom-dropdown * {
-  background-color: white !important;
-  background: white !important;
-}
-
-/* Excepto el icono del dropdown */
-::ng-deep .custom-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon {
-  background-color: transparent !important;
-  background: transparent !important;
-}
-
-/* Y excepto los elementos hover del panel */
-::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
-  background-color: #f3f4f6 !important;
-  background: #f3f4f6 !important;
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.05;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.08;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.05;
+  }
 }

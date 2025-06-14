@@ -6,14 +6,14 @@
       <p-button
         icon="pi pi-arrow-left"
         label="Volver a Entrenadores"
-        styleClass="p-button-text text-gray-600 hover:text-pink-600"
+        styleClass="p-button-text text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors duration-300"
         (click)="goBack()"
       ></p-button>
     </div>
 
   <!-- Loading Spinner -->
   <div *ngIf="loading" class="flex justify-center items-center py-12">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
   </div>
 
   <!-- Services Grid -->
