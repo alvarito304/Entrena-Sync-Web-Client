@@ -93,7 +93,7 @@ export class AdminPanelService {
     return this.http.get<{ secure_url: string }>(`${this.apiUrl}/storage/images/${photoId}`);
   }
 
-  updatePhoto(photoId: string, file: File, clientId: string) {
+  updatePhoto(photoId: string, file: File, clientId: string, gender?: string) {
     const isDefaultAvatar = photoId === this.DEFAULT_AVATAR_ID;
 
     // Crear el observable inicial basado en si necesitamos eliminar o no
@@ -125,9 +125,15 @@ export class AdminPanelService {
       switchMap((uploadResponse: CloudinaryUploadResponse) => {
         // Actualizar el campo avatar del cliente
         console.log("Subida exitosa de la imagen:", uploadResponse);
-        const updateData = {
+        const updateData: any = {
           avatar: uploadResponse.publicId
         };
+        
+        // Incluir gender si está disponible para evitar errores del backend
+        if (gender) {
+          updateData.gender = gender;
+        }
+        
         console.log('Actualizando cliente con avatar:', updateData);
         return this.http.put(`${this.apiUrl}/Clients/${clientId}`, updateData, {
           withCredentials: true,

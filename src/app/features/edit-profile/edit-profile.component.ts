@@ -41,6 +41,7 @@ import {MessageService} from 'primeng/api';
 })
 export class EditProfileComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload!: FileUpload;
+  @ViewChild('fileInput') fileInput!: any;
 
   profileForm: FormGroup;
   isLoading = false;
@@ -161,7 +162,9 @@ export class EditProfileComponent implements OnInit {
   }
 
   onImageSelect(event: any): void {
-    const file = event.files[0];
+    // Compatibilidad con PrimeNG FileUpload y input nativo
+    const file = event.files ? event.files[0] : event.target.files[0];
+    
     if (file) {
       this.selectedFile = file;
       this.selectedFileName = file.name;
@@ -172,6 +175,7 @@ export class EditProfileComponent implements OnInit {
       };
       reader.readAsDataURL(file);
 
+      // Auto-upload como antes
       this.updateImageImmediately();
     }
   }
@@ -187,7 +191,8 @@ export class EditProfileComponent implements OnInit {
       this.adminPanelService.updatePhoto(
         this.currentUserClient.avatar,
         this.selectedFile,
-        this.currentUserClient.clientId
+        this.currentUserClient.clientId,
+        this.currentUserClient.gender
       ).pipe(
         finalize(() => {
           this.isUploadingImage = false;
@@ -232,7 +237,8 @@ export class EditProfileComponent implements OnInit {
     this.adminPanelService.updatePhoto(
       this.currentUserClient?.avatar,
       this.selectedFile,
-      this.currentUserClient.clientId
+      this.currentUserClient.clientId,
+      this.currentUserClient.gender
     ).pipe(
       finalize(() => {
         this.isUploadingImage = false;
@@ -269,6 +275,13 @@ export class EditProfileComponent implements OnInit {
     this.selectedFile = null;
     this.newImagePreview = null;
     this.selectedFileName = '';
+  }
+
+  // Método para disparar la selección de archivo
+  triggerFileInput(): void {
+    if (this.fileInput) {
+      this.fileInput.nativeElement.click();
+    }
   }
 
   onImageClear(): void {

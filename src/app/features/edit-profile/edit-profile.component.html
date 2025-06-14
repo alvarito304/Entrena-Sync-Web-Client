@@ -85,95 +85,89 @@
       <form *ngIf="!isLoadingData" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6 bg-white/50 dark:bg-gray-900/20 p-6 backdrop-blur-md backdrop-filter border border-white/50 dark:border-gray-700/30 shadow-lg hover:shadow-xl transition-transform duration-300">
 
         <!-- Foto de Perfil -->
-        <div class="space-y-4">
-          <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <i class="pi pi-image text-gray-600"></i>
+        <div class="space-y-6">
+          <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+            <i class="pi pi-image text-primary text-lg"></i>
             Foto de Perfil
           </h3>
 
-          <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <!-- Preview de la imagen actual -->
-            <div class="flex-shrink-0">
-              <div class="relative">
-                <div class="w-24 h-24 rounded-full overflow-hidden bg-gray-100 border-2 border-gray-200">
-                  <img
-                    *ngIf="currentProfileImage; else defaultAvatar"
-                    [src]="currentProfileImage"
-                    alt="Foto de perfil actual"
-                    class="w-full h-full object-cover"
-                  />
-                  <ng-template #defaultAvatar>
-                    <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                      <i class="pi pi-user text-gray-400 text-2xl"></i>
-                    </div>
-                  </ng-template>
-                </div>
-                <!-- Badge de cambio -->
-                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                  <i class="pi pi-camera text-white text-xs"></i>
-                </div>
+          <div class="flex flex-col items-center gap-6">
+            <!-- Avatar elegante y grande -->
+            <div class="relative group">
+              <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-100 border-4 border-white dark:border-gray-700 shadow-lg">
+                <img
+                  *ngIf="currentProfileImage; else defaultAvatar"
+                  [src]="currentProfileImage"
+                  alt="Foto de perfil actual"
+                  class="w-full h-full object-cover"
+                />
+                <ng-template #defaultAvatar>
+                  <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                    <i class="pi pi-user text-gray-400 dark:text-gray-500 text-4xl"></i>
+                  </div>
+                </ng-template>
+              </div>
+              
+              <!-- Overlay de hover elegante -->
+              <div class="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center cursor-pointer"
+                   (click)="triggerFileInput()">
+                <i class="pi pi-camera text-white text-2xl"></i>
+              </div>
+              
+              <!-- Badge de edición -->
+              <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg border-3 border-white dark:border-gray-800">
+                <i class="pi pi-pencil text-white text-sm"></i>
               </div>
             </div>
 
-            <!-- Upload de nueva imagen -->
-            <div class="flex-1 w-full">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Actualizar foto de perfil
-              </label>
+            <!-- File input oculto -->
+            <input 
+              #fileInput
+              type="file" 
+              accept="image/*" 
+              (change)="onImageSelect($event)"
+              class="hidden">
 
-              <!-- File Upload usando PrimeNG -->
-              <p-fileUpload
-                mode="basic"
-                name="profileImage"
-                accept="image/*"
-                [maxFileSize]="5000000"
-                [auto]="true"
-                chooseLabel="Seleccionar imagen"
-                styleClass="custom-file-upload w-full"
-                (onSelect)="onImageSelect($event)"
-                (onClear)="onImageClear()"
-              ></p-fileUpload>
+            <!-- Información discreta -->
+            <div class="text-center max-w-xs">
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                Haz clic en la foto para cambiarla
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-500">
+                JPG, PNG • Máx. 5MB • Recomendado: 400x400px
+              </p>
+            </div>
 
-              <!-- Información adicional -->
-              <div class="mt-2 space-y-1">
-                <p class="text-xs text-gray-500">
-                  Formatos soportados: JPG, PNG (máx. 5MB)
-                </p>
-                <p class="text-xs text-gray-500">
-                  Recomendado: imagen cuadrada de al menos 200x200px
-                </p>
-              </div>
-
-              <!-- Preview de la nueva imagen seleccionada -->
-              <div *ngIf="newImagePreview" class="mt-3">
-                <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                  <div class="w-12 h-12 rounded-lg overflow-hidden bg-white">
-                    <img [src]="newImagePreview" alt="Vista previa" class="w-full h-full object-cover">
-                  </div>
-                  <div class="flex-1">
-                    <p class="text-sm font-medium text-blue-900">Nueva imagen seleccionada</p>
-                    <p class="text-xs text-blue-700">{{selectedFileName}}</p>
-                  </div>
-                  <button
-                    type="button"
-                    (click)="removeNewImage()"
-                    class="text-blue-600 hover:text-blue-800 transition-colors"
-                  >
-                    <i class="pi pi-times text-sm"></i>
-                  </button>
+            <!-- Preview elegante de nueva imagen -->
+            <div *ngIf="newImagePreview" 
+                 class="w-full max-w-md p-4 bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border border-primary/20">
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-xl overflow-hidden bg-white shadow-md">
+                  <img [src]="newImagePreview" alt="Vista previa" class="w-full h-full object-cover">
                 </div>
+                <div class="flex-1">
+                  <p class="text-sm font-semibold text-gray-800 dark:text-white">Nueva imagen lista</p>
+                  <p class="text-xs text-gray-600 dark:text-gray-400">{{selectedFileName}}</p>
+                </div>
+                <button
+                  type="button"
+                  (click)="removeNewImage()"
+                  class="w-8 h-8 rounded-full bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 flex items-center justify-center transition-colors"
+                >
+                  <i class="pi pi-times text-red-600 dark:text-red-400 text-xs"></i>
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Separador -->
-        <p-divider></p-divider>
+        <hr class="border-gray-200 dark:border-gray-700">
 
         <!-- Información Personal -->
         <div class="space-y-4">
-          <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <i class="pi pi-user text-gray-600"></i>
+          <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+            <i class="pi pi-user text-primary text-lg"></i>
             Información Personal
           </h3>
 
@@ -241,12 +235,12 @@
         </div>
 
         <!-- Separador -->
-        <p-divider></p-divider>
+        <hr class="border-gray-200 dark:border-gray-700">
 
         <!-- Información de Contacto -->
         <div class="space-y-4">
-          <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <i class="pi pi-envelope text-gray-600"></i>
+          <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+            <i class="pi pi-envelope text-primary text-lg"></i>
             Información de Contacto
           </h3>
 
