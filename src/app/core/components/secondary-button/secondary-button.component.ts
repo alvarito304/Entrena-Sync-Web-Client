@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, Output, EventEmitter} from '@angular/core';
 import {Button} from 'primeng/button';
 import {isPlatformBrowser} from '@angular/common';
 
@@ -12,6 +12,8 @@ import {isPlatformBrowser} from '@angular/common';
   styleUrl: './secondary-button.component.css'
 })
 export class SecondaryButtonComponent implements OnInit, OnDestroy {
+  @Input() type: string = 'button';
+  @Output() clickEvent = new EventEmitter<MouseEvent>();
   @Input() text: string = '';
   darkTheme = false;
   private mutationObserver?: MutationObserver;

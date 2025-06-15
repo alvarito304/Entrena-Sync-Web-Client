@@ -1,17 +1,61 @@
-<div class="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900 p-4">
-  <div class="bg-green-100 border border-green-300 dark:border-green-500 text-green-800 dark:text-green-200 rounded-2xl p-6 shadow-md w-full max-w-md text-center">
+<div class="relative overflow-hidden min-h-screen flex flex-col items-center justify-center p-4">
+  <!-- Decorative elements and background pattern (copiado de services-page) -->
+  <div aria-hidden="true" class="absolute inset-0 -z-10 w-full">
+      <div class="absolute inset-0 bg-gradient-to-b from-[#fdf4fa] to-[#f8e8f7] dark:from-gray-900 dark:to-gray-800"></div>
+      <div class="absolute top-10 left-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.18); animation-delay: 0s;"></div>
+      <div class="absolute top-[25%] right-[15%] w-56 h-56 rounded-full filter blur-3xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.14); animation-delay: 1.5s;"></div>
+      <div class="absolute bottom-[15%] right-[5%] w-80 h-80 rounded-full filter blur-3xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.18); animation-delay: 2s;"></div>
+      <div class="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.15); animation-delay: 3s;"></div>
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.13); animation-delay: 1s;"></div>
+      <div class="absolute top-[30%] left-[10%] w-20 h-20 rounded-full filter blur-xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.2); animation-delay: 0.5s;"></div>
+      <div class="absolute top-[60%] right-[25%] w-24 h-24 rounded-full filter blur-xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.2); animation-delay: 2.5s;"></div>
+      <div class="absolute inset-0 opacity-[0.12] dark:hidden" style="background-image: radial-gradient(#be185d 0.6px, transparent 0.6px); background-size: 24px 24px;"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#f4f6fb] to-[#e8ecf7] dark:from-gray-900 dark:to-gray-800 opacity-0 dark:opacity-100 pointer-events-none"></div>
+      <div class="absolute top-10 left-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.13); animation-delay: 0s;"></div>
+      <div class="absolute top-[25%] right-[15%] w-56 h-56 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.11); animation-delay: 1.5s;"></div>
+      <div class="absolute bottom-[15%] right-[5%] w-80 h-80 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.13); animation-delay: 2s;"></div>
+      <div class="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.12); animation-delay: 3s;"></div>
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.09); animation-delay: 1s;"></div>
+      <div class="absolute top-[30%] left-[10%] w-20 h-20 rounded-full filter blur-xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.16); animation-delay: 0.5s;"></div>
+      <div class="absolute top-[60%] right-[25%] w-24 h-24 rounded-full filter blur-xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.16); animation-delay: 2.5s;"></div>
+      <div class="absolute inset-0 opacity-0 dark:opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(#ec4899 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+  </div>
 
-    <i class="pi pi-check-circle text-6xl text-green-500 mb-4"></i>
+  <div class="relative z-10 bg-green-500/10 dark:bg-green-500/20 backdrop-blur-lg border border-green-500/30 dark:border-green-400/40 text-green-900 dark:text-green-50 rounded-2xl p-6 shadow-xl w-full max-w-md text-center">
+
+    <i class="pi pi-check-circle text-6xl text-green-600 dark:text-green-300 mb-4"></i>
 
     <h2 class="text-2xl font-semibold mb-2">¡Pago completado con éxito!</h2>
     <p class="text-gray-700 dark:text-gray-300 mb-6">
       Tu suscripción ha sido activada. ¡Gracias por confiar en nosotros!
     </p>
 
-    <button pButton type="button" label="Volver al inicio"
-            class="w-full p-button-success"
-            routerLink="/">
-    </button>
+    <div class="flex flex-col sm:flex-row gap-3 mt-6">
+      <app-primary-button
+        class="flex-1"
+        [text]="'Volver al inicio'"
+        (clickEvent)="navigateToHome()">
+      </app-primary-button>
+      <app-secondary-button
+        class="flex-1"
+        [text]="'Ir a mis suscripciones'"
+        (clickEvent)="navigateToMySubscriptions()">
+      </app-secondary-button>
+    </div>
 
   </div>
 </div>

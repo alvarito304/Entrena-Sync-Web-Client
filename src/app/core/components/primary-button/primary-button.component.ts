@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Inject, PLATFORM_ID, Output, EventEmitter } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Button } from 'primeng/button';
 
@@ -10,7 +10,9 @@ import { Button } from 'primeng/button';
   imports: [Button]
 })
 export class PrimaryButtonComponent implements OnInit, OnDestroy {
-  @Input() text = '';
+  @Input() type: string = 'button';
+  @Output() clickEvent = new EventEmitter<MouseEvent>();
+  @Input() text: string = '';
   darkTheme = false;
   private mutationObserver?: MutationObserver;
 
