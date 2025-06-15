@@ -1,17 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {AdminPanelService, CombinedUserClient} from '../../admin-bo/services/admin-panel.service';
+import {AdminPanelService} from '../../admin-bo/services/admin-panel.service';
 import {Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {DatePicker} from 'primeng/datepicker';
 import {DropdownModule} from 'primeng/dropdown';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 import {GenericTableComponent} from '../../../shared/reusable-data-table/reusable-data-table.component';
-import {Calendar} from 'primeng/calendar';
 import {Column} from '../../../core/models/colum/column';
-import {NgIf} from '@angular/common';
 import {AuthService, UserResponse} from '../../keycloak/services/auth.service';
-import {forkJoin, map, Observable, of, switchMap} from 'rxjs';
+import { map, Observable, of, switchMap} from 'rxjs';
 import {FitnessServiceService} from '../../services-page/services/fitness-service.service';
 
 
@@ -35,15 +33,11 @@ export interface CombinedUserClientService {
 @Component({
   selector: 'app-worker-client-administration',
   imports: [
-    DatePicker,
     DropdownModule,
     FormsModule,
     GenericTableComponent,
-    InputText,
     ReactiveFormsModule,
     GenericTableComponent,
-    Calendar,
-    NgIf
   ],
   templateUrl: './worker-client-administration.component.html',
   standalone: true,

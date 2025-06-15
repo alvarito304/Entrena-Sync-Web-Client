@@ -44,8 +44,8 @@
                minlength="3"
                type="text"
                class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
-                border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                        border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                        rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
 
         <!-- Mensaje de error -->
         <div *ngIf="emailModel.invalid && emailModel.touched" class="mt-2 text-sm text-red-500">
@@ -65,8 +65,8 @@
         <p-password styleClass="peer w-full h-14" id="password" name="password" [(ngModel)]="password"
                     [toggleMask]="true" [feedback]="false"
                     inputStyleClass="w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
-                          border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                          rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                      border border-[var(--border-light)] dark:border-[var(--border-dark)]
+                                      rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
       </p-iftalabel>
 
       <!-- Botón -->

@@ -42,7 +42,7 @@
                     <input pInputText id="email" name="email" type="email" [(ngModel)]="email" #emailModel="ngModel" required email
                            class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
                         border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                        rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                        rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                   <div *ngIf="emailModel.invalid && emailModel.touched" class="mt-2 text-sm text-red-500">
                     <span *ngIf="emailModel.errors?.['required']">El email es obligatorio.</span>
                     <span *ngIf="emailModel.errors?.['email']">Formato de email inválido.</span>
@@ -56,12 +56,12 @@
                         peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
                         Contraseña
                     </label>
-                    <p-password styleClass="peer w-full h-14" id="password1" name="password" #passwordModel="ngModel" [(ngModel)]="password" required minlength="6"
+                    <p-password styleClass="peer w-full h-14 hover:border-primary/60 transition-all duration-200 focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1" id="password1" name="password" #passwordModel="ngModel" [(ngModel)]="password" required minlength="6"
                                 [toggleMask]="true" [feedback]="true" promptLabel="Elige contraseña" weakLabel="Muy débil"
                                 mediumLabel="Media" strongLabel="Fuerte"
                                 inputStyleClass="w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
                                       border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                                      rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                      rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                   <div *ngIf="passwordModel?.invalid && passwordModel?.touched" class="mt-2 text-sm text-red-500">
                     <span *ngIf="passwordModel.errors?.['required']">La contraseña es obligatoria.</span>
                     <span *ngIf="passwordModel.errors?.['minlength']">Debe tener al menos 6 caracteres.</span>
@@ -75,12 +75,12 @@
                         peer-focus:text-primary-500 dark:peer-focus:text-primary-300">
                         Confirmar contraseña
                     </label>
-                    <p-password styleClass="peer w-full h-14" id="password2" name="passwordConfirmation"
+                    <p-password styleClass="peer w-full h-14 hover:border-primary/60 transition-all duration-200 focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1" id="password2" name="passwordConfirmation"
                                 #passwordConfirmationModel="ngModel" required
                                 [(ngModel)]="passwordConfirmation" [toggleMask]="true" [feedback]="false"
                                 inputStyleClass="w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
                                       border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                                      rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                      rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                   <div *ngIf="passwordConfirmationModel?.invalid && passwordConfirmationModel?.touched" class="mt-2 text-sm text-red-500">
                     <span *ngIf="passwordConfirmationModel.errors?.['required']">Confirma la contraseña.</span>
                   </div>
@@ -103,7 +103,7 @@
                         <input pInputText id="firstName" name="firstName" [(ngModel)]="firstName" #firstNameModel="ngModel" type="text" required minlength="3"
                                class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
                           border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                          rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                          rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                       <div *ngIf="firstNameModel.invalid && firstNameModel.touched" class="mt-2 text-sm text-red-500">
                         <span *ngIf="firstNameModel.errors?.['required']">El nombre es obligatorio.</span>
                         <span *ngIf="firstNameModel.errors?.['minlength']">Debe tener al menos 2 letras.</span>
@@ -121,7 +121,7 @@
                                #lastNameModel="ngModel" required minlength="2"
                                class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
                           border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                          rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                          rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                       <div *ngIf="lastNameModel.invalid && lastNameModel.touched" class="mt-2 text-sm text-red-500">
                         <span *ngIf="lastNameModel.errors?.['required']">Los apellidos son obligatorios.</span>
                         <span *ngIf="lastNameModel.errors?.['minlength']">Debe tener al menos 2 letras.</span>
@@ -139,7 +139,7 @@
                     <input pInputText id="address" name="address" [(ngModel)]="address" required #addressModel="ngModel" minlength="5" type="text"
                            class="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
                         border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                        rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                        rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                     <div *ngIf="addressModel.invalid && addressModel.touched" class="mt-2 text-sm text-red-500">
                       <span *ngIf="addressModel.errors?.['required']">La dirección es obligatoria</span>
                       <span *ngIf="addressModel.errors?.['minlength']">La dirección debe tener al menos 5 caracteres.</span>
@@ -154,13 +154,13 @@
                     <div class="flex gap-3">
                         <p-dropdown [options]="countryCodes" [(ngModel)]="countryCode" name="countryCode" optionLabel="label"
                                     placeholder="+34"
-                                    class="w-1/3 h-12 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                                    styleClass="w-1/3 h-12 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
                                border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                               rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                               rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                         <input pInputText id="phone" name="phone" [(ngModel)]="phone" type="tel" #phoneModel="ngModel" required pattern="[6-7][0-9]{8}$"
                                class="w-2/3 h-12 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
                           border border-[var(--border-light)] dark:border-[var(--border-dark)]
-                          rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                          rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                     </div>
                     <div *ngIf="phoneModel.invalid && phoneModel.touched" class="mt-2 text-sm text-red-500">
                       <span *ngIf="phoneModel.errors?.['required']">El teléfono es obligatorio.</span>
@@ -180,7 +180,8 @@
                             required
                             name ="birthDate"
                             placeholder="Fecha de Nacimiento"
-                            styleClass="w-full bg-transparent"
+                            styleClass="peer w-full h-14 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)]
+                        rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200"
                     ></p-datepicker>
                     <div *ngIf="birthDateModel.invalid && birthDateModel.touched" class="mt-2 text-sm text-red-500">
                       <span *ngIf="birthDateModel.errors?.['required']">La fecha de nacimiento es obligatoria.</span>
@@ -198,7 +199,7 @@
                     </label>
                     <p-dropdown id="gender" name="gender" [(ngModel)]="gender" #genderModel="ngModel" required [options]="genders" optionLabel="label"
                                 placeholder="Selecciona género"
-                                class="w-full h-12 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)] border border-[var(--border-light)] dark:border-[var(--border-dark)] rounded-lg text-[var(--text-dark)] focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                styleClass="w-full h-12 bg-[var(--input-bg-light)] dark:bg-[var(--input-bg-dark)] border border-[var(--border-light)] dark:border-[var(--border-dark)] rounded-lg text-[var(--text-dark)] focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 hover:border-primary/60 transition-all duration-200" />
                     <div *ngIf="genderModel.invalid && genderModel.touched" class="mt-2 text-sm text-red-500">
                       <span *ngIf="genderModel.errors?.['required']">Selecciona un género.</span>
                     </div>

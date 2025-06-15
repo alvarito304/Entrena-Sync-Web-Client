@@ -1,23 +1,23 @@
-<header class="bg-black relative">
-  <div class="bg-gradient-to-r absolute inset-0 from-gray-700 to-black z-0"></div>
+<header class="bg-black dark:bg-gray-900 relative transition-colors duration-300">
+  <div class="bg-gradient-to-r absolute inset-0 from-gray-700 to-black dark:from-gray-800 dark:to-gray-900 z-0 transition-colors duration-300"></div>
   <div class="container mx-auto px-4 relative">
     <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" [ngClass]="{'bg-black/10': isScrolled}">
 
       <!-- Escritorio -->
-      <div class="hidden xl:flex items-center justify-between py-4 px-6 bg-black/5 backdrop-blur-sm transition-all duration-300">
+      <div class="hidden xl:flex items-center justify-between py-4 px-6 bg-black/5 dark:bg-gray-900/30 backdrop-blur-sm transition-all duration-300">
         <!-- Logo -->
         <div class="flex items-center space-x-2">
-          <img alt="Logo" src="/pink_lightning_no_bg.png" class="h-10 w-10" />
-          <span class="text-2xl font-bold tracking-wider">ENTRENA <span class="text-primary-500">SYNC</span></span>
+          <img alt="Logo" src="/pink_lightning_no_bg.png" class="h-10 w-10 animate-logo-boing transition-all duration-500" />
+          <span class="text-2xl font-bold tracking-wider text-gray-800 dark:text-white transition-colors duration-300 animate-wave">ENTRENA <span class="text-primary-500">SYNC</span></span>
         </div>
         <!-- Menú -->
         <div class="flex flex-1 justify-center">
           <div class="flex space-x-4 items-center">
             <a *ngFor="let link of navLinks"
                [routerLink]="link.path"
-               routerLinkActive="bg-primary-500"
+               routerLinkActive="bg-primary-500 text-white dark:text-primary-100"
                [routerLinkActiveOptions]="{ exact: true }"
-               class="px-3 py-2 text-sm font-medium rounded hover:bg-surface-600 hover:text-primary-400 transition-all duration-200">
+               class="px-3 py-2 text-sm font-medium text-gray-800 dark:text-gray-200 rounded hover:bg-primary-100 hover:text-primary-600 dark:hover:bg-gray-700/50 dark:hover:text-primary-500 transition-colors duration-300">
               {{ link.label }}
             </a>
           </div>
@@ -34,7 +34,7 @@
 
           <ng-container *ngIf="(authService.isAuthenticated() | async); else loginDesktop">
             <div class="flex items-center space-x-4">
-              <span class="text-m text-black-300 dark:white-slate-400 mr-3">{{ user?.username }}</span>
+              <span class="text-m text-gray-800 dark:text-gray-200 mr-3 transition-colors duration-300">{{ user?.username }}</span>
               <p-menu #menuDesktop [popup]="true" [model]="menuItems"></p-menu>
               <img
                 alt="User profile picture"
@@ -48,6 +48,7 @@
             <p-button label="Iniciar Sesión"
                       icon="pi pi-sign-in"
                       (onClick)="navigateToLogin()"
+                      class="text-gray-800 dark:text-gray-100"
                       severity="primary"
                       [outlined]="true">
             </p-button>
@@ -59,7 +60,7 @@
       <div class="xl:hidden flex items-center justify-between py-4 px-4 bg-black/5 backdrop-blur-sm transition-all duration-300">
         <!-- Logo -->
         <div class="flex items-center space-x-2">
-          <img alt="Logo" src="https://placehold.co/60x60?text=FLEX" class="h-10 w-10" />
+          <img alt="Logo" src="/pink_lightning_no_bg.png" class="h-10 w-10" />
           <span class="text-xl font-bold tracking-wider">ENTRENA <span class="text-primary-500">SYNC</span></span>
         </div>
 
@@ -70,7 +71,7 @@
               <img
                 alt="User profile picture"
                 [src]="userPhotoUrl || 'https://placehold.co/32x32/indigo/white?text=' + getUserInitials()"
-                class="w-8 h-8 rounded-full object-cover border-2 border-indigo-200 dark:border-indigo-800 shadow-lg cursor-pointer"
+                class="w-8 h-8 rounded-full object-cover border-2 border-indigo-200 dark:border-indigo-800 shadow-lg cursor-pointer transition duration-300 hover:scale-110"
                 (click)="menuMobile.toggle($event)" />
             </div>
           </ng-container>
@@ -91,8 +92,8 @@
                     severity="primary">
           </p-button>
 
-          <button (click)="toggleMobileMenu()" class="text-white focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button (click)="toggleMobileMenu()" class="text-primary-500 hover:text-primary-600 focus:outline-none transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
@@ -103,20 +104,20 @@
     
     <!-- Menú móvil desplegable con overlay sutil -->
     <div *ngIf="isMobileMenuOpen" 
-         class="fixed inset-0 z-40 bg-gray-500/30 dark:bg-gray-800/30 transition-opacity duration-300"
+         class="fixed inset-0 z-40 bg-gray-500/20 dark:bg-gray-800/20 backdrop-blur-sm transition-colors duration-300"
          (click)="toggleMobileMenu()">
     </div>
     
     <div *ngIf="isMobileMenuOpen" 
          [@fadeInOut]
-         class="fixed inset-y-0 right-0 z-50 w-full sm:w-80 md:w-96 bg-surface-800/95 dark:bg-surface-900/95 shadow-xl transform transition-transform duration-300 ease-in-out">
+         class="fixed inset-y-0 right-0 z-50 w-full sm:w-80 md:w-96 bg-white dark:bg-gray-900 border-l border-primary-500/30 shadow-xl transform transition-colors duration-300 ease-in-out">
       <div class="flex flex-col h-full">
-        <div class="flex items-center justify-between p-5 border-b border-surface-700/30 dark:border-surface-600/30">
+        <div class="flex items-center justify-between p-5 border-b border-primary-500/30 dark:border-primary-500/20 transition-colors duration-300">
           <div class="flex items-center space-x-2">
             <img alt="Logo" src="/pink_lightning_no_bg.png" class="h-8 w-8" />
-            <span class="text-xl font-bold tracking-wider">ENTRENA <span class="text-primary-500">SYNC</span></span>
+            <span class="text-xl font-bold tracking-wider text-gray-100 dark:text-white transition-colors duration-300">ENTRENA <span class="text-primary-500">SYNC</span></span>
           </div>
-          <button (click)="toggleMobileMenu()" class="text-surface-400 hover:text-primary-400 focus:outline-none transition-all duration-200 group">
+          <button (click)="toggleMobileMenu()" class="text-primary-500 hover:text-primary-600 focus:outline-none transition-colors duration-300 group">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-transform duration-300 group-hover:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -130,7 +131,7 @@
                routerLinkActive="bg-primary-500 text-white"
                [routerLinkActiveOptions]="{ exact: true }"
                (click)="toggleMobileMenu()"
-               class="px-5 py-4 text-base font-medium rounded-lg flex items-center hover:bg-surface-600/70 hover:text-primary-400 transition-all duration-200">
+               class="px-5 py-4 text-base font-medium text-gray-700 dark:text-gray-200 rounded-lg flex items-center hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary-500 transition-colors duration-300">
               {{ link.label }}
             </a>
           </div>

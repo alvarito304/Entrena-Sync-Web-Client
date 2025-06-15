@@ -16,7 +16,7 @@ import {AuthService} from '../../keycloak/services/auth.service';
     NgForOf,
     NgIf,
     ConfirmDialog
-  ],
+],
   providers: [ConfirmationService],
   templateUrl: './my-hire-services.component.html',
   styleUrl: './my-hire-services.component.css'

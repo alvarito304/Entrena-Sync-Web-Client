@@ -1,6 +1,6 @@
-import {Component, computed, HostBinding, HostListener} from '@angular/core';
+import {Component, HostListener, Inject, PLATFORM_ID} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
-import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, NgClass, NgForOf, NgIf, isPlatformBrowser} from '@angular/common';
 import {
   trigger,
   transition,
@@ -48,7 +48,18 @@ export class HeaderComponent {
   user: UserResponse | null = null;
   userPhotoUrl: string | null = null;
   menuItems: MenuItem[] = [];
-  constructor(protected authService: AuthService, private router: Router, private adminPanelService: AdminPanelService) {}
+  private readonly THEME_KEY = 'entrena-sync-theme';
+  private isBrowser: boolean;
+  darkTheme = false;
+
+  constructor(
+    protected authService: AuthService, 
+    private router: Router, 
+    private adminPanelService: AdminPanelService,
+    @Inject(PLATFORM_ID) private platformId: any
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   navLinks = [
     { path: '', label: 'Home' },
@@ -57,18 +68,56 @@ export class HeaderComponent {
     { path: 'workouts', label: 'Entrenamientos' },
   ];
 
-  @HostListener('window:scroll')
+  @HostListener('window:scroll', [])
   onWindowScroll() {
-    this.isScrolled = window.scrollY > 10;
+    if (this.isBrowser) {
+      this.isScrolled = window.scrollY > 10;
+    }
   }
 
-  darkTheme = false;
+  private detectSystemTheme() {
+    if (this.isBrowser) {
+      const savedTheme = localStorage.getItem(this.THEME_KEY);
+      
+      if (savedTheme) {
+        this.darkTheme = savedTheme === 'dark';
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        this.darkTheme = true;
+      }
+      
+      this.applyTheme();
+    }
+  }
+
+  private applyTheme() {
+    if (!this.isBrowser) return;
+    
+    const html = document.documentElement;
+    if (this.darkTheme) {
+      html.classList.add('my-app-dark');
+    } else {
+      html.classList.remove('my-app-dark');
+    }
+    // Save theme preference
+    localStorage.setItem(this.THEME_KEY, this.darkTheme ? 'dark' : 'light');
+  }
 
   isDarkTheme() {
     return this.darkTheme;
   }
 
   ngOnInit(): void {
+    // Detecta y aplica el tema guardado o del sistema
+    this.detectSystemTheme();
+    
+    // Escucha cambios en el tema del sistema (solo si no hay preferencia guardada)
+    if (this.isBrowser && !localStorage.getItem(this.THEME_KEY)) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        this.darkTheme = e.matches;
+        this.applyTheme();
+      });
+    }
+    
     this.authService.isAuthenticated().subscribe(isAuth => {
       if (isAuth) {
         this.loadUserData();
@@ -164,11 +213,9 @@ export class HeaderComponent {
   }
 
   toggleDarkMode() {
-    const element = document.querySelector('html');
-    if (element !== null) {
-      element.classList.toggle('my-app-dark');
-      this.darkTheme = !this.darkTheme;
-    }
+    if (!this.isBrowser) return;
+    this.darkTheme = !this.darkTheme;
+    this.applyTheme();
   }
 
   toggleMobileMenu() {

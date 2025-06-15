@@ -1,13 +1,65 @@
-<section class="py-12 md:py-20 lg:py-28 items-center text-center flex flex-col">
-  <p class="text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tight">
-    <span class="text-primary">SINCRONIZA</span>
+<section class="relative py-12 md:py-20 lg:py-28 items-center text-center flex flex-col overflow-hidden">
+  <!-- Decorative elements and background pattern -->
+  <div class="absolute inset-0 -z-10 w-full">
+    <!-- SOLO MODO CLARO: Gradiente, SVG y patrón -->
+    <!-- Fondo gradiente claro -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#fdf4fa] to-[#f8e8f7] dark:from-gray-900 dark:to-gray-800"></div>
+    <!-- Blobs/círculos desenfocados rositas/primary más intensos solo en modo claro -->
+    <div class="absolute top-10 left-10 w-64 h-64 rounded-full filter blur-3xl animate-pulse dark:hidden"
+         style="background-color: rgba(219,39,119,0.18); animation-delay: 0s;"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 rounded-full filter blur-3xl animate-pulse dark:hidden"
+         style="background-color: rgba(219,39,119,0.18); animation-delay: 2s;"></div>
+    <!-- Blob central -->
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+         style="background-color: rgba(219,39,119,0.13); animation-delay: 1s;"></div>
+    <!-- Patrón de puntos rosita/primary más intenso solo en modo claro -->
+    <div class="absolute inset-0 opacity-[0.12] dark:hidden" style="background-image: radial-gradient(#be185d 0.6px, transparent 0.6px); background-size: 24px 24px;"></div>
+    <!-- En modo oscuro, blobs y patrón usan el color primary (rosita), como antes -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#f4f6fb] to-[#e8ecf7] dark:from-gray-900 dark:to-gray-800 opacity-0 dark:opacity-100 pointer-events-none"></div>
+    <div class="absolute top-10 left-10 w-64 h-64 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+         style="background-color: rgba(236,72,153,0.13); animation-delay: 0s;"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+         style="background-color: rgba(236,72,153,0.13); animation-delay: 2s;"></div>
+    <!-- Blob central modo oscuro -->
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+         style="background-color: rgba(236,72,153,0.09); animation-delay: 1s;"></div>
+    <div class="absolute inset-0 opacity-0 dark:opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(#ec4899 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+  </div>
+  <p class="text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tight animate-fade-in-up" style="animation-delay:0.05s">
+    <span class="text-primary-500">SINCRONIZA</span>
     TU VIDA <br> FITNESS
   </p>
-  <p class="text-lg md:text-xl mb-8 max-w-2xl">
+  <p class="text-lg md:text-xl mb-8 max-w-2xl animate-fade-in-up" style="animation-delay:0.15s">
     Únete a nuestra comunidad de apasionados del fitness y transforma tu cuerpo con el equipo más avanzado y la guía de profesionales.
   </p>
-  <div class="sm:flex-row mb-8 flex flex-col gap-4">
-    <app-primary-button text="Empieza Hoy" [routerLink]="'/login'"></app-primary-button>
-    <app-secondary-button text="Nuestros Entrenadores" [routerLink]="'/trainers'"></app-secondary-button>
+  <div class="sm:flex-row mb-8 flex flex-col gap-4 animate-fade-in-up" style="animation-delay:0.25s">
+    <div class="animate-float" style="animation-delay: 0.1s;">
+      <app-primary-button text="Empieza Hoy" [routerLink]="'/login'"></app-primary-button>
+    </div>
+    <div class="animate-float" style="animation-delay: 0.3s;">
+      <app-secondary-button text="Nuestros Entrenadores" [routerLink]="'/trainers'"></app-secondary-button>
+    </div>
+  </div>
+  
+  <!-- Añadimos iconos con texto para destacar beneficios clave -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-10 mt-4">
+    <div class="flex flex-col items-center text-center p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+      <app-icon-with-text 
+        icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
+        text="Entrenamiento personalizado"
+      ></app-icon-with-text>
+    </div>
+    <div class="flex flex-col items-center text-center p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+      <app-icon-with-text 
+        icon="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" 
+        text="Disponible 24/7"
+      ></app-icon-with-text>
+    </div>
+    <div class="flex flex-col items-center text-center p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+      <app-icon-with-text 
+        icon="M13 10V3L4 14h7v7l9-11h-7z" 
+        text="Resultados garantizados"
+      ></app-icon-with-text>
+    </div>
   </div>
 </section>

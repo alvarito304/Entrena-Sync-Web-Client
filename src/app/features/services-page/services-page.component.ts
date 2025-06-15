@@ -5,6 +5,7 @@ import {AdminPanelService, WorkerResponse} from '../admin-bo/services/admin-pane
 import {FitnessService, FitnessServiceService} from './services/fitness-service.service';
 import {Button} from 'primeng/button';
 import {NgForOf, NgIf} from '@angular/common';
+import { PrimaryButtonComponent } from '../../core/components/primary-button/primary-button.component';
 import {catchError, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {AuthService} from '../keycloak/services/auth.service';
@@ -14,7 +15,8 @@ import {AuthService} from '../keycloak/services/auth.service';
   imports: [
     Button,
     NgIf,
-    NgForOf
+    NgForOf,
+    PrimaryButtonComponent
   ],
   templateUrl: './services-page.component.html',
   standalone: true,

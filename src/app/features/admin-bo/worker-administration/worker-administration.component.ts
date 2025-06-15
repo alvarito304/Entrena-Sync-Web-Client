@@ -32,7 +32,6 @@ interface CombinedWorker {
     FormsModule,
     InputText,
     ReactiveFormsModule,
-    JsonPipe,
     NgIf
   ],
   templateUrl: './worker-administration.component.html',

@@ -13,7 +13,7 @@ import {FitnessServiceService} from '../services-page/services/fitness-service.s
 
 @Component({
   selector: 'app-keycloak',
-  imports: [CommonModule, FormsModule, InputText, PasswordModule, ButtonDirective, RouterLink, IftaLabel],
+  imports: [CommonModule, FormsModule, InputText, PasswordModule, RouterLink, IftaLabel],
   templateUrl: './keycloak.component.html',
   standalone: true,
   styleUrl: './keycloak.component.css'

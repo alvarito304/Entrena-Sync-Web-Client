@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Inject, PLATFORM_ID, Output, EventEmitter } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Button } from 'primeng/button';
 
@@ -10,7 +10,10 @@ import { Button } from 'primeng/button';
   imports: [Button]
 })
 export class PrimaryButtonComponent implements OnInit, OnDestroy {
-  @Input() text = '';
+  @Input() type: string = 'button';
+  @Output() clickEvent = new EventEmitter<MouseEvent>();
+  @Input() text: string = '';
+  @Input() icon?: string;
   darkTheme = false;
   private mutationObserver?: MutationObserver;
 
@@ -43,8 +46,8 @@ export class PrimaryButtonComponent implements OnInit, OnDestroy {
   }
 
   get computedStyleClass(): string {
-    const baseClasses = "p-3 font-semibold rounded-full transition-all duration-300 shadow-lg";
-    const textColorClass = this.darkTheme ? "text-white" : "text-black";
-    return `${baseClasses} ${textColorClass}`;
+    const baseClasses = "p-3 font-semibold rounded-md transition-colors duration-300 shadow-md";
+    const colorClass = "p-button-primary";
+    return `${baseClasses} ${colorClass}`;
   }
 }

@@ -1,4 +1,6 @@
 <p-button
   [label]="text"
   [styleClass]="computedStyleClass"
-></p-button>
+  [type]="type"
+  (click)="clickEvent.emit($event)">
+</p-button>

@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, Output, EventEmitter} from '@angular/core';
 import {Button} from 'primeng/button';
 import {isPlatformBrowser} from '@angular/common';
 
@@ -12,6 +12,8 @@ import {isPlatformBrowser} from '@angular/common';
   styleUrl: './secondary-button.component.css'
 })
 export class SecondaryButtonComponent implements OnInit, OnDestroy {
+  @Input() type: string = 'button';
+  @Output() clickEvent = new EventEmitter<MouseEvent>();
   @Input() text: string = '';
   darkTheme = false;
   private mutationObserver?: MutationObserver;
@@ -45,8 +47,11 @@ export class SecondaryButtonComponent implements OnInit, OnDestroy {
   }
 
   get computedStyleClass(): string {
-    const baseClasses = "p-3 bg-transparent border border-gray-700 hover:border-primary-400 bg-surface-300 font-semibold rounded-full transition-all duration-300 shadow-lg";
-    const textColorClass = this.darkTheme ? "text-white" : "text-black";
-    return `${baseClasses} ${textColorClass}`;
+    const baseClasses = "p-3 font-semibold rounded-md transition-all duration-300 shadow-md hover:shadow-lg";
+    // Combinación de colores más atractiva con borders sutiles y hover mejorado
+    const colorClass = this.darkTheme 
+      ? "text-primary-400 hover:text-primary-300 border border-primary-500/40 hover:border-primary-500 bg-gray-800 hover:bg-gray-700" 
+      : "text-primary-700 hover:text-primary-800 border border-primary-500/40 hover:border-primary-500 bg-gray-50 hover:bg-gray-100";
+    return `${baseClasses} ${colorClass}`;
   }
 }

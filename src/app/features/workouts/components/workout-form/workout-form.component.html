@@ -110,17 +110,28 @@
             <label for="intensity" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Intensity (0-10) *
             </label>
-            <div class="flex items-center space-x-2">
-              <input
-                type="range"
-                id="intensity"
-                name="intensity"
-                [(ngModel)]="formData.intensity"
-                min="0"
-                max="10"
-                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-primary"
-              />
-              <span class="text-sm font-medium">{{ formData.intensity }}</span>
+            <div class="flex items-center gap-4">
+              <div class="flex-1">
+                <p-slider 
+                  [(ngModel)]="formData.intensity" 
+                  [min]="0" 
+                  [max]="10" 
+                  [step]="1" 
+                  styleClass="w-full"
+                  [ngModelOptions]="{standalone: true}"
+                ></p-slider>
+              </div>
+              <div>
+                <input 
+                  type="number" 
+                  pInputText 
+                  [(ngModel)]="formData.intensity" 
+                  name="intensity"
+                  min="0"
+                  max="10"
+                  class="w-14 h-10 rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -172,7 +183,7 @@
             
             <!-- Nuevos ejercicios con autocompletado -->
             <div *ngFor="let entry of getNewExerciseEntries(); let i = index"
-              class="grid grid-cols-[1fr_auto] gap-2 items-center bg-white/20 dark:bg-gray-800/20 p-3 rounded-md backdrop-blur-sm transition-all duration-200 mb-2"
+              class="grid grid-cols-[1fr_auto] gap-2 items-center py-3 rounded-md mb-2"
             >
               <!-- Cada entrada tiene su propio autocomplete -->
               <div class="w-full">
@@ -183,10 +194,8 @@
                   (completeMethod)="filterExercise($event, getExistingExercisesCount() + i)"
                   field="name"
                   placeholder="Type to search exercise"
-                  [style]="{'width':'100%'}"
-                  [inputStyle]="{'width':'100%', 'border-radius': '0.375rem', 'height': '2.5rem', 'background-color': 'rgba(255, 255, 255, 0.5)', 'border-color': 'rgba(255, 255, 255, 0.3)'}"
-                  [panelStyle]="{'background-color': 'rgba(255, 255, 255, 0.9)'}"
                   (onSelect)="onExerciseSelect($event, getExistingExercisesCount() + i)"
+                  inputStyleClass="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                   styleClass="w-full"
                 ></p-autocomplete>
                 <!-- Muestra el valor seleccionado si existe -->
@@ -206,7 +215,7 @@
             <!-- Ejercicios en modo creación -->
             <div *ngIf="!isEditing">
               <div *ngFor="let entry of exerciseEntries; let i = index"
-                class="grid grid-cols-[1fr_auto] gap-2 items-center bg-white/20 dark:bg-gray-800/20 p-3 rounded-md backdrop-blur-sm transition-all duration-200 mb-2"
+                class="grid grid-cols-[1fr_auto] gap-2 items-center py-3 rounded-md"
               >
                 <!-- Cada entrada tiene su propio autocomplete -->
                 <div class="w-full">
@@ -217,11 +226,9 @@
                     (completeMethod)="filterExercise($event, i)"
                     field="name"
                     placeholder="Type to search exercise"
-                    [style]="{'width':'100%'}"
-                    [inputStyle]="{'width':'100%', 'border-radius': '0.375rem', 'height': '2.5rem', 'background-color': 'rgba(255, 255, 255, 0.5)', 'border-color': 'rgba(255, 255, 255, 0.3)'}"
-                    [panelStyle]="{'background-color': 'rgba(255, 255, 255, 0.9)'}"
                     (onSelect)="onExerciseSelect($event, i)"
                     styleClass="w-full"
+                    inputStyleClass="flex h-10 w-full rounded-md border border-white/30 dark:border-gray-700/30 bg-white/50 dark:bg-gray-800/50 px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground transition-all duration-200 hover:border-primary/60 focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                   ></p-autocomplete>
                   <!-- Muestra el valor seleccionado si existe -->
                   <div *ngIf="entry.value || entry.exercise?.name" class="mt-1 text-xs text-gray-500 truncate">

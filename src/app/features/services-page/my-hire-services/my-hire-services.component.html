@@ -1,6 +1,45 @@
 <p-confirmDialog></p-confirmDialog>
 
-<div class="container mx-auto p-6 pt-20 m-20 mb-30">
+<!-- Animated Background Container -->
+<div class="min-h-screen relative overflow-hidden">
+  <!-- Decorative elements and background pattern (copiado de services-page) -->
+  <div class="absolute inset-0 -z-10 w-full">
+      <div class="absolute inset-0 bg-gradient-to-b from-[#fdf4fa] to-[#f8e8f7] dark:from-gray-900 dark:to-gray-800"></div>
+      <div class="absolute top-10 left-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.18); animation-delay: 0s;"></div>
+      <div class="absolute top-[25%] right-[15%] w-56 h-56 rounded-full filter blur-3xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.14); animation-delay: 1.5s;"></div>
+      <div class="absolute bottom-[15%] right-[5%] w-80 h-80 rounded-full filter blur-3xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.18); animation-delay: 2s;"></div>
+      <div class="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.15); animation-delay: 3s;"></div>
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.13); animation-delay: 1s;"></div>
+      <div class="absolute top-[30%] left-[10%] w-20 h-20 rounded-full filter blur-xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.2); animation-delay: 0.5s;"></div>
+      <div class="absolute top-[60%] right-[25%] w-24 h-24 rounded-full filter blur-xl animate-pulse dark:hidden"
+           style="background-color: rgba(219,39,119,0.2); animation-delay: 2.5s;"></div>
+      <div class="absolute inset-0 opacity-[0.12] dark:hidden" style="background-image: radial-gradient(#be185d 0.6px, transparent 0.6px); background-size: 24px 24px;"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#f4f6fb] to-[#e8ecf7] dark:from-gray-900 dark:to-gray-800 opacity-0 dark:opacity-100 pointer-events-none"></div>
+      <div class="absolute top-10 left-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.13); animation-delay: 0s;"></div>
+      <div class="absolute top-[25%] right-[15%] w-56 h-56 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.11); animation-delay: 1.5s;"></div>
+      <div class="absolute bottom-[15%] right-[5%] w-80 h-80 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.13); animation-delay: 2s;"></div>
+      <div class="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.12); animation-delay: 3s;"></div>
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.09); animation-delay: 1s;"></div>
+      <div class="absolute top-[30%] left-[10%] w-20 h-20 rounded-full filter blur-xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.16); animation-delay: 0.5s;"></div>
+      <div class="absolute top-[60%] right-[25%] w-24 h-24 rounded-full filter blur-xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+           style="background-color: rgba(236,72,153,0.16); animation-delay: 2.5s;"></div>
+      <div class="absolute inset-0 opacity-0 dark:opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(#ec4899 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+  </div>
+
+  <!-- Content Wrapper with Margins -->
+  <div class="relative z-10 container mx-auto p-6 pt-20 mt-0 md:mt-20 mb-10 md:mb-30">
   <div *ngIf="isLoading; else content" class="flex justify-center items-center min-h-[300px]">
     <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
   </div>
@@ -8,7 +47,7 @@
    <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">Mis Suscripciones</h2>
 
    <div *ngIf="subscriptions.length > 0; else noSubscriptions" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-     <div *ngFor="let sub of subscriptions" class="rounded-2xl shadow-lg p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+     <div *ngFor="let sub of subscriptions" class="rounded-2xl shadow-lg p-6 bg-white/50 backdrop-blur-sm dark:bg-gray-800/50 dark:backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
        <div class="flex justify-between items-center mb-2">
          <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ sub.name }}</h3>
          <p-badge
