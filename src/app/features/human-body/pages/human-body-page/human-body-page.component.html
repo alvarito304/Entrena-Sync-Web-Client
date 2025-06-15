@@ -1,3 +1,57 @@
-<div class="margen-top">
-  <app-human-body ></app-human-body>
+<div class="margen-top min-h-screen py-8 px-4 relative overflow-hidden">
+    <!-- Decorative elements and background pattern -->
+    <div class="absolute inset-0 -z-10 w-full">
+        <!-- SOLO MODO CLARO: Gradiente, SVG y patrón -->
+        <!-- Fondo gradiente claro -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#fdf4fa] to-[#f8e8f7] dark:from-gray-900 dark:to-gray-800"></div>
+        
+        <!-- Blobs/círculos desenfocados rositas/primary más intensos solo en modo claro -->
+        <div class="absolute top-10 left-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.18); animation-delay: 0s;"></div>
+        <div class="absolute top-[25%] right-[15%] w-56 h-56 rounded-full filter blur-3xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.14); animation-delay: 1.5s;"></div>
+        <div class="absolute bottom-[15%] right-[5%] w-80 h-80 rounded-full filter blur-3xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.18); animation-delay: 2s;"></div>
+        <div class="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.15); animation-delay: 3s;"></div>
+             
+        <!-- Blob central -->
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.13); animation-delay: 1s;"></div>
+             
+        <!-- Círculos pequeños adicionales modo claro -->
+        <div class="absolute top-[30%] left-[10%] w-20 h-20 rounded-full filter blur-xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.2); animation-delay: 0.5s;"></div>
+        <div class="absolute top-[60%] right-[25%] w-24 h-24 rounded-full filter blur-xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.2); animation-delay: 2.5s;"></div>
+             
+        <!-- Patrón de puntos rosita/primary más intenso solo en modo claro -->
+        <div class="absolute inset-0 opacity-[0.12] dark:hidden" style="background-image: radial-gradient(#be185d 0.6px, transparent 0.6px); background-size: 24px 24px;"></div>
+        
+        <!-- En modo oscuro, blobs y patrón usan el color primary (rosita) -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#f4f6fb] to-[#e8ecf7] dark:from-gray-900 dark:to-gray-800 opacity-0 dark:opacity-100 pointer-events-none"></div>
+        <div class="absolute top-10 left-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.13); animation-delay: 0s;"></div>
+        <div class="absolute top-[25%] right-[15%] w-56 h-56 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.11); animation-delay: 1.5s;"></div>
+        <div class="absolute bottom-[15%] right-[5%] w-80 h-80 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.13); animation-delay: 2s;"></div>
+        <div class="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.12); animation-delay: 3s;"></div>
+             
+        <!-- Blob central modo oscuro -->
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.09); animation-delay: 1s;"></div>
+             
+        <!-- Círculos pequeños adicionales modo oscuro -->
+        <div class="absolute top-[30%] left-[10%] w-20 h-20 rounded-full filter blur-xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.16); animation-delay: 0.5s;"></div>
+        <div class="absolute top-[60%] right-[25%] w-24 h-24 rounded-full filter blur-xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.16); animation-delay: 2.5s;"></div>
+             
+        <div class="absolute inset-0 opacity-0 dark:opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(#ec4899 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+    </div>
+
+  <!-- Contenido original de la página human-body -->
+  <app-human-body></app-human-body>
 </div>

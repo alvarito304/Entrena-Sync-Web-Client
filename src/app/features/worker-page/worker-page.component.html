@@ -1,4 +1,56 @@
-<div class="min-h-screen bg-white mt-20 mb-20">
+<div class="min-h-screen mt-20 relative overflow-hidden">
+    <!-- Decorative elements and background pattern -->
+    <div class="absolute inset-0 -z-10 w-full">
+        <!-- SOLO MODO CLARO: Gradiente, SVG y patrón -->
+        <!-- Fondo gradiente claro -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#fdf4fa] to-[#f8e8f7] dark:from-gray-900 dark:to-gray-800"></div>
+        
+        <!-- Blobs/círculos desenfocados rositas/primary más intensos solo en modo claro -->
+        <div class="absolute top-10 left-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.18); animation-delay: 0s;"></div>
+        <div class="absolute top-[25%] right-[15%] w-56 h-56 rounded-full filter blur-3xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.14); animation-delay: 1.5s;"></div>
+        <div class="absolute bottom-[15%] right-[5%] w-80 h-80 rounded-full filter blur-3xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.18); animation-delay: 2s;"></div>
+        <div class="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.15); animation-delay: 3s;"></div>
+             
+        <!-- Blob central -->
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.13); animation-delay: 1s;"></div>
+             
+        <!-- Círculos pequeños adicionales modo claro -->
+        <div class="absolute top-[30%] left-[10%] w-20 h-20 rounded-full filter blur-xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.2); animation-delay: 0.5s;"></div>
+        <div class="absolute top-[60%] right-[25%] w-24 h-24 rounded-full filter blur-xl animate-pulse dark:hidden"
+             style="background-color: rgba(219,39,119,0.2); animation-delay: 2.5s;"></div>
+             
+        <!-- Patrón de puntos rosita/primary más intenso solo en modo claro -->
+        <div class="absolute inset-0 opacity-[0.12] dark:hidden" style="background-image: radial-gradient(#be185d 0.6px, transparent 0.6px); background-size: 24px 24px;"></div>
+        
+        <!-- En modo oscuro, blobs y patrón usan el color primary (rosita) -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#f4f6fb] to-[#e8ecf7] dark:from-gray-900 dark:to-gray-800 opacity-0 dark:opacity-100 pointer-events-none"></div>
+        <div class="absolute top-10 left-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.13); animation-delay: 0s;"></div>
+        <div class="absolute top-[25%] right-[15%] w-56 h-56 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.11); animation-delay: 1.5s;"></div>
+        <div class="absolute bottom-[15%] right-[5%] w-80 h-80 rounded-full filter blur-3xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.13); animation-delay: 2s;"></div>
+        <div class="absolute bottom-[10%] left-[15%] w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.12); animation-delay: 3s;"></div>
+             
+        <!-- Blob central modo oscuro -->
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full filter blur-2xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.09); animation-delay: 1s;"></div>
+             
+        <!-- Círculos pequeños adicionales modo oscuro -->
+        <div class="absolute top-[30%] left-[10%] w-20 h-20 rounded-full filter blur-xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.16); animation-delay: 0.5s;"></div>
+        <div class="absolute top-[60%] right-[25%] w-24 h-24 rounded-full filter blur-xl animate-pulse opacity-0 dark:opacity-100 pointer-events-none"
+             style="background-color: rgba(236,72,153,0.16); animation-delay: 2.5s;"></div>
+             
+        <div class="absolute inset-0 opacity-0 dark:opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(#ec4899 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+    </div>
   <div class="max-w-7xl mx-auto mt-10 mb-10 px-4">
     <h1 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-white">Profesionales en el sector</h1>
     <p class="text-gray-600 dark:text-gray-300 mb-8">
@@ -10,7 +62,7 @@
   <div *ngIf="loading" class="flex justify-center items-center py-20 min-h-[400px]">
     <div class="flex flex-col items-center">
       <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-600"></div>
-      <p class="mt-4 text-gray-600">Cargando profesionales...</p>
+      <p class="mt-4 text-gray-600 dark:text-gray-300">Cargando profesionales...</p>
     </div>
   </div>
 
@@ -19,7 +71,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <div
         *ngFor="let trainer of currentTrainers"
-        class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 overflow-hidden"
+        class="bg-white/50 backdrop-blur-sm dark:bg-gray-800/50 dark:backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 dark:border dark:border-gray-700 overflow-hidden"
       >
         <!-- Trainer Image -->
         <div class="relative">
@@ -41,24 +93,23 @@
         <!-- Trainer Info -->
         <div class="p-6">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="text-xl font-bold text-gray-900">{{ trainer.name }}</h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ trainer.name }}</h3>
             <div class="flex items-center gap-1">
               <i class="pi pi-star-fill text-yellow-400 text-sm"></i>
-              <span class="text-sm font-medium text-gray-600">{{ trainer.rating }}</span>
+              <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ trainer.rating }}</span>
             </div>
           </div>
 
           <div class="flex items-center gap-1 mb-3">
-            <i class="pi pi-map-marker text-gray-400 text-sm"></i>
-            <span class="text-sm text-gray-600">{{ trainer.location }}</span>
+            <i class="pi pi-map-marker text-gray-400 dark:text-gray-500 text-sm"></i>
+            <span class="text-sm text-gray-600 dark:text-gray-300">{{ trainer.location }}</span>
           </div>
 
-          <p class="text-gray-600 text-sm leading-relaxed mb-4">{{ trainer.description }}</p>
+          <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">{{ trainer.description }}</p>
 
           <p-button
             label="Ver Servicios"
-            styleClass="w-full bg-pink-600 hover:bg-pink-700 border-pink-600 hover:border-pink-700"
-            [style]="{'background-color': '#db2777', 'border-color': '#db2777'}"
+            styleClass="w-full text-white bg-primary-600 hover:bg-primary-700 border-primary-600 hover:border-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 dark:border-primary-500 dark:hover:border-primary-600"
             [routerLink]="['/services', trainer.workerId]"
           ></p-button>
         </div>
@@ -67,9 +118,9 @@
 
     <!-- Empty State -->
     <div *ngIf="currentTrainers.length === 0" class="text-center py-12">
-      <i class="pi pi-users text-gray-400 text-6xl mb-4"></i>
-      <h3 class="text-xl font-semibold text-gray-600 mb-2">No hay entrenadores disponibles</h3>
-      <p class="text-gray-500">No se encontraron profesionales en este momento.</p>
+      <i class="pi pi-users text-gray-400 dark:text-gray-500 text-6xl mb-4"></i>
+      <h3 class="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">No hay entrenadores disponibles</h3>
+      <p class="text-gray-500 dark:text-gray-400">No se encontraron profesionales en este momento.</p>
     </div>
 
     <!-- Pagination -->

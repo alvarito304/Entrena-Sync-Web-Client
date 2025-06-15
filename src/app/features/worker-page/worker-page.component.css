@@ -52,3 +52,46 @@
   display: flex;
   align-items: center;
 }
+
+/* Dark mode styles for paginator */
+html.dark :host ::ng-deep .custom-paginator .p-paginator-pages .p-paginator-page {
+  background-color: #374151; /* gray-700 */
+  border-color: #4b5563; /* gray-600 */
+  color: #d1d5db; /* gray-300 */
+}
+
+html.dark :host ::ng-deep .custom-paginator .p-paginator-pages .p-paginator-page:hover {
+  background-color: #4b5563; /* gray-600 */
+  border-color: #9ca3af; /* gray-400 */
+  color: #f3f4f6; /* gray-100 */
+}
+
+html.dark :host ::ng-deep .custom-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: #db2777; /* pink-600 */
+  border-color: #db2777; /* pink-600 */
+  color: white;
+}
+
+html.dark :host ::ng-deep .custom-paginator .p-paginator-prev,
+html.dark :host ::ng-deep .custom-paginator .p-paginator-next {
+  background-color: #374151; /* gray-700 */
+  border-color: #4b5563; /* gray-600 */
+  color: #d1d5db; /* gray-300 */
+}
+
+html.dark :host ::ng-deep .custom-paginator .p-paginator-prev:hover,
+html.dark :host ::ng-deep .custom-paginator .p-paginator-next:hover {
+  background-color: #4b5563; /* gray-600 */
+  border-color: #9ca3af; /* gray-400 */
+  color: #f3f4f6; /* gray-100 */
+}
+
+html.dark :host ::ng-deep .custom-paginator .p-paginator-prev:disabled,
+html.dark :host ::ng-deep .custom-paginator .p-paginator-next:disabled {
+  opacity: 0.5;
+  /* color will be inherited or can be set explicitly if needed */
+}
+
+html.dark :host ::ng-deep .custom-paginator .p-paginator-current {
+  color: #9ca3af; /* gray-400 */
+}
