@@ -1,4 +1,4 @@
-<div class="min-h-screen mt-20 relative overflow-hidden">
+<div class="min-h-screen relative overflow-hidden">
   <!-- Decorative elements and background pattern (copiado de worker-page) -->
   <div class="absolute inset-0 -z-10 w-full">
       <div class="absolute inset-0 bg-gradient-to-b from-[#fdf4fa] to-[#f8e8f7] dark:from-gray-900 dark:to-gray-800"></div>
@@ -34,8 +34,10 @@
            style="background-color: rgba(236,72,153,0.16); animation-delay: 2.5s;"></div>
       <div class="absolute inset-0 opacity-0 dark:opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(#ec4899 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
   </div>
-  <!-- Header Section -->
-  <div class="max-w-7xl mx-auto mt-10 mb-10 px-4">
+  <!-- Content Wrapper with Margins -->
+  <div class="relative z-20 mt-20">
+    <!-- Header Section -->
+    <div class="max-w-7xl mx-auto mt-10 mb-10 px-4">
     <!-- Back Button -->
     <div class="mb-6">
       <p-button
@@ -89,13 +91,11 @@
               <span class="text-2xl font-bold text-gray-900 dark:text-white">{{ service.price }}€</span>
               <span class="text-gray-600 dark:text-gray-300 text-sm ml-1">/ sesión</span>
             </div>
-            <p-button
-              label="Suscribirse"
-              icon="pi pi-plus"
-              styleClass="text-white bg-primary-600 hover:bg-primary-700 border-primary-600 hover:border-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 dark:border-primary-500 dark:hover:border-primary-600"
-              
-              (click)="subscribeToService(service)"
-            ></p-button>
+            <app-primary-button
+              [text]="'Suscribirse'"
+              [icon]="'pi pi-plus'"
+              (clickEvent)="subscribeToService(service)"
+            ></app-primary-button>
           </div>
         </div>
       </div>
@@ -107,6 +107,7 @@
       <h3 class="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">No hay servicios disponibles</h3>
       <p class="text-gray-500 dark:text-gray-400">Este entrenador aún no ha publicado servicios.</p>
     </div>
+      </div>
   </div>
 </div>
 </div>

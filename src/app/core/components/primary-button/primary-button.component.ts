@@ -13,6 +13,7 @@ export class PrimaryButtonComponent implements OnInit, OnDestroy {
   @Input() type: string = 'button';
   @Output() clickEvent = new EventEmitter<MouseEvent>();
   @Input() text: string = '';
+  @Input() icon?: string;
   darkTheme = false;
   private mutationObserver?: MutationObserver;
 
