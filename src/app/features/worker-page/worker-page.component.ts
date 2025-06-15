@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Paginator} from 'primeng/paginator';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {Button} from 'primeng/button';
-import {Tag} from 'primeng/tag';
-import {Avatar} from 'primeng/avatar';
+
 import {AdminPanelService} from '../admin-bo/services/admin-panel.service';
 import {Router, RouterLink} from '@angular/router';
 import {catchError, forkJoin, map, of} from 'rxjs';
@@ -28,10 +27,7 @@ export interface Trainer {
   selector: 'app-worker-page',
   imports: [
     Paginator,
-    NgClass,
     Button,
-    Tag,
-    Avatar,
     NgForOf,
     RouterLink,
     NgIf

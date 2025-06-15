@@ -3,8 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { TableModule } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
-import { Ripple } from 'primeng/ripple';
-import {Button, ButtonModule} from 'primeng/button';
+import {Button} from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialog } from 'primeng/confirmdialog';
@@ -14,10 +13,8 @@ import { CommonModule } from '@angular/common';
 import { FileUpload } from 'primeng/fileupload';
 import { SelectModule } from 'primeng/select';
 import { Tag } from 'primeng/tag';
-import { RadioButton } from 'primeng/radiobutton';
 import { Rating } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
-import { InputNumber } from 'primeng/inputnumber';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import {Column} from '../../models/colum/column';
@@ -32,7 +29,6 @@ import {ProgressSpinner} from 'primeng/progressspinner';
   imports: [
     TableModule,
     Dialog,
-    Ripple,
     SelectModule,
     ToastModule,
     ToolbarModule,
@@ -43,11 +39,9 @@ import {ProgressSpinner} from 'primeng/progressspinner';
     FileUpload,
     SelectModule,
     Tag,
-    RadioButton,
     Rating,
     InputTextModule,
     FormsModule,
-    InputNumber,
     IconFieldModule,
     InputIconModule,
     Button,

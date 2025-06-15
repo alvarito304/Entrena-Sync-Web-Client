@@ -4,15 +4,11 @@ import {AdminPanelService} from '../services/admin-panel.service';
 import {MenuItem} from 'primeng/api';
 import {Menu} from 'primeng/menu';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {UserAdministrationComponent} from '../user-administration/user-administration.component';
-import {TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-admin-panel',
   imports: [
     Menu,
-    UserAdministrationComponent,
-    TitleCasePipe,
     RouterOutlet,
     RouterLink,
     RouterLinkActive

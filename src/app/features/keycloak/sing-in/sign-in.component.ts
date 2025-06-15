@@ -1,22 +1,20 @@
 import { Component } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule, NgForm, NgModel} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {PasswordModule} from 'primeng/password';
 import {ButtonModule} from 'primeng/button';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {MenuItem, MessageService} from 'primeng/api';
 import {Steps} from 'primeng/steps';
-import {FileUpload} from 'primeng/fileupload';
 import {DropdownModule} from 'primeng/dropdown';
-import {Calendar} from 'primeng/calendar';
 import {IftaLabelModule} from 'primeng/iftalabel';
 import {DatePicker} from "primeng/datepicker";
 import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: 'app-sign-in',
-    imports: [CommonModule, IftaLabelModule, FormsModule, InputTextModule, PasswordModule, ButtonModule, RouterLink, Steps, FileUpload, DropdownModule, Calendar, DatePicker],
+    imports: [CommonModule, IftaLabelModule, FormsModule, InputTextModule, PasswordModule, ButtonModule, Steps, DropdownModule, DatePicker],
   templateUrl: './sign-in.component.html',
   standalone: true,
   styleUrl: './sign-in.component.css'

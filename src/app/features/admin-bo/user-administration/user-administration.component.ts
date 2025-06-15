@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
 import {AdminPanelService, CombinedUserClient, UpateUserRequest} from '../services/admin-panel.service';
-import {AuthService, UserRequest, UserResponse} from '../../keycloak/services/auth.service';
+import {UserRequest, UserResponse} from '../../keycloak/services/auth.service';
 import {Router} from '@angular/router';
 import {GenericTableComponent} from '../../../core/components/generic-table/generic-table.component';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MultiSelect} from 'primeng/multiselect';
-import {Dialog} from 'primeng/dialog';
-import {MessageService, PrimeTemplate} from 'primeng/api';
-import {ButtonDirective} from 'primeng/button';
-import {CommonModule, NgIf, NgTemplateOutlet} from '@angular/common';
+import {MessageService} from 'primeng/api';
+import {CommonModule} from '@angular/common';
 import {InputText} from 'primeng/inputtext';
 import {DatePicker} from 'primeng/datepicker';
 import {DropdownModule} from 'primeng/dropdown';
@@ -20,14 +17,8 @@ import {CalendarModule} from 'primeng/calendar';
   imports: [
     GenericTableComponent,
     FormsModule,
-    MultiSelect,
     CalendarModule,
     CommonModule,
-    Dialog,
-    PrimeTemplate,
-    ButtonDirective,
-    NgTemplateOutlet,
-    NgIf,
     InputText,
     DatePicker,
     DropdownModule,

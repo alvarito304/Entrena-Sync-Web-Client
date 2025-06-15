@@ -13,11 +13,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DividerModule } from 'primeng/divider';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import {routes} from '../../app.routes';
 import {FileUpload} from 'primeng/fileupload';
-import {catchError, EMPTY, finalize, map, of, switchMap} from 'rxjs';
-import {AuthService, UserResponse} from '../keycloak/services/auth.service';
-import {ClientCreateRequest, ClientUpdateRequest} from '../../core/models/clients/clients-interfaces';
+import {catchError, EMPTY, finalize} from 'rxjs';
+import { ClientUpdateRequest} from '../../core/models/clients/clients-interfaces';
 import {MessageService} from 'primeng/api';
 
 @Component({
@@ -34,8 +32,7 @@ import {MessageService} from 'primeng/api';
     CalendarModule,
     InputMaskModule,
     DividerModule,
-    ProgressSpinnerModule,
-    FileUpload
+    ProgressSpinnerModule
   ],
   styleUrls: ['./edit-profile.component.css']
 })
@@ -164,7 +161,7 @@ export class EditProfileComponent implements OnInit {
   onImageSelect(event: any): void {
     // Compatibilidad con PrimeNG FileUpload y input nativo
     const file = event.files ? event.files[0] : event.target.files[0];
-    
+
     if (file) {
       this.selectedFile = file;
       this.selectedFileName = file.name;

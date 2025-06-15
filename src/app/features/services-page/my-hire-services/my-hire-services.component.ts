@@ -6,7 +6,6 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {FitnessServiceService} from '../services/fitness-service.service';
 import {AuthService} from '../../keycloak/services/auth.service';
-import { PrimaryButtonComponent } from "../../../core/components/primary-button/primary-button.component";
 
 @Component({
   selector: 'app-my-hire-services',
@@ -16,8 +15,7 @@ import { PrimaryButtonComponent } from "../../../core/components/primary-button/
     Badge,
     NgForOf,
     NgIf,
-    ConfirmDialog,
-    PrimaryButtonComponent
+    ConfirmDialog
 ],
   providers: [ConfirmationService],
   templateUrl: './my-hire-services.component.html',
